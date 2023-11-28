@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using NetBanking.Infrastructure.Identity.Entities;
+using RealStateApp.Infrastructure.Identity.Entities;
 
 namespace RealStateApp.Infraestructure.Identity.Context
 {

@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Identity;
 
-namespace NetBanking.Infrastructure.Identity.Entities
+namespace RealStateApp.Infrastructure.Identity.Entities
 {
     public class AppUser : IdentityUser
     {

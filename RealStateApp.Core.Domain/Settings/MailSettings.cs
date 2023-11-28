@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace RealStateApp.Core.Domain.Settings
 {
-    internal class MailSettings
+    public class MailSettings
     {
     }
 }

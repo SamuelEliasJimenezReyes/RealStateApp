@@ -5,11 +5,6 @@ using MimeKit;
 using RealStateApp.Core.Application.Dtos.Email;
 using RealStateApp.Core.Application.Interface.Services;
 using RealStateApp.Core.Domain.Settings;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace RealStateApp.Infraestructure.Shared.Services
 {

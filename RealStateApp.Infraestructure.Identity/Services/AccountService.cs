@@ -2,7 +2,7 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.EntityFrameworkCore;
-using NetBanking.Infrastructure.Identity.Entities;
+using RealStateApp.Infrastructure.Identity.Entities;
 using RealStateApp.Core.Application.Dtos.Account;
 using RealStateApp.Core.Application.Dtos.User;
 using RealStateApp.Core.Application.Interface.Services;
@@ -13,6 +13,7 @@ using System.Data;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using RealStateApp.Core.Application.Enums;
 
 namespace RealStateApp.Infraestructure.Identity.Services
 {
