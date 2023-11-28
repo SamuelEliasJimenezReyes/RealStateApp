@@ -5,6 +5,7 @@ using Microsoft.EntityFrameworkCore;
 using NetBanking.Infrastructure.Identity.Entities;
 using RealStateApp.Core.Application.Dtos.Account;
 using RealStateApp.Core.Application.Dtos.User;
+using RealStateApp.Core.Application.Enums;
 using RealStateApp.Core.Application.Interface.Services;
 using RealStateApp.Core.Application.ViewModels.User;
 using System;
