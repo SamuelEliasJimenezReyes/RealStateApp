@@ -1,10 +1,14 @@
+using RealStateApp.Core.Application;
 using RealStateApp.Infraestructure.Identity;
+using RealStateApp.Infraestructure.Shared;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
-
+builder.Services.AddIdentityInfrastructure(builder.Configuration);
+builder.Services.AddSharedLayer(builder.Configuration);
+builder.Services.AddApplicationLayer();
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
