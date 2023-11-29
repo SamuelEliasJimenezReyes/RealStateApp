@@ -39,7 +39,6 @@ namespace RealStateApp.Infraestructure.Shared.Services
                 smtp.Authenticate(MailSettings.SmtpUser, MailSettings.SmtpPass);
                 await smtp.SendAsync(email);
                 smtp.Disconnect(true);
-
             }
             catch (Exception ex)
             {
