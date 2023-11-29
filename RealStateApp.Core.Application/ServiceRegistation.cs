@@ -1,4 +1,6 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
+using RealStateApp.Core.Application.Interface.Services;
+using RealStateApp.Core.Application.Services;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,6 +15,8 @@ namespace RealStateApp.Core.Application
         public static void AddApplicationLayer(this IServiceCollection services)
         {
             services.AddAutoMapper(Assembly.GetExecutingAssembly());
+
+            services.AddTransient((typeof(IGenericService<,,>)), (typeof(GenericService<,,>)));
 
         }
 
