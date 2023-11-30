@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿
 
 namespace RealStateApp.Core.Application.Dtos.Account
 {
@@ -15,7 +11,6 @@ namespace RealStateApp.Core.Application.Dtos.Account
         public string Password { get; set; }
         public string ConfirmPassword { get; set; }
         public string Phone { get; set; }
-        public string Cedula { get; set; } = null!;
-        public bool IsAdmin { get; set; }
+        public bool IsAgent { get; set; }
     }
 }

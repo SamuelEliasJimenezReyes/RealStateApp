@@ -16,7 +16,6 @@ namespace RealStateApp.Infrastructure.Identity.Seeds
             defaultUser.LastName = "Solamente donde...";
             defaultUser.EmailConfirmed = true;
             defaultUser.PhoneNumberConfirmed = true;
-            defaultUser.Cedula = "12345678915";
             defaultUser.IsActive = true;
 
             if (userManager.Users.All(u => u.Id != defaultUser.Id))

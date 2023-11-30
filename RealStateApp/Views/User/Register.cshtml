@@ -8,6 +8,7 @@
 <body>
 <div class="container ">
     <div class="row justify-content-center pt-5 mt-5 m-1">
+            <h1 class="text-center mb-3"><strong>Únete a nuestra Real State app</strong></h1>
         <div class="col-md-6 col-sm-8 col-xl-4 col-lg-5 formulario">
                 <form method="post" asp-controller="User" asp-action="Register" enctype="multipart/form-data">
 
@@ -29,10 +30,6 @@
                     <div class="form-group mx-sm-4 pt-3 mb-3">
                         <input asp-for="Email" class="form-control" placeholder="Enter the Email">
                         <span asp-validation-for="Email" class="text-white"></span>
-                    </div>
-                    <div class="form-group mx-sm-4 pt-3 mb-3">
-                        <input asp-for="Cedula" class="form-control" placeholder="Enter the Cedula" maxlength="11">
-                        <span asp-validation-for="Cedula" class="text-white"></span>
                     </div>
                     <div class="form-group mx-sm-4 pb-3 mb-2">
                         <input asp-for="Password" class="form-control" placeholder="Enter the Password" id="passwordInput">

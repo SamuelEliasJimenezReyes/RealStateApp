@@ -14,7 +14,7 @@ using System.Data;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using RealStateApp.Core.Application.Enums;
+using RealStateApp.Core.Application.Dtos.Email;
 
 namespace RealStateApp.Infraestructure.Identity.Services
 {
@@ -45,7 +45,6 @@ namespace RealStateApp.Infraestructure.Identity.Services
                 userDto.UserName = user.UserName;
                 userDto.LastName = user.LastName;
                 userDto.FirstName = user.Name;
-                userDto.Cedula = user.Cedula;
                 userDto.IsActive = user.IsActive;
                 userDto.Email = user.Email;
                 userDto.Phone = user.PhoneNumber;
@@ -164,7 +163,6 @@ namespace RealStateApp.Infraestructure.Identity.Services
             userDTO.LastName = user.LastName;
             userDTO.FirstName = user.Name;
             userDTO.Phone = user.PhoneNumber;
-            userDTO.Cedula = user.Cedula;
             return userDTO;
         }
 
@@ -196,23 +194,38 @@ namespace RealStateApp.Infraestructure.Identity.Services
                 Email = request.Email,
                 Name = request.FirstName,
                 LastName = request.LastName,
-                EmailConfirmed = true,
-                Cedula = request.Cedula,
+                EmailConfirmed = false,
                 UserName = request.UserName,
                 PhoneNumber = request.Phone,
                 PhoneNumberConfirmed = true
             };
 
             var result = await _userManager.CreateAsync(user, request.Password);
-
-            if (request.IsAdmin)
+            if (result.Succeeded)
             {
-                await _userManager.AddToRoleAsync(user, Roles.Admin.ToString());
+                if (request.IsAgent)
+                {
+                    await _userManager.AddToRoleAsync(user, Roles.Admin.ToString());
+                }
+                else
+                {
+                    var verificationUri = await SendVerificationEmailUri(user, origin);
+                    await _emailService.SendAsync(new EmailRequest()
+                    {
+                        To = user.Email,
+                        Body = $"Please confirm your account visiting this URL {verificationUri}",
+                        Subject = "Confirm registration"
+                    });
+                    await _userManager.AddToRoleAsync(user, Roles.Client.ToString());
+                }
             }
             else
             {
-                await _userManager.AddToRoleAsync(user, Roles.Client.ToString());
+                response.HasError = true;
+                response.Error = $"An error occurred trying to register the user.";
+                return response;
             }
+
             var userForId = await _userManager.FindByEmailAsync(request.Email);
 
             response.UserId = userForId.Id;
@@ -341,7 +354,6 @@ namespace RealStateApp.Infraestructure.Identity.Services
             value.Email = dto.Email;
             value.Name = dto.FirstName;
             value.LastName = dto.LastName;
-            value.Cedula = dto.Cedula;
             value.UserName = dto.UserName;
             value.PhoneNumber = dto.Phone;
 
@@ -359,7 +371,6 @@ namespace RealStateApp.Infraestructure.Identity.Services
             value.Email = vm.Email;
             value.Name = vm.FirstName;
             value.LastName = vm.LastName;
-            value.Cedula = vm.Cedula;
             value.UserName = vm.Username;
 
             await _userManager.UpdateAsync(value);
@@ -380,7 +391,6 @@ namespace RealStateApp.Infraestructure.Identity.Services
             userDTO.LastName = user.LastName;
             userDTO.FirstName = user.Name;
             userDTO.Phone = user.PhoneNumber;
-            userDTO.Cedula = user.Cedula;
 
             return userDTO;
 

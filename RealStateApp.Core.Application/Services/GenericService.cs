@@ -42,7 +42,9 @@ namespace RealStateApp.Core.Application.Services
 
         public virtual async Task Delete(int id)
         {
-            await _repository.DeleteAsync(id);
+            var saveEntity = GetByIdSaveViewModel(id);
+            var entity = _mapper.Map<Model>(saveEntity);
+            await _repository.DeleteAsync(entity);
         }
 
         public virtual async Task<SaveViewModel> GetByIdSaveViewModel(int id)

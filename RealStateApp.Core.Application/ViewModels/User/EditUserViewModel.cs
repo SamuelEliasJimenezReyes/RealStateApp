@@ -28,8 +28,6 @@ namespace RealStateApp.Core.Application.ViewModels.User
 
         [RegularExpression(@"^\d{11}$", ErrorMessage = "Debe de colocar su cedula sin guiones")]
         [Required(ErrorMessage = "Debe ingresar su Cedula")]
-        public string Cedula { get; set; } = null!;
-
         public decimal InitialAmount { get; set; }
         public bool HasError { get; set; }
         public string? Error { get; set; }

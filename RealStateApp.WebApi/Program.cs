@@ -6,6 +6,7 @@ using System.Reflection;
 using Microsoft.AspNetCore.Identity;
 using RealStateApp.Infrastructure.Identity.Entities;
 using RealStateApp.Infrastructure.Identity.Seeds;
+using RealStateApp.Infrastructure.Identity;
 
 var builder = WebApplication.CreateBuilder(args);
 

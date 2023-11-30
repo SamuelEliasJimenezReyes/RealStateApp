@@ -6,7 +6,6 @@ namespace RealStateApp.Infrastructure.Identity.Entities
     {
         public string Name { get; set; }
         public string LastName { get; set; }
-        public string Cedula { get; set; }
         public string? ImagePath { get; set; }
         public bool IsActive { get; set; } = true;
     }

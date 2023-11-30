@@ -41,7 +41,7 @@ namespace WebApp.RealStateApp.Controllers
                 {
                     return RedirectToRoute(new { controller = "Client", action = "Index" });
                 }
-                return RedirectToRoute(new { controller = "Admin", action = "Dashboard" });
+                return RedirectToRoute(new { controller = "Agent", action = "Index" });
             }
             else
             {
@@ -59,14 +59,14 @@ namespace WebApp.RealStateApp.Controllers
             return RedirectToRoute(new { controller = "User", action = "Index" });
         }
 
-        [Authorize(Roles = "Admin")]
+        //[Authorize(Roles = "Admin")]
         public IActionResult Register()
         {
             return View(new SaveUserViewModel());
         }
 
 
-        [Authorize(Roles = "Admin")]
+        //[Authorize(Roles = "Admin")]
         [HttpPost]
         public async Task<IActionResult> Register(SaveUserViewModel vm)
         {
@@ -77,7 +77,7 @@ namespace WebApp.RealStateApp.Controllers
             if (ModelState.IsValid)
             {
                 response = await _userService.RegisterAsync(vm, origin);
-                return RedirectToRoute(new { controller = "Admin", action = "Index" });
+                return RedirectToRoute(new { controller = "User", action = "Index" });
             }
 
             return View(vm);
@@ -148,7 +148,6 @@ namespace WebApp.RealStateApp.Controllers
                 var user = await _userService.GetUserDTOAsync(userId);
                 var editUser = new EditUserViewModel()
                 {
-                    Cedula = user.Cedula,
                     Email = user.Email,
                     FirstName = user.FirstName,
                     LastName = user.LastName,
@@ -164,7 +163,6 @@ namespace WebApp.RealStateApp.Controllers
             UserDTO value = new();
 
 
-            value.Cedula = vm.Cedula;
             value.Phone = vm.Phone;
             value.Email = vm.Email;
             value.FirstName = vm.FirstName;
@@ -173,7 +171,7 @@ namespace WebApp.RealStateApp.Controllers
             value.UserId = vm.UserId;
 
             await _userService.UpdateUserByUserId(value);
-            return RedirectToRoute(new { controller = "Admin", action = "Dashboard" });
+            return RedirectToRoute(new { controller = "Home", action = "Index" });
         }
 
 
@@ -182,7 +180,6 @@ namespace WebApp.RealStateApp.Controllers
                var user = await _userService.GetUserDTOAsync(userId);
                 var editUser = new EditUserViewModel()
                 {
-                    Cedula = user.Cedula,
                     Email = user.Email,
                     FirstName = user.FirstName,
                     LastName = user.LastName,
@@ -197,7 +194,6 @@ namespace WebApp.RealStateApp.Controllers
             {
                 UserDTO value = new();
             
-                value.Cedula= vm.Cedula;
                 value.Phone= vm.Phone;
                 value.Email= vm.Email;
                 value.FirstName = vm.FirstName;
@@ -207,7 +203,7 @@ namespace WebApp.RealStateApp.Controllers
 
               var user = await _userService.UpdateUserByUserId(value);
 
-            return RedirectToRoute(new {controller = "Admin", action= "Dashboard" });
+            return RedirectToRoute(new {controller = "Home", action= "Index" });
             }
     }
 }

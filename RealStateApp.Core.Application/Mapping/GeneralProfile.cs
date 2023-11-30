@@ -2,7 +2,7 @@
 using RealStateApp.Core.Application.ViewModels.User;
 using RealStateApp.Core.Application.Dtos.Account;
 
-namespace NetBanking.Core.Application.Mapping
+namespace RealStateApp.Core.Application.Mapping
 {
     public class GeneralProfile : Profile
     {

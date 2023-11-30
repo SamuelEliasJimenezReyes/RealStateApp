@@ -1,4 +1,15 @@
-﻿<!DOCTYPE html>
+﻿@using Microsoft.AspNetCore.Http
+@using RealStateApp.Core.Application.Dtos.Account
+@using RealStateApp.Core.Application.Helpers;
+@using RealStateApp.Core.Application.ViewModels.User
+@inject IHttpContextAccessor httpContextAccessor
+@{
+    var User = httpContextAccessor.HttpContext.Session.Get<AuthenticationResponse>("user");
+    var isAdmin = User != null ? User.Roles.Any(r => r == "Admin") : false;
+    var isBasic = User != null ? User.Roles.Any(r => r == "Client") : false;
+}
+
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8" />
@@ -9,9 +20,12 @@
     <link rel="stylesheet" href="~/RealStateApp.styles.css" asp-append-version="true" />
 </head>
 <body>
+  
+
     <header>
-        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
-            <div class="container-fluid">
+      
+            <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
+                <div class="container-fluid">
                 <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">RealStateApp</a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
                         aria-expanded="false" aria-label="Toggle navigation">
@@ -29,6 +43,15 @@
                             <a class="nav-link text-dark" asp-area="" asp-controller="User" asp-action="Register">Únete a la app</a>
                         </li>
                     </ul>
+                    @if (User != null)
+                    {
+                    <ul class="navbar-nav">
+                        <li class="nav-item align-content-end">
+                            <a class="nav-link text-black float-end fw-bold" asp-controller="User" asp-action="LogOut">Cerrar Session (@(User.UserName))</a>
+                        </li>
+                    </ul>
+
+                    }
                 </div>
             </div>
         </nav>
