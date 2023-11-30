@@ -4,6 +4,8 @@ using RealStateApp.Core.Application.Helpers;
 using RealStateApp.Core.Application.Dtos.Account;
 using RealStateApp.Core.Application.Dtos.User;
 using Microsoft.AspNetCore.Authorization;
+using RealStateApp.Core.Application.Interface.Services;
+using WebApp.RealStateApp.Middlewares;
 
 namespace WebApp.RealStateApp.Controllers
 {
@@ -11,10 +13,9 @@ namespace WebApp.RealStateApp.Controllers
     {
         private readonly IUserService _userService;
 
-        public UserController(IUserService userService, ISavingAccountService savingAccountService)
+        public UserController(IUserService userService)
         {
             _userService = userService;
-            _savingAccountService = savingAccountService;
         }
 
         [ServiceFilter(typeof(LoginAuthorize))]
@@ -204,7 +205,6 @@ namespace WebApp.RealStateApp.Controllers
                 value.UserName = vm.Username;
                   value.UserId = vm.UserId;
 
-            await _savingAccountService.AddAmountToSavingAccount(value.UserId, vm.InitialAmount);
               var user = await _userService.UpdateUserByUserId(value);
 
             return RedirectToRoute(new {controller = "Admin", action= "Dashboard" });

@@ -16,9 +16,9 @@ namespace WebApp.RealStateApp.Middlewares
 
         public bool HasUser()
         {
-            AuthenticationResponse userViewModel = _httpContextAccessor.HttpContext.Session.Get<AuthenticationResponse>("user");
+            AuthenticationResponse userViewModels = _httpContextAccessor.HttpContext.Session.Get<AuthenticationResponse>("user");
 
-            if (userViewModel == null)
+            if (userViewModels == null)
             {
                 return false;
             }
