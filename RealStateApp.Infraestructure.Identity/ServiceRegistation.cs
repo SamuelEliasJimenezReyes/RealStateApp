@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using NetBanking.Infrastructure.Identity.Entities;
 using RealStateApp.Core.Application.Interface.Services;
 using RealStateApp.Infraestructure.Identity.Context;
 using RealStateApp.Infraestructure.Identity.Services;

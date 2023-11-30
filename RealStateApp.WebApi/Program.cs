@@ -1,3 +1,8 @@
+using RealStateApp.Core.Application;
+using RealStateApp.Infraestructure.Identity;
+using RealStateApp.Infraestructure.Shared;
+using System.Reflection;
+
 using Microsoft.AspNetCore.Identity;
 using RealStateApp.Infrastructure.Identity.Entities;
 using RealStateApp.Infrastructure.Identity.Seeds;
@@ -10,6 +15,13 @@ builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+builder.Services.AddIdentityInfrastructure(builder.Configuration);
+builder.Services.AddSharedLayer(builder.Configuration);
+builder.Services.AddApplicationLayer();
+
+
+
+
 
 var app = builder.Build();
 
