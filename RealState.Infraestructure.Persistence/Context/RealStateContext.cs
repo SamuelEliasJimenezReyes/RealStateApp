@@ -19,6 +19,7 @@ namespace RealState.Infraestructure.Persistence.Context
         public DbSet<SaleTypes> SaleTypes { get; set; }
 
         public DbSet<PropertyImprovents> PropertyImprovents { get; set; }
+        public DbSet<FavoriteProperties> FavoriteProperties { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -32,7 +33,7 @@ namespace RealState.Infraestructure.Persistence.Context
             modelBuilder.Entity<PropertyTypes>().ToTable("PropertyTypes");
             modelBuilder.Entity<SaleTypes>().ToTable("SaleTypes");
             modelBuilder.Entity<PropertyImprovents>().ToTable("PropertyImprovents");
-
+            modelBuilder.Entity<FavoriteProperties>().ToTable("FavoriteProperties");
             #endregion
 
             #region Primary keys
@@ -42,6 +43,7 @@ namespace RealState.Infraestructure.Persistence.Context
             modelBuilder.Entity<PropertyTypes>().HasKey(a => a.Id);
             modelBuilder.Entity<SaleTypes>().HasKey(a => a.Id);
             modelBuilder.Entity<PropertyImprovents>().HasKey(a => new {a.PropertyId, a.ImproventId});
+            modelBuilder.Entity<FavoriteProperties>().HasKey(a => new { a.PropertyId, a.ClientId });
             #endregion
 
             #region Relationships
@@ -71,6 +73,10 @@ namespace RealState.Infraestructure.Persistence.Context
                 .WithMany(a => a.PropertyImprovents)
                 .HasForeignKey(a => a.ImproventId);
 
+            modelBuilder.Entity<FavoriteProperties>()
+               .HasOne(a => a.Property)
+               .WithMany(a => a.FavoriteProperties)
+               .HasForeignKey(a => a.PropertyId);
 
             #endregion
 

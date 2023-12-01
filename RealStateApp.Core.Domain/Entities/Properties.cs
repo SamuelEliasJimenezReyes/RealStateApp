@@ -22,5 +22,6 @@ namespace RealStateApp.Core.Domain.Entities
         public ICollection<PropertyImprovents> PropertyImprovents { get; set; }
 
         public ICollection<ImagesProperties> ImagesProperties { get; set; }
+        public ICollection<FavoriteProperties>? FavoriteProperties { get; set; }
     }
 }
