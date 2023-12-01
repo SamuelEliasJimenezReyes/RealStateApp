@@ -1,6 +1,4 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using RealStateApp.Models;
-using System.Diagnostics;
 
 namespace RealStateApp.Controllers
 {
