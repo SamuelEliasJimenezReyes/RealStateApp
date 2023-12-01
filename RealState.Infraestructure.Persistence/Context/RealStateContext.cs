@@ -74,7 +74,13 @@ namespace RealState.Infraestructure.Persistence.Context
 
             #endregion
 
-
+            #region Querys
+            modelBuilder.Entity<ImagesProperties>().HasQueryFilter(x => !x.IsDeleted);
+            modelBuilder.Entity<Improvements>().HasQueryFilter(x => !x.IsDeleted);
+            modelBuilder.Entity<Properties>().HasQueryFilter(x => !x.IsDeleted);
+            modelBuilder.Entity<PropertyTypes>().HasQueryFilter(x => !x.IsDeleted);
+            modelBuilder.Entity<SaleTypes>().HasQueryFilter(x => !x.IsDeleted);
+            #endregion 
 
 
 
