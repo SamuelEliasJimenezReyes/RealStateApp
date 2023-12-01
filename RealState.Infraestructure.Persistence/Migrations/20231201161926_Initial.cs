@@ -107,6 +107,24 @@ namespace RealState.Infraestructure.Persistence.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "FavoriteProperties",
+                columns: table => new
+                {
+                    ClientId = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    PropertyId = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_FavoriteProperties", x => new { x.PropertyId, x.ClientId });
+                    table.ForeignKey(
+                        name: "FK_FavoriteProperties_Properties_PropertyId",
+                        column: x => x.PropertyId,
+                        principalTable: "Properties",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "ImagesProperties",
                 columns: table => new
                 {
@@ -179,6 +197,9 @@ namespace RealState.Infraestructure.Persistence.Migrations
         /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.DropTable(
+                name: "FavoriteProperties");
+
             migrationBuilder.DropTable(
                 name: "ImagesProperties");
 

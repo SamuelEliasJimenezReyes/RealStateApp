@@ -22,6 +22,19 @@ namespace RealState.Infraestructure.Persistence.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
+            modelBuilder.Entity("RealStateApp.Core.Domain.Entities.FavoriteProperties", b =>
+                {
+                    b.Property<int>("PropertyId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("ClientId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("PropertyId", "ClientId");
+
+                    b.ToTable("FavoriteProperties", (string)null);
+                });
+
             modelBuilder.Entity("RealStateApp.Core.Domain.Entities.ImagesProperties", b =>
                 {
                     b.Property<int>("Id")
@@ -244,6 +257,17 @@ namespace RealState.Infraestructure.Persistence.Migrations
                     b.ToTable("SaleTypes", (string)null);
                 });
 
+            modelBuilder.Entity("RealStateApp.Core.Domain.Entities.FavoriteProperties", b =>
+                {
+                    b.HasOne("RealStateApp.Core.Domain.Entities.Properties", "Property")
+                        .WithMany("FavoriteProperties")
+                        .HasForeignKey("PropertyId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Property");
+                });
+
             modelBuilder.Entity("RealStateApp.Core.Domain.Entities.ImagesProperties", b =>
                 {
                     b.HasOne("RealStateApp.Core.Domain.Entities.Properties", "Properties")
@@ -300,6 +324,8 @@ namespace RealState.Infraestructure.Persistence.Migrations
 
             modelBuilder.Entity("RealStateApp.Core.Domain.Entities.Properties", b =>
                 {
+                    b.Navigation("FavoriteProperties");
+
                     b.Navigation("ImagesProperties");
 
                     b.Navigation("PropertyImprovents");
