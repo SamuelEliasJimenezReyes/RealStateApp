@@ -11,15 +11,15 @@ namespace RealStateApp.Core.Domain.Entities
         public string Description { get; set; }
         public int BathroomQuantity { get; set; }
         public string AgentId { get; set; }
-        public int PropertyTypeId { get; set; }
+        public int PropertiesTypeId { get; set; }
        
         public int SaleTypeId { get; set; }
 
         //Navigation Properties
-        public SaleTypes SaleType { get; set; }
+        public SalesTypes SaleType { get; set; }
 
-        public PropertyTypes propertyTypes { get; set; }
-        public ICollection<PropertyImprovents> PropertyImprovents { get; set; }
+        public PropertiesTypes PropertiesTypes { get; set; }
+        public ICollection<PropertiesImprovents> PropertiesImprovents { get; set; }
 
         public ICollection<ImagesProperties> ImagesProperties { get; set; }
         public ICollection<FavoriteProperties>? FavoriteProperties { get; set; }

@@ -5,9 +5,9 @@ using RealStateApp.Core.Domain.Entities;
 namespace RealState.Infraestructure.Persistence.Repositories
 {
 
-    public class PropertyRepository : GenericRepository<Properties>, IPropertyRepository
+    public class PropertiesRepository : GenericRepository<Properties>, IPropertiesRepository
     {
-        public PropertyRepository(RealStateContext dbContext) : base(dbContext)
+        public PropertiesRepository(RealStateContext dbContext) : base(dbContext)
         {
         }
     }

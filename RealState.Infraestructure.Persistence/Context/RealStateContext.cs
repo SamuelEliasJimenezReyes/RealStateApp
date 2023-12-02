@@ -14,11 +14,11 @@ namespace RealState.Infraestructure.Persistence.Context
 
         public DbSet<Properties> Properties { get; set; }
 
-        public DbSet<PropertyTypes> PropertyTypes { get; set; }
+        public DbSet<PropertiesTypes> PropertiesTypes { get; set; }
 
-        public DbSet<SaleTypes> SaleTypes { get; set; }
+        public DbSet<SalesTypes> SaleTypes { get; set; }
 
-        public DbSet<PropertyImprovents> PropertyImprovents { get; set; }
+        public DbSet<PropertiesImprovents> PropertiesImprovents { get; set; }
         public DbSet<FavoriteProperties> FavoriteProperties { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -30,9 +30,9 @@ namespace RealState.Infraestructure.Persistence.Context
             modelBuilder.Entity<ImagesProperties>().ToTable("ImagesProperties");
             modelBuilder.Entity<Improvements>().ToTable("Improvements");
             modelBuilder.Entity<Properties>().ToTable("Properties");
-            modelBuilder.Entity<PropertyTypes>().ToTable("PropertyTypes");
-            modelBuilder.Entity<SaleTypes>().ToTable("SaleTypes");
-            modelBuilder.Entity<PropertyImprovents>().ToTable("PropertyImprovents");
+            modelBuilder.Entity<PropertiesTypes>().ToTable("PropertiesTypes");
+            modelBuilder.Entity<SalesTypes>().ToTable("SaleTypes");
+            modelBuilder.Entity<PropertiesImprovents>().ToTable("PropertiesImprovents");
             modelBuilder.Entity<FavoriteProperties>().ToTable("FavoriteProperties");
             #endregion
 
@@ -40,10 +40,10 @@ namespace RealState.Infraestructure.Persistence.Context
             modelBuilder.Entity<ImagesProperties>().HasKey(a => a.Id);
             modelBuilder.Entity<Improvements>().HasKey(a => a.Id);
             modelBuilder.Entity<Properties>().HasKey(a => a.Id);
-            modelBuilder.Entity<PropertyTypes>().HasKey(a => a.Id);
-            modelBuilder.Entity<SaleTypes>().HasKey(a => a.Id);
-            modelBuilder.Entity<PropertyImprovents>().HasKey(a => new {a.PropertyId, a.ImproventId});
-            modelBuilder.Entity<FavoriteProperties>().HasKey(a => new { a.PropertyId, a.ClientId });
+            modelBuilder.Entity<PropertiesTypes>().HasKey(a => a.Id);
+            modelBuilder.Entity<SalesTypes>().HasKey(a => a.Id);
+            modelBuilder.Entity<PropertiesImprovents>().HasKey(a => new {a.PropertiesId, a.ImproventId});
+            modelBuilder.Entity<FavoriteProperties>().HasKey(a => new { a.PropertiesId, a.ClientId });
             #endregion
 
             #region Relationships
@@ -59,24 +59,24 @@ namespace RealState.Infraestructure.Persistence.Context
                .HasForeignKey(a => a.SaleTypeId);
 
              modelBuilder.Entity<Properties>()
-                .HasOne(a => a.propertyTypes)
+                .HasOne(a => a.PropertiesTypes)
                 .WithMany(a => a.Properties)
-                .HasForeignKey(a => a.PropertyTypeId);
+                .HasForeignKey(a => a.PropertiesTypeId);
 
-            modelBuilder.Entity<PropertyImprovents>()
+            modelBuilder.Entity<PropertiesImprovents>()
                 .HasOne(a => a.Properties)
-                .WithMany(a => a.PropertyImprovents)
-                .HasForeignKey(a => a.PropertyId);
+                .WithMany(a => a.PropertiesImprovents)
+                .HasForeignKey(a => a.PropertiesId);
 
-            modelBuilder.Entity<PropertyImprovents>()
+            modelBuilder.Entity<PropertiesImprovents>()
                 .HasOne(a => a.improvements)
-                .WithMany(a => a.PropertyImprovents)
+                .WithMany(a => a.PropertiesImprovents)
                 .HasForeignKey(a => a.ImproventId);
 
             modelBuilder.Entity<FavoriteProperties>()
-               .HasOne(a => a.Property)
+               .HasOne(a => a.Properties)
                .WithMany(a => a.FavoriteProperties)
-               .HasForeignKey(a => a.PropertyId);
+               .HasForeignKey(a => a.PropertiesId);
 
             #endregion
 
@@ -84,8 +84,8 @@ namespace RealState.Infraestructure.Persistence.Context
             modelBuilder.Entity<ImagesProperties>().HasQueryFilter(x => !x.IsDeleted);
             modelBuilder.Entity<Improvements>().HasQueryFilter(x => !x.IsDeleted);
             modelBuilder.Entity<Properties>().HasQueryFilter(x => !x.IsDeleted);
-            modelBuilder.Entity<PropertyTypes>().HasQueryFilter(x => !x.IsDeleted);
-            modelBuilder.Entity<SaleTypes>().HasQueryFilter(x => !x.IsDeleted);
+            modelBuilder.Entity<PropertiesTypes>().HasQueryFilter(x => !x.IsDeleted);
+            modelBuilder.Entity<SalesTypes>().HasQueryFilter(x => !x.IsDeleted);
             #endregion 
 
 

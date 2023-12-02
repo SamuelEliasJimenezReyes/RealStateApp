@@ -7,7 +7,7 @@ using RealStateApp.Core.Domain.Entities;
 
 namespace RealStateApp.Core.Application.Interface.Services
 {
-    public interface IPropertyService : IGenericService<SavePropertiesVM, PropertiesVM, Properties>
+    public interface IPropertiesService : IGenericService<SavePropertiesVM, PropertiesVM, Properties>
     {
         
     }

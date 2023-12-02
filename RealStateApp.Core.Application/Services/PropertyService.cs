@@ -8,14 +8,14 @@ using RealStateApp.Core.Domain.Entities;
 
 namespace RealStateApp.Core.Application.Services
 {
-    public class PropertyService : GenericService<SavePropertiesVM, PropertiesVM, Properties>, IPropertyService
+    public class PropertiesService : GenericService<SavePropertiesVM, PropertiesVM, Properties>, IPropertiesService
     {
-        private readonly IPropertyRepository _propertyRepository;
+        private readonly IPropertiesRepository _PropertiesRepository;
         private readonly IMapper _mapper;
 
-        public PropertyService(IPropertyRepository propertyRepository, IMapper mapper) : base(propertyRepository, mapper)
+        public PropertiesService(IPropertiesRepository PropertiesRepository, IMapper mapper) : base(PropertiesRepository, mapper)
         {
-            _propertyRepository = propertyRepository;
+            _PropertiesRepository = PropertiesRepository;
             _mapper = mapper;
         }
     }

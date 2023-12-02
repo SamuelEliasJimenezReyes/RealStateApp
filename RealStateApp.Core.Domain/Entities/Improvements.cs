@@ -6,6 +6,6 @@ namespace RealStateApp.Core.Domain.Entities
     {
         public string Description { get; set; }
         public string Name { get; set; }
-        public ICollection<PropertyImprovents> PropertyImprovents { get; set; }
+        public ICollection<PropertiesImprovents> PropertiesImprovents { get; set; }
     }
 }
