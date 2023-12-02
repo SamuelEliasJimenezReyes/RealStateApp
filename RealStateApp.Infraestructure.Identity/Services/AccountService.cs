@@ -1,20 +1,17 @@
-﻿using AutoMapper;
-using Microsoft.AspNetCore.Identity;
+﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.WebUtilities;
-using Microsoft.EntityFrameworkCore;
 using RealStateApp.Infrastructure.Identity.Entities;
 using RealStateApp.Core.Application.Dtos.Account;
-using RealStateApp.Core.Application.Dtos.User;
 using RealStateApp.Core.Application.Enums;
 using RealStateApp.Core.Application.Interface.Services;
-using RealStateApp.Core.Application.ViewModels.User;
-using System;
-using System.Collections.Generic;
-using System.Data;
-using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 using RealStateApp.Core.Application.Dtos.Email;
+using Microsoft.Extensions.Options;
+using Microsoft.IdentityModel.Tokens;
+using RealStateApp.Core.Domain.Settings;
+using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
+using System.Security.Cryptography;
 
 namespace RealStateApp.Infraestructure.Identity.Services
 {
@@ -23,59 +20,24 @@ namespace RealStateApp.Infraestructure.Identity.Services
         private readonly UserManager<AppUser> _userManager;
         private readonly SignInManager<AppUser> _signInManager;
         private readonly IEmailService _emailService;
-        private readonly IMapper _mapper;
+        private readonly JWTSettings _jwtSettings;
 
-        public AccountService(UserManager<AppUser> userManager, SignInManager<AppUser> signInManager, IEmailService emailService, IMapper mapper)
+        public AccountService(
+              UserManager<AppUser> userManager,
+              SignInManager<AppUser> signInManager,
+              IEmailService emailService,
+              IOptions<JWTSettings> jwtSettings
+            )
         {
             _userManager = userManager;
             _signInManager = signInManager;
             _emailService = emailService;
-            _mapper = mapper;
-        }
-
-        public async Task<List<UserDTO>> GetAllUsers()
-        {
-
-            var userList = await _userManager.Users.ToListAsync();
-            List<UserDTO> userDTOList = new();
-            foreach (var user in userList)
-            {
-                var userDto = new UserDTO();
-
-                userDto.UserName = user.UserName;
-                userDto.LastName = user.LastName;
-                userDto.FirstName = user.Name;
-                userDto.IsActive = user.IsActive;
-                userDto.Email = user.Email;
-                userDto.Phone = user.PhoneNumber;
-                userDto.UserId = user.Id;
-                userDto.Roles = _userManager.GetRolesAsync(user).Result.ToList();
-                userDTOList.Add(userDto);
-            }
-            return userDTOList;
-        }
-
-        public async Task ChangeUserStatus(string userName)
-        {
-            var user = await _userManager.FindByNameAsync(userName);
-            if (user.IsActive == true)
-            {
-                user.IsActive = false;
-                await _userManager.UpdateAsync(user);
-            }
-            else
-            {
-                user.IsActive = true;
-                await _userManager.UpdateAsync(user);
-            }
-
+            _jwtSettings = jwtSettings.Value;
         }
 
         public async Task<AuthenticationResponse> AuthenticateAsync(AuthenticationRequest request)
         {
             AuthenticationResponse response = new();
-
-
 
             var user = await _userManager.FindByEmailAsync(request.Email);
             if (user == null)
@@ -98,12 +60,8 @@ namespace RealStateApp.Infraestructure.Identity.Services
                 response.Error = $"Account no confirmed for {request.Email}";
                 return response;
             }
-            if (!user.IsActive)
-            {
-                response.HasError = true;
-                response.Error = $"Account Is Inactived for {request.Email}. You need to Contact The Admin 'domingoadmin@email.com'";
-                return response;
-            }
+
+            JwtSecurityToken jwtSecurityToken = await GenerateJWToken(user);
 
             response.Id = user.Id;
             response.Email = user.Email;
@@ -113,6 +71,9 @@ namespace RealStateApp.Infraestructure.Identity.Services
 
             response.Roles = rolesList.ToList();
             response.IsVerified = user.EmailConfirmed;
+            response.JWToken = new JwtSecurityTokenHandler().WriteToken(jwtSecurityToken);
+            var refreshToken = GenerateRefreshToken();
+            response.RefreshToken = refreshToken.Token;
 
             return response;
         }
@@ -120,50 +81,6 @@ namespace RealStateApp.Infraestructure.Identity.Services
         public async Task SignOutAsync()
         {
             await _signInManager.SignOutAsync();
-        }
-
-        public async Task<bool> IsaValidUser(string UserName)
-        {
-            var user = await _userManager.FindByNameAsync(UserName);
-            if (user == null)
-            {
-                return false;
-            }
-            return true;
-        }
-
-
-        //TENGO QUE USAR AUTOMAPPER EN ESTE METODO QUE NO SE ME OLVIDE
-        public async Task<UserDTO> GetUserByUserName(string UserName)
-        {
-            var user = await _userManager.FindByNameAsync(UserName);
-            if (user == null)
-            {
-                return null;
-            }
-            UserDTO userDTO = new();
-            userDTO.UserName = user.UserName;
-            userDTO.LastName = user.LastName;
-            userDTO.FirstName = user.Name;
-            userDTO.Phone = user.PhoneNumber;
-            userDTO.UserId = user.Id;
-            return userDTO;
-        }
-
-        public async Task<UserDTO> GetUserByUserEmail(string Email)
-        {
-            var user = await _userManager.FindByEmailAsync(Email);
-            if (user == null)
-            {
-                return null;
-            }
-            UserDTO userDTO = new();
-            userDTO.Email = user.Email;
-            userDTO.UserName = user.UserName;
-            userDTO.LastName = user.LastName;
-            userDTO.FirstName = user.Name;
-            userDTO.Phone = user.PhoneNumber;
-            return userDTO;
         }
 
         public async Task<RegisterResponse> RegisterBasicUserAsync(RegisterRequest request, string origin)
@@ -194,30 +111,20 @@ namespace RealStateApp.Infraestructure.Identity.Services
                 Email = request.Email,
                 Name = request.FirstName,
                 LastName = request.LastName,
-                EmailConfirmed = false,
-                UserName = request.UserName,
-                PhoneNumber = request.Phone,
-                PhoneNumberConfirmed = true
+                UserName = request.UserName
             };
 
             var result = await _userManager.CreateAsync(user, request.Password);
             if (result.Succeeded)
             {
-                if (request.IsAgent)
+                await _userManager.AddToRoleAsync(user, Roles.Client.ToString());
+                var verificationUri = await SendVerificationEmailUri(user, origin);
+                await _emailService.SendAsync(new EmailRequest()
                 {
-                    await _userManager.AddToRoleAsync(user, Roles.Admin.ToString());
-                }
-                else
-                {
-                    var verificationUri = await SendVerificationEmailUri(user, origin);
-                    await _emailService.SendAsync(new EmailRequest()
-                    {
-                        To = user.Email,
-                        Body = $"Please confirm your account visiting this URL {verificationUri}",
-                        Subject = "Confirm registration"
-                    });
-                    await _userManager.AddToRoleAsync(user, Roles.Client.ToString());
-                }
+                    To = user.Email,
+                    Body = $"Please confirm your account visiting this URL {verificationUri}",
+                    Subject = "Confirm registration"
+                });
             }
             else
             {
@@ -226,9 +133,6 @@ namespace RealStateApp.Infraestructure.Identity.Services
                 return response;
             }
 
-            var userForId = await _userManager.FindByEmailAsync(request.Email);
-
-            response.UserId = userForId.Id;
             return response;
         }
 
@@ -270,7 +174,7 @@ namespace RealStateApp.Infraestructure.Identity.Services
 
             var verificationUri = await SendForgotPasswordUri(user, origin);
 
-            await _emailService.SendAsync(new Core.Application.Dtos.Email.EmailRequest()
+            await _emailService.SendAsync(new EmailRequest()
             {
                 To = user.Email,
                 Body = $"Please reset your account visiting this URL {verificationUri}",
@@ -279,15 +183,6 @@ namespace RealStateApp.Infraestructure.Identity.Services
 
 
             return response;
-        }
-
-        public async Task UpdatePassword(ResetPasswordRequest request)
-        {
-            var user = await _userManager.FindByEmailAsync(request.Email);
-
-
-            user.PasswordHash = request.Password;
-
         }
 
         public async Task<ResetPasswordResponse> ResetPasswordAsync(ResetPasswordRequest request)
@@ -306,7 +201,7 @@ namespace RealStateApp.Infraestructure.Identity.Services
                 return response;
             }
 
-            request.Token = await _userManager.GeneratePasswordResetTokenAsync(user);
+            request.Token = Encoding.UTF8.GetString(WebEncoders.Base64UrlDecode(request.Token));
             var result = await _userManager.ResetPasswordAsync(user, request.Token, request.Password);
 
             if (!result.Succeeded)
@@ -319,11 +214,62 @@ namespace RealStateApp.Infraestructure.Identity.Services
             return response;
         }
 
-        public async Task UpdateUser(SaveUserViewModel user)
+        #region PrivateMethods
+
+        private async Task<JwtSecurityToken> GenerateJWToken(AppUser user)
         {
-            var oldUser = await _userManager.FindByEmailAsync(user.Email);
-            await _userManager.UpdateAsync(oldUser);
+            var userClaims = await _userManager.GetClaimsAsync(user);
+            var roles = await _userManager.GetRolesAsync(user);
+
+            var roleClaims = new List<Claim>();
+
+            foreach (var role in roles)
+            {
+                roleClaims.Add(new Claim("roles", role));
+            }
+
+            var claims = new[]
+            {
+                new Claim(JwtRegisteredClaimNames.Sub,user.UserName),
+                new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
+                new Claim(JwtRegisteredClaimNames.Email,user.Email),
+                new Claim("uid", user.Id)
+            }
+            .Union(userClaims)
+            .Union(roleClaims);
+
+            var symmectricSecurityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_jwtSettings.Key));
+            var signingCredetials = new SigningCredentials(symmectricSecurityKey, SecurityAlgorithms.HmacSha256);
+
+            var jwtSecurityToken = new JwtSecurityToken(
+                issuer: _jwtSettings.Issuer,
+                audience: _jwtSettings.Audience,
+                claims: claims,
+                expires: DateTime.UtcNow.AddMinutes(_jwtSettings.DurationInMinutes),
+                signingCredentials: signingCredetials);
+
+            return jwtSecurityToken;
         }
+
+        private RefreshToken GenerateRefreshToken()
+        {
+            return new RefreshToken
+            {
+                Token = RandomTokenString(),
+                Expires = DateTime.UtcNow.AddDays(7),
+                Created = DateTime.UtcNow
+            };
+        }
+
+        private string RandomTokenString()
+        {
+            using var rngCryptoServiceProvider = new RNGCryptoServiceProvider();
+            var ramdomBytes = new byte[40];
+            rngCryptoServiceProvider.GetBytes(ramdomBytes);
+
+            return BitConverter.ToString(ramdomBytes).Replace("-", "");
+        }
+
 
         private async Task<string> SendVerificationEmailUri(AppUser user, string origin)
         {
@@ -347,53 +293,6 @@ namespace RealStateApp.Infraestructure.Identity.Services
             return verificationUri;
         }
 
-        public async Task<UserDTO> UpdateUser(UserDTO dto)
-        {
-            AppUser value = await _userManager.FindByIdAsync(dto.UserId);
-            value.UserName = dto.UserName;
-            value.Email = dto.Email;
-            value.Name = dto.FirstName;
-            value.LastName = dto.LastName;
-            value.UserName = dto.UserName;
-            value.PhoneNumber = dto.Phone;
-
-            //lo Hago para obtener el Id
-
-            dto.UserId = value.Id;
-
-            await _userManager.UpdateAsync(value);
-
-            return dto;
-        }
-        public async Task UpdateUserByUserName(EditUserViewModel vm)
-        {
-            AppUser value = await _userManager.FindByIdAsync(vm.UserId);
-            value.Email = vm.Email;
-            value.Name = vm.FirstName;
-            value.LastName = vm.LastName;
-            value.UserName = vm.Username;
-
-            await _userManager.UpdateAsync(value);
-        }
-
-        public async Task<RegisterRequest> GetUserById(string UserId)
-        {
-
-            var user = await _userManager.FindByIdAsync(UserId);
-
-            if (user == null)
-            {
-                return null;
-            }
-            RegisterRequest userDTO = new();
-            userDTO.Email = user.Email;
-            userDTO.UserName = user.UserName;
-            userDTO.LastName = user.LastName;
-            userDTO.FirstName = user.Name;
-            userDTO.Phone = user.PhoneNumber;
-
-            return userDTO;
-
-        }
+        #endregion
     }
 }

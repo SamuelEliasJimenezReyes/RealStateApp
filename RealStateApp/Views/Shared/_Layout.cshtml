@@ -8,10 +8,9 @@
     var isAdmin = User != null ? User.Roles.Any(r => r == "Admin") : false;
     var isBasic = User != null ? User.Roles.Any(r => r == "Client") : false;
 }
-
 <!DOCTYPE html>
-<html lang="en">
-<head>
+<html lang="en" data-bs-theme="dark">
+    <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@ViewData["Title"] - RealStateApp</title>
