@@ -17,10 +17,10 @@ namespace RealStateApp.Core.Application.Services
             _mapper = mapper;
         }
 
-        public async Task ChangeUserStatus(string userName)
-        {
-            await _accountService.ChangeUserStatus(userName);
-        }
+        //public async Task ChangeUserStatus(string userName)
+        //{
+        //    await _accountService.ChangeUserStatus(userName);
+        //}
 
         public async Task<AuthenticationResponse> LoginAsync(LoginViewModel vm)
         {
@@ -28,10 +28,10 @@ namespace RealStateApp.Core.Application.Services
             AuthenticationResponse userResponse = await _accountService.AuthenticateAsync(loginRequest);
             return userResponse;
         }
-        public async Task UpdateUser(SaveUserViewModel user)
-        {
-            await _accountService.UpdateUser(user);
-        }
+        //public async Task UpdateUser(SaveUserViewModel user)
+        //{
+        //    await _accountService.UpdateUser(user);
+        //}
 
         public async Task SignOutAsync()
         {
@@ -66,24 +66,24 @@ namespace RealStateApp.Core.Application.Services
             return await _accountService.ResetPasswordAsync(resetRequest);
         }
 
-        public async Task<RegisterRequest> GetUserDTOAsync(string userId)
-        {
-            return await _accountService.GetUserById(userId);
-        }
+        //public async Task<RegisterRequest> GetUserDTOAsync(string userId)
+        //{
+        //    return await _accountService.GetUserById(userId);
+        //}
 
-        public async Task<bool> IsaValidUser(string UserName)
-        {
-            return await _accountService.IsaValidUser(UserName);
-        }
+        //public async Task<bool> IsaValidUser(string UserName)
+        //{
+        //    return await _accountService.IsaValidUser(UserName);
+        //}
 
-        public async Task<List<UserDTO>> GetAllUsers()
-        {
-            return await _accountService.GetAllUsers();
-        }
+        //public async Task<List<UserDTO>> GetAllUsers()
+        //{
+        //    return await _accountService.GetAllUsers();
+        //}
 
-        public async Task<UserDTO> UpdateUserByUserId(UserDTO dto)
-        {
-            return await _accountService.UpdateUser(dto);
-        }
+        //public async Task<UserDTO> UpdateUserByUserId(UserDTO dto)
+        //{
+        //    return await _accountService.UpdateUser(dto);
+        //}
     }
 }
