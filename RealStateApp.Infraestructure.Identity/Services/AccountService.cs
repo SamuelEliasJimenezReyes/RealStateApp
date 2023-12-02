@@ -217,7 +217,6 @@ namespace RealStateApp.Infraestructure.Identity.Services
         #region PrivateMethods
 
         private async Task<JwtSecurityToken> GenerateJWToken(AppUser user)
-
         {
             var userClaims = await _userManager.GetClaimsAsync(user);
             var roles = await _userManager.GetRolesAsync(user);
