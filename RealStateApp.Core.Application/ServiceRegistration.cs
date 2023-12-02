@@ -12,8 +12,10 @@ namespace RealStateApp.Core.Application
             #region 
 
             services.AddAutoMapper(Assembly.GetExecutingAssembly());
-            services.AddTransient<IUserService, UserService>();
 
+            #endregion
+            #region Services
+            services.AddTransient<IUserService, UserService>();
             #endregion
         }
     }

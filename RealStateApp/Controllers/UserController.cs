@@ -143,68 +143,68 @@ namespace WebApp.RealStateApp.Controllers
             return View();
         }
 
-            public async Task<IActionResult> UpdateUser(string userId)
-            {
-                var user = await _userService.GetUserDTOAsync(userId);
-                var editUser = new EditUserViewModel()
-                {
-                    Email = user.Email,
-                    FirstName = user.FirstName,
-                    LastName = user.LastName,
-                    Phone = user.Phone,
-                    Username = user.UserName,
-                };
-            return View(editUser);
-        }
+        //    public async Task<IActionResult> UpdateUser(string userId)
+        //    {
+        //        var user = await _userService.GetUserDTOAsync(userId);
+        //        var editUser = new EditUserViewModel()
+        //        {
+        //            Email = user.Email,
+        //            FirstName = user.FirstName,
+        //            LastName = user.LastName,
+        //            Phone = user.Phone,
+        //            Username = user.UserName,
+        //        };
+        //    return View(editUser);
+        //}
 
-        [HttpPost]
-        public async Task<IActionResult> UpdateUser(EditUserViewModel vm)
-        {
-            UserDTO value = new();
-
-
-            value.Phone = vm.Phone;
-            value.Email = vm.Email;
-            value.FirstName = vm.FirstName;
-            value.LastName = vm.LastName;
-            value.UserName = vm.Username;
-            value.UserId = vm.UserId;
-
-            await _userService.UpdateUserByUserId(value);
-            return RedirectToRoute(new { controller = "Home", action = "Index" });
-        }
+        //[HttpPost]
+        //public async Task<IActionResult> UpdateUser(EditUserViewModel vm)
+        //{
+        //    UserDTO value = new();
 
 
-        public async Task<IActionResult> UpdateClient(string userId)
-            {
-               var user = await _userService.GetUserDTOAsync(userId);
-                var editUser = new EditUserViewModel()
-                {
-                    Email = user.Email,
-                    FirstName = user.FirstName,
-                    LastName = user.LastName,
-                    Phone = user.Phone,
-                    Username = user.UserName,
-                };
-                return View(editUser);
-            }
+        //    value.Phone = vm.Phone;
+        //    value.Email = vm.Email;
+        //    value.FirstName = vm.FirstName;
+        //    value.LastName = vm.LastName;
+        //    value.UserName = vm.Username;
+        //    value.UserId = vm.UserId;
 
-            [HttpPost]
-            public async Task<IActionResult> UpdateClient(EditUserViewModel vm)
-            {
-                UserDTO value = new();
+        //    await _userService.UpdateUserByUserId(value);
+        //    return RedirectToRoute(new { controller = "Home", action = "Index" });
+        //}
+
+
+        //public async Task<IActionResult> UpdateClient(string userId)
+        //    {
+        //       var user = await _userService.GetUserDTOAsync(userId);
+        //        var editUser = new EditUserViewModel()
+        //        {
+        //            Email = user.Email,
+        //            FirstName = user.FirstName,
+        //            LastName = user.LastName,
+        //            Phone = user.Phone,
+        //            Username = user.UserName,
+        //        };
+        //        return View(editUser);
+        //    }
+
+            //[HttpPost]
+            //public async Task<IActionResult> UpdateClient(EditUserViewModel vm)
+            //{
+            //    UserDTO value = new();
             
-                value.Phone= vm.Phone;
-                value.Email= vm.Email;
-                value.FirstName = vm.FirstName;
-                value.LastName= vm.LastName;
-                value.UserName = vm.Username;
-                  value.UserId = vm.UserId;
+            //    value.Phone= vm.Phone;
+            //    value.Email= vm.Email;
+            //    value.FirstName = vm.FirstName;
+            //    value.LastName= vm.LastName;
+            //    value.UserName = vm.Username;
+            //      value.UserId = vm.UserId;
 
-              var user = await _userService.UpdateUserByUserId(value);
+            //  var user = await _userService.UpdateUserByUserId(value);
 
-            return RedirectToRoute(new {controller = "Home", action= "Index" });
-            }
+            //return RedirectToRoute(new {controller = "Home", action= "Index" });
+            //}
     }
 }
 
