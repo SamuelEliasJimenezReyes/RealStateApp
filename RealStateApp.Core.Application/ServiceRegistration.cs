@@ -9,14 +9,24 @@ namespace RealStateApp.Core.Application
     {
         public static void AddApplicationLayer(this IServiceCollection services)
         {
-            #region 
+            #region AutoMapper
 
             services.AddAutoMapper(Assembly.GetExecutingAssembly());
 
             #endregion
+
+
             #region Services
+
+            services.AddTransient(typeof(IGenericService<,,>), typeof(GenericService<,,>));
             services.AddTransient<IUserService, UserService>();
+            services.AddTransient<IPropertiesService, PropertiesService>();
+            services.AddTransient<IPropertiesTypesService, PropertiesTypesServices>();
+            services.AddTransient<ISalesTypeService, SalesTypesServices>();
+            services.AddTransient<IImprovementsService, ImprovementsServices>();
+
             #endregion
+
         }
     }
 }

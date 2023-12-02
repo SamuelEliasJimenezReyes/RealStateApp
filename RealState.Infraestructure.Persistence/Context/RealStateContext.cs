@@ -18,7 +18,7 @@ namespace RealState.Infraestructure.Persistence.Context
 
         public DbSet<SalesTypes> SaleTypes { get; set; }
 
-        public DbSet<PropertiesImprovents> PropertiesImprovents { get; set; }
+        public DbSet<PropertiesImprovements> PropertiesImprovementss { get; set; }
         public DbSet<FavoriteProperties> FavoriteProperties { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -32,7 +32,7 @@ namespace RealState.Infraestructure.Persistence.Context
             modelBuilder.Entity<Properties>().ToTable("Properties");
             modelBuilder.Entity<PropertiesTypes>().ToTable("PropertiesTypes");
             modelBuilder.Entity<SalesTypes>().ToTable("SaleTypes");
-            modelBuilder.Entity<PropertiesImprovents>().ToTable("PropertiesImprovents");
+            modelBuilder.Entity<PropertiesImprovements>().ToTable("PropertiesImprovementss");
             modelBuilder.Entity<FavoriteProperties>().ToTable("FavoriteProperties");
             #endregion
 
@@ -42,7 +42,7 @@ namespace RealState.Infraestructure.Persistence.Context
             modelBuilder.Entity<Properties>().HasKey(a => a.Id);
             modelBuilder.Entity<PropertiesTypes>().HasKey(a => a.Id);
             modelBuilder.Entity<SalesTypes>().HasKey(a => a.Id);
-            modelBuilder.Entity<PropertiesImprovents>().HasKey(a => new {a.PropertiesId, a.ImproventId});
+            modelBuilder.Entity<PropertiesImprovements>().HasKey(a => new {a.PropertiesId, a.ImprovementId});
             modelBuilder.Entity<FavoriteProperties>().HasKey(a => new { a.PropertiesId, a.ClientId });
             #endregion
 
@@ -57,21 +57,21 @@ namespace RealState.Infraestructure.Persistence.Context
                .HasOne(a => a.SaleType)
                .WithMany(a => a.Properties)
                .HasForeignKey(a => a.SaleTypeId);
-
+                
              modelBuilder.Entity<Properties>()
                 .HasOne(a => a.PropertiesTypes)
                 .WithMany(a => a.Properties)
                 .HasForeignKey(a => a.PropertiesTypeId);
 
-            modelBuilder.Entity<PropertiesImprovents>()
+            modelBuilder.Entity<PropertiesImprovements>()
                 .HasOne(a => a.Properties)
-                .WithMany(a => a.PropertiesImprovents)
+                .WithMany(a => a.PropertiesImprovements)
                 .HasForeignKey(a => a.PropertiesId);
 
-            modelBuilder.Entity<PropertiesImprovents>()
+            modelBuilder.Entity<PropertiesImprovements>()
                 .HasOne(a => a.improvements)
-                .WithMany(a => a.PropertiesImprovents)
-                .HasForeignKey(a => a.ImproventId);
+                .WithMany(a => a.PropertiesImprovements)
+                .HasForeignKey(a => a.ImprovementId);
 
             modelBuilder.Entity<FavoriteProperties>()
                .HasOne(a => a.Properties)
@@ -86,9 +86,53 @@ namespace RealState.Infraestructure.Persistence.Context
             modelBuilder.Entity<Properties>().HasQueryFilter(x => !x.IsDeleted);
             modelBuilder.Entity<PropertiesTypes>().HasQueryFilter(x => !x.IsDeleted);
             modelBuilder.Entity<SalesTypes>().HasQueryFilter(x => !x.IsDeleted);
-            #endregion 
+            #endregion
 
+            #region DataInsertion
 
+            #region Improvements
+            modelBuilder.Entity<Improvements>()
+                .HasData(new Improvements
+                {
+                    Id = 1,
+                    Name = "Habitación",
+                    Description = "es una habitación"
+                    
+                });
+
+            modelBuilder.Entity<Improvements>()
+             .HasData(new Improvements
+             {
+                 Id = 2,
+                 Name = "Cocina",
+                 Description = "es una Cocina"
+
+             });
+            #endregion
+
+            #region PropertiesTypes
+            modelBuilder.Entity<PropertiesTypes>()
+                .HasData(new PropertiesTypes
+                {
+                    Id = 1,
+                    Name = "Apartamento",
+                    Description = "es una grasa"
+
+                });
+            #endregion
+
+            #region SalesTypes
+            modelBuilder.Entity<SalesTypes>()
+                .HasData(new SalesTypes
+                {
+                    Id = 1,
+                    Name = "Alquiler",
+                    Description = "se paga en un determinado tiempo"
+
+                });
+            #endregion
+
+            #endregion
 
 
         }

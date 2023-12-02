@@ -31,7 +31,7 @@ namespace RealState.Infraestructure.Persistence.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "PropertyTypes",
+                name: "PropertiesTypes",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
@@ -46,7 +46,7 @@ namespace RealState.Infraestructure.Persistence.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_PropertyTypes", x => x.Id);
+                    table.PrimaryKey("PK_PropertiesTypes", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -81,7 +81,7 @@ namespace RealState.Infraestructure.Persistence.Migrations
                     Description = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     BathroomQuantity = table.Column<int>(type: "int", nullable: false),
                     AgentId = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    PropertyTypeId = table.Column<int>(type: "int", nullable: false),
+                    PropertiesTypeId = table.Column<int>(type: "int", nullable: false),
                     SaleTypeId = table.Column<int>(type: "int", nullable: false),
                     IsDeleted = table.Column<bool>(type: "bit", nullable: false),
                     CreatedBy = table.Column<string>(type: "nvarchar(max)", nullable: true),
@@ -93,9 +93,9 @@ namespace RealState.Infraestructure.Persistence.Migrations
                 {
                     table.PrimaryKey("PK_Properties", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Properties_PropertyTypes_PropertyTypeId",
-                        column: x => x.PropertyTypeId,
-                        principalTable: "PropertyTypes",
+                        name: "FK_Properties_PropertiesTypes_PropertiesTypeId",
+                        column: x => x.PropertiesTypeId,
+                        principalTable: "PropertiesTypes",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
@@ -111,14 +111,14 @@ namespace RealState.Infraestructure.Persistence.Migrations
                 columns: table => new
                 {
                     ClientId = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    PropertyId = table.Column<int>(type: "int", nullable: false)
+                    PropertiesId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_FavoriteProperties", x => new { x.PropertyId, x.ClientId });
+                    table.PrimaryKey("PK_FavoriteProperties", x => new { x.PropertiesId, x.ClientId });
                     table.ForeignKey(
-                        name: "FK_FavoriteProperties_Properties_PropertyId",
-                        column: x => x.PropertyId,
+                        name: "FK_FavoriteProperties_Properties_PropertiesId",
+                        column: x => x.PropertiesId,
                         principalTable: "Properties",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
@@ -150,24 +150,24 @@ namespace RealState.Infraestructure.Persistence.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "PropertyImprovents",
+                name: "PropertiesImprovementss",
                 columns: table => new
                 {
-                    PropertyId = table.Column<int>(type: "int", nullable: false),
-                    ImproventId = table.Column<int>(type: "int", nullable: false)
+                    PropertiesId = table.Column<int>(type: "int", nullable: false),
+                    ImprovementId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_PropertyImprovents", x => new { x.PropertyId, x.ImproventId });
+                    table.PrimaryKey("PK_PropertiesImprovementss", x => new { x.PropertiesId, x.ImprovementId });
                     table.ForeignKey(
-                        name: "FK_PropertyImprovents_Improvements_ImproventId",
-                        column: x => x.ImproventId,
+                        name: "FK_PropertiesImprovementss_Improvements_ImprovementId",
+                        column: x => x.ImprovementId,
                         principalTable: "Improvements",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_PropertyImprovents_Properties_PropertyId",
-                        column: x => x.PropertyId,
+                        name: "FK_PropertiesImprovementss_Properties_PropertiesId",
+                        column: x => x.PropertiesId,
                         principalTable: "Properties",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
@@ -179,9 +179,9 @@ namespace RealState.Infraestructure.Persistence.Migrations
                 column: "PropertiesId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Properties_PropertyTypeId",
+                name: "IX_Properties_PropertiesTypeId",
                 table: "Properties",
-                column: "PropertyTypeId");
+                column: "PropertiesTypeId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Properties_SaleTypeId",
@@ -189,9 +189,9 @@ namespace RealState.Infraestructure.Persistence.Migrations
                 column: "SaleTypeId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_PropertyImprovents_ImproventId",
-                table: "PropertyImprovents",
-                column: "ImproventId");
+                name: "IX_PropertiesImprovementss_ImprovementId",
+                table: "PropertiesImprovementss",
+                column: "ImprovementId");
         }
 
         /// <inheritdoc />
@@ -204,7 +204,7 @@ namespace RealState.Infraestructure.Persistence.Migrations
                 name: "ImagesProperties");
 
             migrationBuilder.DropTable(
-                name: "PropertyImprovents");
+                name: "PropertiesImprovementss");
 
             migrationBuilder.DropTable(
                 name: "Improvements");
@@ -213,7 +213,7 @@ namespace RealState.Infraestructure.Persistence.Migrations
                 name: "Properties");
 
             migrationBuilder.DropTable(
-                name: "PropertyTypes");
+                name: "PropertiesTypes");
 
             migrationBuilder.DropTable(
                 name: "SaleTypes");

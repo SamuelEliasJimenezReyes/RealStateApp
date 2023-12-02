@@ -1,8 +1,8 @@
 ﻿
 
-namespace RealStateApp.Core.Application.ViewModels.Improvents
+namespace RealStateApp.Core.Application.ViewModels.Improvements
 {
-    public class ImproventsVM
+    public class ImprovementsVM
     {
         public int Id { get; set; }
         public string Description { get; set; }

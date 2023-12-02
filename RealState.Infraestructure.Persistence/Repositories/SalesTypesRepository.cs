@@ -6,9 +6,9 @@ using RealStateApp.Core.Domain.Entities;
 
 namespace RealState.Infraestructure.Persistence.Repositories
 {
-    public class SaleTypesRepository : GenericRepository<SalesTypes>, ISalesTypeRepository
+    public class SalesTypesRepository : GenericRepository<SalesTypes>, ISalesTypeRepository
     {
-        public SaleTypesRepository(RealStateContext dbContext) : base(dbContext)
+        public SalesTypesRepository(RealStateContext dbContext) : base(dbContext)
         {
         }
     }

@@ -6,9 +6,9 @@ using RealStateApp.Core.Domain.Entities;
 
 namespace RealState.Infraestructure.Persistence.Repositories
 {
-    public class ImproventsRepository : GenericRepository<Improvements>, IImproventRepository
+    public class ImprovementsRepository : GenericRepository<Improvements>, IImprovementsRepository
     {
-        public ImproventsRepository(RealStateContext dbContext) : base(dbContext)
+        public ImprovementsRepository(RealStateContext dbContext) : base(dbContext)
         {
         }
     }

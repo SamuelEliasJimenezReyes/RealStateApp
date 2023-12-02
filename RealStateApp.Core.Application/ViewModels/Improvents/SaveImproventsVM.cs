@@ -1,8 +1,8 @@
 ﻿
 
-namespace RealStateApp.Core.Application.ViewModels.Improvents
+namespace RealStateApp.Core.Application.ViewModels.Improvements
 {
-    public class SaveImproventsVM
+    public class SaveImprovementsVM
     {
     }
 }

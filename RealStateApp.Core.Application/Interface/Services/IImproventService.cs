@@ -1,11 +1,11 @@
 ﻿
 
-using RealStateApp.Core.Application.ViewModels.Improvents;
+using RealStateApp.Core.Application.ViewModels.Improvements;
 using RealStateApp.Core.Domain.Entities;
 
 namespace RealStateApp.Core.Application.Interface.Services
 {
-    public interface IImproventService : IGenericService<SaveImproventsVM, ImproventsVM, Improvements>
+    public interface IImprovementsService : IGenericService<SaveImprovementsVM, ImprovementsVM, Improvements>
     {
     }
 }

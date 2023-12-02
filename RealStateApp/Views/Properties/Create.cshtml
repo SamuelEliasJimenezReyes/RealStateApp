@@ -6,7 +6,7 @@
 }
 
 <body>
-    @if (Model.PropertiesTypes.Count > 1 && Model.SalesTypes.Count > 1 && Model.improvents.Count > 1)
+    @if (Model.PropertiesTypes.Count >= 1 && Model.SalesTypes.Count >= 1 && Model.Improvements.Count >= 1)
     {
         <div class="container ">
             <div class="row justify-content-center pt-5 mt-5 m-1">
@@ -56,15 +56,15 @@
                             <span asp-validation-for="BathroomQuantity" class="text-white"></span>
                         </div>
                         <div class="form-group text-center mb-2">
-                            <label asp-for="PropertiesImproventsId" class="control-label mb-1"><strong>Mejoras</strong></label>
-                            <select asp-for="PropertiesImproventsId" class="form-control mb-3 select2" multiple>
+                            <label asp-for="PropertiesImprovementsId" class="control-label mb-1"><strong>Mejoras</strong></label>
+                            <select asp-for="PropertiesImprovementsId" class="form-control mb-3 select2" multiple>
                                 <option value="">Seleccione las Mejoras </option>
-                                @foreach (var item in Model.improvents)
+                                @foreach (var item in Model.Improvements)
                                 {
                                     <option value="@item.Id">@item.Name</option>
                                 }
                             </select>
-                            <span asp-validation-for="PropertiesImproventsId" class="text-danger"></span>
+                            <span asp-validation-for="PropertiesImprovementsId" class="text-danger"></span>
                         </div>
                         <div class="form-group mx-sm-4 pt-3 mb-2">
                             <input asp-for="BathroomQuantity" class="form-control" placeholder="Ingrese la Cantidad de Baños de la Propiedad" />
@@ -91,6 +91,11 @@
         <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
         <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+    }else
+    {
+        <div class="bg-dager">
+            <h2>No Se pueden crear Propiedades Todavía</h2>
+        </div>
     }
 </body>
 

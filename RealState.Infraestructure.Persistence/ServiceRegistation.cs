@@ -24,11 +24,15 @@ namespace RealState.Infraestructure.Persistence
             }
             #endregion
 
+
             #region Repository
-                services.AddTransient(typeof(IGenericRepository<>), typeof(GenericRepository<>));
+            services.AddTransient(typeof(IGenericRepository<>), typeof(GenericRepository<>));
+
+            services.AddTransient<IPropertiesRepository, PropertiesRepository>();
+            services.AddTransient<IPropertiesTypesRepository, PropertiesTypesRepository>();
+            services.AddTransient<ISalesTypeRepository, SalesTypesRepository>();
+            services.AddTransient<IImprovementsRepository, ImprovementsRepository>();
             #endregion 
         }
-
-
     }
 }

@@ -1,5 +1,5 @@
 ﻿using Microsoft.AspNetCore.Http;
-using RealStateApp.Core.Application.ViewModels.Improvents;
+using RealStateApp.Core.Application.ViewModels.Improvements;
 using RealStateApp.Core.Application.ViewModels.PropertiesTypes;
 using RealStateApp.Core.Application.ViewModels.SalesTypes;
 using System.ComponentModel.DataAnnotations;
@@ -22,12 +22,12 @@ namespace RealStateApp.Core.Application.ViewModels.Properties
 
         [DataType(DataType.ImageUrl)]
         public List<IFormFile>? File { get; set; } = null!;
-        public List<int> PropertiesImproventsId { get; set; }
+        public List<int> PropertiesImprovementsId { get; set; }
 
         public List<string> ImagesProperties { get; set; }
 
         //Listas para usar en los Select 
-        public List<ImproventsVM> improvents { get; set; }
+        public List<ImprovementsVM> Improvements { get; set; }
         public List<SalesTypesVM> SalesTypes { get; set; }
         public List<PropertiesTypesVM> PropertiesTypes { get; set; }
     }
