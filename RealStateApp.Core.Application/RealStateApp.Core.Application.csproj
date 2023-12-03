@@ -13,9 +13,18 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="Dtos\Improvements\" />
+    <Folder Include="Dtos\PropertiesTypes\" />
+    <Folder Include="Dtos\SalesTypes\" />
     <Folder Include="Enums\" />
     <Folder Include="Exceptions\" />
-    <Folder Include="Features\" />
+    <Folder Include="Features\Improvements\Commands\CreateImprovements\" />
+    <Folder Include="Features\Improvements\Commands\DeleteImprovementById\" />
+    <Folder Include="Features\Improvements\Commands\UpdateImprovement\" />
+    <Folder Include="Features\Improvements\Queries\GetAllImprovements\" />
+    <Folder Include="Features\Improvements\Queries\GetImprovementById\" />
+    <Folder Include="Features\SalesTypes\" />
+    <Folder Include="Features\PropertiesTypes\" />
     <Folder Include="Helpers\" />
     <Folder Include="Wrappers\" />
   </ItemGroup>
