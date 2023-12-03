@@ -21,7 +21,6 @@ namespace RealStateApp.Core.Application.ViewModels.Properties
         public List<string>? ImagePath { get; set; } = null!;
 
         [DataType(DataType.ImageUrl)]
-        [StringLength(4, ErrorMessage = "Seleccione un máximo de 4 imágenes.")]
         public List<IFormFile>? File { get; set; } = null!;
         public List<int> PropertiesImprovementsId { get; set; }
 

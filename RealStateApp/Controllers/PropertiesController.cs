@@ -36,5 +36,20 @@ namespace RealStateApp.Controllers
 
             return View(savePropertiesVM);
         }
+
+        [HttpPost]
+        public async Task<IActionResult> Create(SavePropertiesVM svm)
+        {
+
+            if (!ModelState.IsValid)
+            {
+
+                await _propertiesService.Add(svm);
+                return RedirectToRoute(new {controller = "Properties", action = "Index" });
+
+            }
+            return View(svm);
+
+        }
     }
 }

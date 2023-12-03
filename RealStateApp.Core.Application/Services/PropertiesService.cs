@@ -13,6 +13,7 @@ namespace RealStateApp.Core.Application.Services
         private readonly IPropertiesRepository _PropertiesRepository;
         private readonly IMapper _mapper;
 
+
         public PropertiesService(IPropertiesRepository PropertiesRepository, IMapper mapper) : base(PropertiesRepository, mapper)
         {
             _PropertiesRepository = PropertiesRepository;
