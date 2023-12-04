@@ -10,6 +10,8 @@ namespace RealStateApp.Core.Application.Interface.Services
         Task<ForgotPasswordResponse> ForgotPasswordAsync(ForgotPasswordRequest request, string origin);
         Task<RegisterResponse> RegisterBasicUserAsync(RegisterRequest request, string origin);
         Task<ResetPasswordResponse> ResetPasswordAsync(ResetPasswordRequest request);
+        Task<UserDTO> GetUserById(string UserId);
+        Task<List<UserDTO>> GetAllUsers();
         Task SignOutAsync();
     }
 }

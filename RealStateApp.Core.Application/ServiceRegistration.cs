@@ -24,7 +24,8 @@ namespace RealStateApp.Core.Application
             services.AddTransient<IPropertiesTypesService, PropertiesTypesServices>();
             services.AddTransient<ISalesTypeService, SalesTypesServices>();
             services.AddTransient<IImprovementsService, ImprovementsServices>();
-
+            services.AddTransient<IImagesPropertiesService, ImagesPropertiesService>();
+            services.AddTransient<IPropertiesImprovementsService, PropertiesImprovementsService>();
             #endregion
 
         }
