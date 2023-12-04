@@ -162,7 +162,7 @@ namespace RealStateApp.Core.Application.Mapping
             #region PropertiesImprovements
 
             CreateMap<SavePropertiesImprovementsVM, PropertiesImprovements>()
-                   .ForMember(x => x.improvements, opt => opt.Ignore())
+                   .ForMember(x => x.Improvements, opt => opt.Ignore())
                     .ForMember(x => x.Properties, opt => opt.Ignore())
                    .ReverseMap();
 
