@@ -8,6 +8,7 @@ namespace RealStateApp.Core.Application.ViewModels.Properties
 {
     public class SavePropertiesVM
     {
+        public int Id { get; set; }
         public string Code { get; set; }
         public decimal Price { get; set; }
         public double LandSizeMeter { get; set; }
@@ -18,17 +19,20 @@ namespace RealStateApp.Core.Application.ViewModels.Properties
         public int PropertiesTypeId { get; set; }
 
         public int SaleTypeId { get; set; }
-        public List<string>? ImagePath { get; set; } = null!;
 
         [DataType(DataType.ImageUrl)]
         public List<IFormFile>? File { get; set; } = null!;
         public List<int> PropertiesImprovementsId { get; set; }
 
-        public List<string> ImagesProperties { get; set; }
+        public List<string> ImagesProperties { get; set; } = new();
 
         //Listas para usar en los Select 
         public List<ImprovementsVM> Improvements { get; set; }
         public List<SalesTypesVM> SalesTypes { get; set; }
         public List<PropertiesTypesVM> PropertiesTypes { get; set; }
+        public string ErrorMessage { get; set; }
+        public bool HasError { get; set; }
+
     }
+
 }

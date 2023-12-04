@@ -8,8 +8,15 @@
 }
 
 <body>
+   
     @if (Model.PropertiesTypes.Count >= 1 && Model.SalesTypes.Count >= 1 && Model.Improvements.Count >= 1)
     {
+        @if (Model.HasError)
+        {
+            <div class="bg-danger">
+                <h2>@Model.ErrorMessage</h2>
+            </div>
+        }
         <div class="container ">
             <div class="row justify-content-center pt-5 mt-5 m-1">
                 <div class="col-md-6 col-sm-8 col-xl-4 col-lg-5 formulario">
@@ -31,7 +38,8 @@
                             <span asp-validation-for="SaleTypeId" class="text-white"> </span>
                         </div>
                         <div class="form-group mx-sm-4 pt-3 mt-1 mb-2">
-                            <input type="text" asp-for="Price" class="form-control" placeholder="Ingrese el Precio de de la Propiedad">
+                            <label asp-for="Price" class="control-label mb-1"><strong>Precio de la Propiedad</strong></label>
+                            <input type="text" asp-for="Price" type="number" class="form-control">
                             <span asp-validation-for="Price" class="text-white"></span>
                         </div>
                         <div class="form-group mx-sm-4 pt-3 mb-2">
@@ -39,25 +47,27 @@
                             <span asp-validation-for="Description" class="text-white"></span>
                         </div>
                         <div class="form-group mx-sm-4 pt-3 mb-2">
-                            <input asp-for="LandSizeMeter" class="form-control" placeholder="Ingrese el tamaño de la propiedad">
+                            <label asp-for="LandSizeMeter" class="control-label mb-1"><strong>Ingrese el tamaño de la Propiedad</strong></label>
+                            <input asp-for="LandSizeMeter" type="number" class="form-control">
                             <span asp-validation-for="LandSizeMeter" class="text-white"></span>
                             <span class="text-danger">La medida debe ser en Metros</span>
                         </div>
                         <div class="form-group mx-sm-4 pt-3 mb-2">
-                            <input asp-for="RoomQuantity" class="form-control" placeholder="Ingrese la Cantidad de Habitaciones de la Propiedad">
+                            <label asp-for="RoomQuantity" class="control-label mb-1"><strong>Cantidad de Habitaciones</strong></label>
+                            <input asp-for="RoomQuantity" type="number" class="form-control">
                             <span asp-validation-for="RoomQuantity" class="text-white"></span>
                         </div>
                         <div class="form-group mx-sm-4 pt-3 mb-2">
-                            <input asp-for="BathroomQuantity" class="form-control" placeholder="Ingrese la Cantidad de Baños de la Propiedad" />
+                            <label asp-for="BathroomQuantity" class="control-label mb-1"><strong>Cantidad de Baños</strong></label>
+                            <input asp-for="BathroomQuantity" type="number" class="form-control" />
                             <span asp-validation-for="BathroomQuantity" class="text-white"></span>
                         </div>
-                        <div class="form-group mb-3">
+                        <div class="form-group mb-3 text-dark">
                             <label asp-for="PropertiesImprovementsId" class="control-label mb-1"><strong>Mejoras</strong></label>
-                            <select asp-for="PropertiesImprovementsId" id="select2" class="form-control mb-3 select2" multiple>
-                                <option value="">Seleccione las Mejoras</option>
+                            <select asp-for="PropertiesImprovementsId" id="select2" class="form-control mb-3 text-dark">
                                 @foreach (var item in Model.Improvements)
                                 {
-                                    <option value="@item.Id">@item.Name</option>
+                                    <option value="@item.Id" class="text-dark">@item.Name</option>
                                 }
                             </select>
                             <span asp-validation-for="PropertiesImprovementsId" class="text-danger"></span>
@@ -65,12 +75,11 @@
                        <div>
                             <label asp-for="File">Selecciona hasta 4 imágenes:</label>
                             <input type="file" asp-for="File" lang="es" name="File" class="d-none mb-2" id="image" multiple />
-                            <button type="button" class="btn btn-outline-white btn-lg btn-block btn-outline-light" onclick="document.getElementById('image').click()">
-                                <i class="fa-regular fa-image text-white"></i>
+                            <button type="button" class="btn btn-outline-dark btn-lg btn-block btn-outline-light" onclick="document.getElementById('image').click()">
+                                <i class="fa-regular fa-image text-dark"></i>
                             </button>
                             <span asp-validation-for="File" class="text-white mb-2"></span>
                         </div>
- 
 
                         <div id="imageContainer"></div>
 
@@ -91,27 +100,21 @@
 
  }else
     {
-        <div class="bg-dager">
+        <div class="bg-danger">
             <h2>No Se pueden crear Propiedades Todavía</h2>
         </div>
     }
 </body>
 
 @section Scripts {
-    @await Html.PartialAsync("_ValidationScriptsPartial")
-    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
-    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/habibmhamadi/multi-select-tag@2.0.1/dist/css/multi-select-tag.css">
+    <script src="https://cdn.jsdelivr.net/gh/habibmhamadi/multi-select-tag@2.0.1/dist/js/multi-select-tag.js"></script>
 
     <script>
-        $(document).ready(function () {
-            $('#select2').select2({
-                placeholder: "Seleccione las Mejoras",
-                allowClear: true,
-                multiple: true,
-                width: '100%' 
-            });
-        });
+        new MultiSelectTag('select2')
     </script>
+
+   
 @* 
     <script>
         $(document).ready(function () {
@@ -224,21 +227,21 @@
             cursor: pointer;
         }
 
-    .select2-container--default .select2-selection--multiple {
-        border: 1px solid #ced4da;
+    /* .select2-container--default .select2-selection--multiple {
+        border: 1px solid #007bff;
         border-radius: .25rem;
     }
 
         .select2-container--default .select2-selection--multiple .select2-selection__choice {
             background-color: #007bff;
             border: 1px solid #0069d9;
-            color: #fff;
+            color: #007bff;
             margin-right: 5px;
         }
 
         .select2-container--default .select2-selection--multiple .select2-selection__choice__remove {
-            color: #ccc;
-        }
+            color: #007bff;
+        } */
 </style>
 
 

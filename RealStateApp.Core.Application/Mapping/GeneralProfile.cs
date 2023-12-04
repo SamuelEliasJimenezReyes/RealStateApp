@@ -6,6 +6,8 @@ using RealStateApp.Core.Application.ViewModels.PropertiesTypes;
 using RealStateApp.Core.Application.ViewModels.Properties;
 using RealStateApp.Core.Application.ViewModels.SalesTypes;
 using RealStateApp.Core.Application.ViewModels.Improvements;
+using RealStateApp.Core.Application.ViewModels.ImagesProperties;
+using RealStateApp.Core.Application.ViewModels.ImprovementsProperties;
 
 namespace RealStateApp.Core.Application.Mapping
 {
@@ -43,20 +45,33 @@ namespace RealStateApp.Core.Application.Mapping
                 .ForMember(x => x.Improvements, opt => opt.Ignore())
                 .ForMember(x => x.ImagesProperties, opt => opt.Ignore())
                  .ForMember(x => x.SalesTypes, opt => opt.Ignore())
-                 .ForMember(x => x.SaleTypeId, opt => opt.Ignore())
                   .ForMember(x => x.File, opt => opt.Ignore())
-                   .ForMember(x => x.PropertiesTypeId, opt => opt.Ignore())
                  .ReverseMap()
                   .ForMember(x => x.Created, opt => opt.Ignore())
                    .ForMember(x => x.PropertiesTypes, opt => opt.Ignore())
-                   .ForMember(x => x.PropertiesTypeId, opt => opt.Ignore())
                    .ForMember(x => x.PropertiesImprovements, opt => opt.Ignore())
                     .ForMember(x => x.CreatedBy, opt => opt.Ignore())
                      .ForMember(x => x.IsDeleted, opt => opt.Ignore())
                       .ForMember(x => x.LastModified, opt => opt.Ignore())
                        .ForMember(x => x.LastModifiedBy, opt => opt.Ignore())
-                        .ForMember(x => x.SaleType, opt => opt.Ignore())
-                        .ForMember(x => x.SaleTypeId, opt => opt.Ignore());
+                        .ForMember(x => x.SaleType, opt => opt.Ignore());
+
+            CreateMap<Properties, PropertiesVM>()
+              //.ForMember(x => x.PropertiesTypes, opt => opt.Ignore())
+              //.ForMember(x => x.PropertiesImprovementsId, opt => opt.Ignore())
+              //.ForMember(x => x.Improvements, opt => opt.Ignore())
+              //.ForMember(x => x.ImagesProperties, opt => opt.Ignore())
+              // .ForMember(x => x.SalesTypes, opt => opt.Ignore())
+              //  .ForMember(x => x.File, opt => opt.Ignore())
+               .ReverseMap()
+                .ForMember(x => x.Created, opt => opt.Ignore())
+                 .ForMember(x => x.PropertiesTypes, opt => opt.Ignore())
+                 .ForMember(x => x.PropertiesImprovements, opt => opt.Ignore())
+                  .ForMember(x => x.CreatedBy, opt => opt.Ignore())
+                   .ForMember(x => x.IsDeleted, opt => opt.Ignore())
+                    .ForMember(x => x.LastModified, opt => opt.Ignore())
+                     .ForMember(x => x.LastModifiedBy, opt => opt.Ignore())
+                      .ForMember(x => x.SaleType, opt => opt.Ignore());
 
             #endregion
 
@@ -127,6 +142,29 @@ namespace RealStateApp.Core.Application.Mapping
              .ForMember(x => x.LastModifiedBy, opt => opt.Ignore())
              .ForMember(x => x.IsDeleted, opt => opt.Ignore())
              .ForMember(x => x.PropertiesImprovements, opt => opt.Ignore());
+
+            #endregion
+
+            #region ImagesProperties
+
+            CreateMap<SaveImagesPropertiesVM, ImagesProperties>()
+                .ForMember(x => x.Created, opt => opt.Ignore())
+                 .ForMember(x => x.CreatedBy, opt => opt.Ignore())
+                  .ForMember(x => x.LastModified, opt => opt.Ignore())
+                   .ForMember(x => x.LastModifiedBy, opt => opt.Ignore())
+                    .ForMember(x => x.Created, opt => opt.Ignore())
+                     .ForMember(x => x.IsDeleted, opt => opt.Ignore())
+                      .ForMember(x => x.Properties, opt => opt.Ignore())
+                     .ReverseMap();
+
+            #endregion
+
+            #region PropertiesImprovements
+
+            CreateMap<SavePropertiesImprovementsVM, PropertiesImprovements>()
+                   .ForMember(x => x.improvements, opt => opt.Ignore())
+                    .ForMember(x => x.Properties, opt => opt.Ignore())
+                   .ReverseMap();
 
             #endregion
 

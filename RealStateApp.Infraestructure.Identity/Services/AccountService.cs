@@ -12,6 +12,8 @@ using RealStateApp.Core.Domain.Settings;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Security.Cryptography;
+using RealStateApp.Core.Application.Dtos.User;
+using Microsoft.EntityFrameworkCore;
 
 namespace RealStateApp.Infraestructure.Identity.Services
 {
@@ -34,6 +36,46 @@ namespace RealStateApp.Infraestructure.Identity.Services
             _emailService = emailService;
             _jwtSettings = jwtSettings.Value;
         }
+
+        #region Tengo que usar AutoMapper en estos Metodos
+        public async Task<List<UserDTO>> GetAllUsers()
+        {
+
+            var userList = await _userManager.Users.ToListAsync();
+            List<UserDTO> userDTOList = new();
+            foreach (var user in userList)
+            {
+                var userDto = new UserDTO();
+
+                userDto.UserName = user.UserName;
+                userDto.LastName = user.LastName;
+                userDto.FirstName = user.Name;
+                userDto.IsActive = user.IsActive;
+                userDto.Email = user.Email;
+                userDto.Phone = user.PhoneNumber;
+                userDto.UserId = user.Id;
+                userDto.Roles = _userManager.GetRolesAsync(user).Result.ToList();
+                userDTOList.Add(userDto);
+            }
+            return userDTOList;
+        }
+
+         public async Task<UserDTO> GetUserById(string UserId)
+        {
+            var user = await _userManager.FindByIdAsync(UserId);
+            if (user == null)
+            {
+                return null;
+            }
+            UserDTO userDTO = new();
+            userDTO.UserName = user.UserName;
+            userDTO.LastName = user.LastName;
+            userDTO.FirstName = user.Name;
+            userDTO.Phone = user.PhoneNumber;
+            userDTO.UserId = user.Id;
+            return userDTO;
+        }
+        #endregion
 
         public async Task<AuthenticationResponse> AuthenticateAsync(AuthenticationRequest request)
         {
