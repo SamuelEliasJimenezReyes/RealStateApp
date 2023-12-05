@@ -13,9 +13,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Dtos\Improvements\" />
-    <Folder Include="Dtos\PropertiesTypes\" />
-    <Folder Include="Dtos\SalesTypes\" />
     <Folder Include="Enums\" />
     <Folder Include="Exceptions\" />
     <Folder Include="Features\Improvements\Commands\CreateImprovements\" />
@@ -23,8 +20,11 @@
     <Folder Include="Features\Improvements\Commands\UpdateImprovement\" />
     <Folder Include="Features\Improvements\Queries\GetAllImprovements\" />
     <Folder Include="Features\Improvements\Queries\GetImprovementById\" />
-    <Folder Include="Features\SalesTypes\" />
-    <Folder Include="Features\PropertiesTypes\" />
+    <Folder Include="Features\PropertiesTypes\Commands\CreatePropertiesTypes\" />
+    <Folder Include="Features\PropertiesTypes\Commands\DeletePropertiesTypeById\" />
+    <Folder Include="Features\PropertiesTypes\Commands\UpdatePropertiesTypes\" />
+    <Folder Include="Features\PropertiesTypes\Queries\GetAllPropertiesTypes\" />
+    <Folder Include="Features\PropertiesTypes\Queries\GetPropertiesTypeById\" />
     <Folder Include="Helpers\" />
     <Folder Include="Wrappers\" />
   </ItemGroup>
@@ -32,7 +32,8 @@
   <ItemGroup>
     <PackageReference Include="AutoMapper" Version="12.0.1" />
     <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="12.0.1" />
-    <PackageReference Include="MediatR.Extensions.Microsoft.DependencyInjection" Version="11.1.0" />
+    <PackageReference Include="MediatR" Version="11.0.0" />
+    <PackageReference Include="MediatR.Extensions.Microsoft.DependencyInjection" Version="11.0.0" />
     <PackageReference Include="Microsoft.AspNetCore.Http" Version="2.2.2" />
     <PackageReference Include="Microsoft.AspNetCore.Http.Abstractions" Version="2.2.0" />
     <PackageReference Include="Microsoft.AspNetCore.Http.Extensions" Version="2.2.0" />

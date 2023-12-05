@@ -76,7 +76,7 @@ namespace WebApp.RealStateApp.Controllers
 
             if (ModelState.IsValid)
             {
-                response = await _userService.RegisterAsync(vm, origin);
+                response = await _userService.RegisterAsync(vm, origin, "Admin");
                 return RedirectToRoute(new { controller = "User", action = "Index" });
             }
 

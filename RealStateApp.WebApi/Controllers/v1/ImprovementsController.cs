@@ -1,11 +1,14 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
-namespace RealStateApp.WebApi.Controllers
+namespace RealStateApp.WebApi.Controllers.v1
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class SalesTypesController : ControllerBase
+    public class ImprovementsController : ControllerBase
     {
     }
+
+
+
 }
