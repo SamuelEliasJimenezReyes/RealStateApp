@@ -11,9 +11,7 @@ namespace RealStateApp.Core.Application
         public static void AddApplicationLayer(this IServiceCollection services)
         {
             #region AutoMapper
-
             services.AddAutoMapper(Assembly.GetExecutingAssembly());
-
             #endregion
 
             #region MediatR
