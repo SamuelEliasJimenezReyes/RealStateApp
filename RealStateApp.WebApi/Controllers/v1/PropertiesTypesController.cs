@@ -48,6 +48,7 @@ namespace RealStateApp.WebApi.Controllers.v1
         public async Task<IActionResult> GetById(int id)
         {
             try
+
             {
                 return Ok(await Mediator.Send(new GetPropertiesTypeByIdQuery { Id = id }));
             }
