@@ -12,7 +12,7 @@ namespace RealStateApp.Core.Application.Interface.Services
         //Task<RegisterRequest> GetUserDTOAsync(string userId);
         //Task<bool> IsaValidUser(string UserName);
         Task<AuthenticationResponse> LoginAsync(LoginViewModel vm);
-        Task<RegisterResponse> RegisterAsync(SaveUserViewModel vm, string origin);
+        Task<RegisterResponse> RegisterAsync(SaveUserViewModel vm, string origin, string Role);
         Task<ResetPasswordResponse> ResetPasswordAsync(ResetPasswordViewModel vm);
         Task SignOutAsync();
         //Task UpdateUser(SaveUserViewModel user);

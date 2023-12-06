@@ -125,7 +125,7 @@ namespace RealStateApp.Infraestructure.Identity.Services
             await _signInManager.SignOutAsync();
         }
 
-        public async Task<RegisterResponse> RegisterBasicUserAsync(RegisterRequest request, string origin)
+        public async Task<RegisterResponse> RegisterBasicUserAsync(RegisterRequest request, string origin, string Role)
         {
             RegisterResponse response = new()
             {
@@ -173,6 +173,25 @@ namespace RealStateApp.Infraestructure.Identity.Services
                 response.HasError = true;
                 response.Error = $"An error occurred trying to register the user.";
                 return response;
+            }
+            switch (Role)
+            {
+                case "Agent":
+                    await _userManager.AddToRoleAsync(user, Roles.Agent.ToString());
+                    break;
+
+                case "Admin":
+                    await _userManager.AddToRoleAsync(user, Roles.Admin.ToString());
+                    break;
+
+                case "Client":
+                    await _userManager.AddToRoleAsync(user, Roles.Client.ToString());
+                    break;
+
+                case "Developer":
+                    await _userManager.AddToRoleAsync(user, Roles.Developer.ToString());
+                    break;
+
             }
 
             return response;

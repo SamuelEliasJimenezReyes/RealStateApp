@@ -8,6 +8,7 @@ using RealStateApp.Infrastructure.Identity.Entities;
 using RealStateApp.Infrastructure.Identity.Seeds;
 using RealStateApp.Infrastructure.Identity;
 using RealState.Infraestructure.Persistence;
+using RealStateApp.WebApi.Extensions;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -21,10 +22,14 @@ builder.Services.AddIdentityInfrastructure(builder.Configuration);
 builder.Services.AddPersistenceInfrastructure(builder.Configuration);
 builder.Services.AddSharedLayer(builder.Configuration);
 builder.Services.AddApplicationLayer();
-
-
-
-
+builder.Services.AddSession();
+builder.Services.AddDistributedMemoryCache();
+builder.Services.AddApiVersioningExtension();
+builder.Services.AddEndpointsApiExplorer();
+builder.Services.AddSwaggerGen();
+builder.Services.AddHealthChecks();
+builder.Services.AddSwaggerExtension();
+builder.Services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 
 var app = builder.Build();
 
@@ -54,8 +59,17 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
-app.UseHttpsRedirection();
 
+app.UseRouting();
+
+
+
+app.UseHealthChecks("/health");
+
+app.UseSession();
+
+app.UseHttpsRedirection();
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();

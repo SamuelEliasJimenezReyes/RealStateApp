@@ -4,12 +4,14 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace RealStateApp.WebApi.Controllers
 {
+    [ApiController]
     [Route("api/v{version:apiVersion}/[controller]")]
     [ApiController]
     public abstract class BaseApiController : ControllerBase
     {
         private IMediator _mediator;
 
-        protected IMediator mediator => _mediator ??= HttpContext.RequestServices.GetService<IMediator>();
+        protected IMediator Mediator => _mediator ??= HttpContext.RequestServices.GetService<IMediator>();
     }
+
 }
