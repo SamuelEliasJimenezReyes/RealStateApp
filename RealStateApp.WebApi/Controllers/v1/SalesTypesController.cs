@@ -22,7 +22,14 @@ namespace RealStateApp.WebApi.Controllers.v1
         {
             try
             {
-                return Ok(await Mediator.Send(new GetAllSalesTypesQuery()));
+               var list = await Mediator.Send(new GetAllSalesTypesQuery());
+                
+                if (list.Count == 0)
+                {
+                    return NoContent();
+                }
+
+                return Ok(list);
             }
             catch (Exception ex)
             {
