@@ -12,8 +12,8 @@ using RealState.Infraestructure.Persistence.Context;
 namespace RealState.Infraestructure.Persistence.Migrations
 {
     [DbContext(typeof(RealStateContext))]
-    [Migration("20231206052207_Initial")]
-    partial class Initial
+    [Migration("20231206214908_A")]
+    partial class A
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -201,7 +201,7 @@ namespace RealState.Infraestructure.Persistence.Migrations
 
                     b.HasIndex("ImprovementId");
 
-                    b.ToTable("PropertiesImprovementss", (string)null);
+                    b.ToTable("PropertiesImprovements", (string)null);
                 });
 
             modelBuilder.Entity("RealStateApp.Core.Domain.Entities.PropertiesTypes", b =>

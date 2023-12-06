@@ -26,7 +26,7 @@ namespace RealStateApp.Core.Application.Services
         public override async Task<SavePropertiesVM> Add(SavePropertiesVM vm)
         {
             var propertiesList = await base.GetAllViewModel();
-            vm.AgentId = "abbe4883-548a-4667-b9c2-009a8259d5ed";
+            vm.AgentId = "77ab3005-7d85-42e5-8dfa-b3ffdbb7f0f5";
 
             vm.Code = GenerateUniquecode.GenerateUniqueCode(propertiesList);
 
