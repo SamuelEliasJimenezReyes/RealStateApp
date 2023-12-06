@@ -2,6 +2,7 @@
 
 namespace RealStateApp.Core.Application.Dtos.PropertiesTypes
 {
+
     public class PropertiesTypesDTO
     {
         public int Id {get; set;}     
