@@ -186,7 +186,7 @@ namespace RealState.Infraestructure.Persistence.Migrations
                     b.ToTable("Properties", (string)null);
                 });
 
-            modelBuilder.Entity("RealStateApp.Core.Domain.Entities.PropertiesImprovents", b =>
+            modelBuilder.Entity("RealStateApp.Core.Domain.Entities.PropertiesImprovements", b =>
                 {
                     b.Property<int>("PropertiesId")
                         .HasColumnType("int");
@@ -194,11 +194,11 @@ namespace RealState.Infraestructure.Persistence.Migrations
                     b.Property<int>("ImprovementId")
                         .HasColumnType("int");
 
-                    b.HasKey("PropertiesId", "ImproventId");
+                    b.HasKey("PropertiesId", "ImprovementId");
 
                     b.HasIndex("ImprovementId");
 
-                    b.ToTable("PropertiesImprovents", (string)null);
+                    b.ToTable("PropertiesImprovementss", (string)null);
                 });
 
             modelBuilder.Entity("RealStateApp.Core.Domain.Entities.PropertiesTypes", b =>
@@ -235,6 +235,15 @@ namespace RealState.Infraestructure.Persistence.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("PropertiesTypes", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Description = "es una grasa",
+                            IsDeleted = false,
+                            Name = "Apartamento"
+                        });
                 });
 
             modelBuilder.Entity("RealStateApp.Core.Domain.Entities.SalesTypes", b =>
@@ -323,28 +332,28 @@ namespace RealState.Infraestructure.Persistence.Migrations
                     b.Navigation("SaleType");
                 });
 
-            modelBuilder.Entity("RealStateApp.Core.Domain.Entities.PropertiesImprovents", b =>
+            modelBuilder.Entity("RealStateApp.Core.Domain.Entities.PropertiesImprovements", b =>
                 {
-                    b.HasOne("RealStateApp.Core.Domain.Entities.Improvements", "improvements")
-                        .WithMany("PropertiesImprovents")
-                        .HasForeignKey("ImproventId")
+                    b.HasOne("RealStateApp.Core.Domain.Entities.Improvements", "Improvements")
+                        .WithMany("PropertiesImprovements")
+                        .HasForeignKey("ImprovementId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("RealStateApp.Core.Domain.Entities.Properties", "Properties")
-                        .WithMany("PropertiesImprovents")
+                        .WithMany("PropertiesImprovements")
                         .HasForeignKey("PropertiesId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("Properties");
+                    b.Navigation("Improvements");
 
-                    b.Navigation("improvements");
+                    b.Navigation("Properties");
                 });
 
             modelBuilder.Entity("RealStateApp.Core.Domain.Entities.Improvements", b =>
                 {
-                    b.Navigation("PropertiesImprovents");
+                    b.Navigation("PropertiesImprovements");
                 });
 
             modelBuilder.Entity("RealStateApp.Core.Domain.Entities.Properties", b =>
@@ -353,7 +362,7 @@ namespace RealState.Infraestructure.Persistence.Migrations
 
                     b.Navigation("ImagesProperties");
 
-                    b.Navigation("PropertiesImprovents");
+                    b.Navigation("PropertiesImprovements");
                 });
 
             modelBuilder.Entity("RealStateApp.Core.Domain.Entities.PropertiesTypes", b =>

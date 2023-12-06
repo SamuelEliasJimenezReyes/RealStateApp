@@ -36,7 +36,7 @@ namespace RealState.Infraestructure.Persistence
             services.AddTransient<IPropertiesImprovementsRepository, PropertiesImprovementsRepository>();
                 services.AddScoped<ISalesTypeRepository, SalesTypesRepository>();
                 services.AddTransient(typeof(IGenericRepository<>), typeof(GenericRepository<>));
-                services.AddScoped<ISalesTypeRepository, SaleTypesRepository>();
+                services.AddScoped<ISalesTypeRepository, SalesTypesRepository>();
                 services.AddScoped<IPropertiesTypesRepository, PropertiesTypesRepository>();
 
             #endregion 
