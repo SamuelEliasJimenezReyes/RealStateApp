@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using RealState.Infraestructure.Persistence.Context;
 
@@ -11,9 +12,11 @@ using RealState.Infraestructure.Persistence.Context;
 namespace RealState.Infraestructure.Persistence.Migrations
 {
     [DbContext(typeof(RealStateContext))]
-    partial class RealStateContextModelSnapshot : ModelSnapshot
+    [Migration("20231206044554_Initial2")]
+    partial class Initial2
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -106,22 +109,6 @@ namespace RealState.Infraestructure.Persistence.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Improvements", (string)null);
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            Description = "es una habitación",
-                            IsDeleted = false,
-                            Name = "Habitación"
-                        },
-                        new
-                        {
-                            Id = 2,
-                            Description = "es una Cocina",
-                            IsDeleted = false,
-                            Name = "Cocina"
-                        });
                 });
 
             modelBuilder.Entity("RealStateApp.Core.Domain.Entities.Properties", b =>
@@ -191,12 +178,12 @@ namespace RealState.Infraestructure.Persistence.Migrations
                     b.Property<int>("PropertiesId")
                         .HasColumnType("int");
 
-                    b.Property<int>("ImprovementId")
+                    b.Property<int>("ImproventId")
                         .HasColumnType("int");
 
                     b.HasKey("PropertiesId", "ImproventId");
 
-                    b.HasIndex("ImprovementId");
+                    b.HasIndex("ImproventId");
 
                     b.ToTable("PropertiesImprovents", (string)null);
                 });
@@ -271,15 +258,6 @@ namespace RealState.Infraestructure.Persistence.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("SaleTypes", (string)null);
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            Description = "se paga en un determinado tiempo",
-                            IsDeleted = false,
-                            Name = "Alquiler"
-                        });
                 });
 
             modelBuilder.Entity("RealStateApp.Core.Domain.Entities.FavoriteProperties", b =>

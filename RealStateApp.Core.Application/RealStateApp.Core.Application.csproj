@@ -20,11 +20,6 @@
     <Folder Include="Features\Improvements\Commands\UpdateImprovement\" />
     <Folder Include="Features\Improvements\Queries\GetAllImprovements\" />
     <Folder Include="Features\Improvements\Queries\GetImprovementById\" />
-    <Folder Include="Features\PropertiesTypes\Commands\CreatePropertiesTypes\" />
-    <Folder Include="Features\PropertiesTypes\Commands\DeletePropertiesTypeById\" />
-    <Folder Include="Features\PropertiesTypes\Commands\UpdatePropertiesTypes\" />
-    <Folder Include="Features\PropertiesTypes\Queries\GetAllPropertiesTypes\" />
-    <Folder Include="Features\PropertiesTypes\Queries\GetPropertiesTypeById\" />
     <Folder Include="Helpers\" />
     <Folder Include="Features\Properties\Commands\" />
     <Folder Include="Features\Properties\Queries\GetPropertiesById\" />
