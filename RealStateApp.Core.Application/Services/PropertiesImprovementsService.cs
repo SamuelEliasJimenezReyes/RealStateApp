@@ -35,5 +35,7 @@ namespace RealStateApp.Core.Application.Services
 
             return improvementsListVM;
         }
+
+      
     }
 }

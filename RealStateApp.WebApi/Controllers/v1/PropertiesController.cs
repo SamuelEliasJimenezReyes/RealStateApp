@@ -15,11 +15,11 @@ namespace RealStateApp.WebApi.Controllers.v1
         {
             try
             {
-                return Ok(await mediator.Send(new GetAllPropertiesQuery() {}));
+                return Ok(await Mediator.Send(new GetAllPropertiesQuery() {}));
             }
             catch(Exception ex) 
             {
-                return StatusCode(StatusCodes.Status500InternalServerError);
+                return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
             }
         }
     }

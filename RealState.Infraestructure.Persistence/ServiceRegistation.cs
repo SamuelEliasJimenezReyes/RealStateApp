@@ -34,7 +34,7 @@ namespace RealState.Infraestructure.Persistence
             services.AddTransient<IImprovementsRepository, ImprovementsRepository>();
             services.AddTransient<IImagesPropertiesRepository, ImagesPropertiesRepository>();
             services.AddTransient<IPropertiesImprovementsRepository, PropertiesImprovementsRepository>();
-                services.AddScoped<ISalesTypeRepository, SaleTypesRepository>();
+                services.AddScoped<ISalesTypeRepository, SalesTypesRepository>();
 
             #endregion 
         }

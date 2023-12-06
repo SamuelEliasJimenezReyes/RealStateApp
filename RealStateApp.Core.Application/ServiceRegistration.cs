@@ -12,8 +12,9 @@ namespace RealStateApp.Core.Application
         {
             #region AutoMapper
             services.AddAutoMapper(Assembly.GetExecutingAssembly());
-            services.AddMediatR(Assembly.GetExecutingAssembly());
+
             #endregion
+            services.AddMediatR(Assembly.GetExecutingAssembly());
 
             #region MediatR
             services.AddMediatR(Assembly.GetExecutingAssembly());

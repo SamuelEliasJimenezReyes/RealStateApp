@@ -1,6 +1,4 @@
-﻿
-
-namespace RealStateApp.Core.Application.Dtos.SalesTypes
+﻿namespace RealStateApp.Core.Application.Dtos.Api.SalesTypes
 {
     public class SalesTypesDTO
     {

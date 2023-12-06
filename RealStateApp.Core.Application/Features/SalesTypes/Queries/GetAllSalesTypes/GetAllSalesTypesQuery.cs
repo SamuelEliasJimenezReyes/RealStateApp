@@ -1,7 +1,7 @@
 ﻿
 using AutoMapper;
 using MediatR;
-using RealStateApp.Core.Application.Dtos.SalesTypes;
+using RealStateApp.Core.Application.Dtos.Api.SalesTypes;
 using RealStateApp.Core.Application.Interface.Repositories;
 using System.Runtime.CompilerServices;
 using System.Threading;
