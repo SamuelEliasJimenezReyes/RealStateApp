@@ -198,7 +198,7 @@ namespace RealState.Infraestructure.Persistence.Migrations
 
                     b.HasIndex("ImprovementId");
 
-                    b.ToTable("PropertiesImprovementss", (string)null);
+                    b.ToTable("PropertiesImprovements", (string)null);
                 });
 
             modelBuilder.Entity("RealStateApp.Core.Domain.Entities.PropertiesTypes", b =>

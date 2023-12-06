@@ -18,7 +18,7 @@ namespace RealState.Infraestructure.Persistence.Context
 
         public DbSet<SalesTypes> SaleTypes { get; set; }
 
-        public DbSet<PropertiesImprovements> PropertiesImprovementss { get; set; }
+        public DbSet<PropertiesImprovements> PropertiesImprovements { get; set; }
         public DbSet<FavoriteProperties> FavoriteProperties { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -32,7 +32,7 @@ namespace RealState.Infraestructure.Persistence.Context
             modelBuilder.Entity<Properties>().ToTable("Properties");
             modelBuilder.Entity<PropertiesTypes>().ToTable("PropertiesTypes");
             modelBuilder.Entity<SalesTypes>().ToTable("SaleTypes");
-            modelBuilder.Entity<PropertiesImprovements>().ToTable("PropertiesImprovementss");
+            modelBuilder.Entity<PropertiesImprovements>().ToTable("PropertiesImprovements");
             modelBuilder.Entity<FavoriteProperties>().ToTable("FavoriteProperties");
             #endregion
 
