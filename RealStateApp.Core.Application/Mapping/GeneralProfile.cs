@@ -8,6 +8,8 @@ using RealStateApp.Core.Application.ViewModels.SalesTypes;
 using RealStateApp.Core.Application.ViewModels.Improvements;
 using RealStateApp.Core.Application.ViewModels.ImagesProperties;
 using RealStateApp.Core.Application.ViewModels.ImprovementsProperties;
+using RealStateApp.Core.Application.Dtos.Api.Properties;
+using RealStateApp.Core.Application.Features.Properties.Queries.GetAllProperties;
 
 namespace RealStateApp.Core.Application.Mapping
 {
@@ -72,6 +74,9 @@ namespace RealStateApp.Core.Application.Mapping
                     .ForMember(x => x.LastModified, opt => opt.Ignore())
                      .ForMember(x => x.LastModifiedBy, opt => opt.Ignore())
                       .ForMember(x => x.SaleType, opt => opt.Ignore());
+
+            CreateMap<GetAllPropertiesParameter, GetAllPropertiesQuery>()
+                .ReverseMap();
 
             #endregion
 
@@ -162,7 +167,7 @@ namespace RealStateApp.Core.Application.Mapping
             #region PropertiesImprovements
 
             CreateMap<SavePropertiesImprovementsVM, PropertiesImprovements>()
-                   .ForMember(x => x.improvements, opt => opt.Ignore())
+                   .ForMember(x => x.Improvements, opt => opt.Ignore())
                     .ForMember(x => x.Properties, opt => opt.Ignore())
                    .ReverseMap();
 

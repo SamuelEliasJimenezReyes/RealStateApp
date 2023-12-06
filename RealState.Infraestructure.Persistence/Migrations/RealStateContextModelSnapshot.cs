@@ -334,7 +334,7 @@ namespace RealState.Infraestructure.Persistence.Migrations
 
             modelBuilder.Entity("RealStateApp.Core.Domain.Entities.PropertiesImprovements", b =>
                 {
-                    b.HasOne("RealStateApp.Core.Domain.Entities.Improvements", "improvements")
+                    b.HasOne("RealStateApp.Core.Domain.Entities.Improvements", "Improvements")
                         .WithMany("PropertiesImprovements")
                         .HasForeignKey("ImprovementId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -346,9 +346,9 @@ namespace RealState.Infraestructure.Persistence.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("Properties");
+                    b.Navigation("Improvements");
 
-                    b.Navigation("improvements");
+                    b.Navigation("Properties");
                 });
 
             modelBuilder.Entity("RealStateApp.Core.Domain.Entities.Improvements", b =>

@@ -38,11 +38,11 @@ namespace RealStateApp.Core.Application.Services
             await _accountService.SignOutAsync();
         }
 
-        public async Task<RegisterResponse> RegisterAsync(SaveUserViewModel vm, string origin)
+        public async Task<RegisterResponse> RegisterAsync(SaveUserViewModel vm, string origin, string Role)
         {
 
             RegisterRequest registerRequest = _mapper.Map<RegisterRequest>(vm);
-            var response = await _accountService.RegisterBasicUserAsync(registerRequest, origin);
+            var response = await _accountService.RegisterBasicUserAsync(registerRequest, origin, Role);
 
 
             return response;

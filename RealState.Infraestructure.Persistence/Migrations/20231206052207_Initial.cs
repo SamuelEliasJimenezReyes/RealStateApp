@@ -3,6 +3,8 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
+#pragma warning disable CA1814 // Prefer jagged arrays over multidimensional
+
 namespace RealState.Infraestructure.Persistence.Migrations
 {
     /// <inheritdoc />
@@ -172,6 +174,25 @@ namespace RealState.Infraestructure.Persistence.Migrations
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
+
+            migrationBuilder.InsertData(
+                table: "Improvements",
+                columns: new[] { "Id", "Created", "CreatedBy", "Description", "IsDeleted", "LastModified", "LastModifiedBy", "Name" },
+                values: new object[,]
+                {
+                    { 1, null, null, "es una habitación", false, null, null, "Habitación" },
+                    { 2, null, null, "es una Cocina", false, null, null, "Cocina" }
+                });
+
+            migrationBuilder.InsertData(
+                table: "PropertiesTypes",
+                columns: new[] { "Id", "Created", "CreatedBy", "Description", "IsDeleted", "LastModified", "LastModifiedBy", "Name" },
+                values: new object[] { 1, null, null, "es una grasa", false, null, null, "Apartamento" });
+
+            migrationBuilder.InsertData(
+                table: "SaleTypes",
+                columns: new[] { "Id", "Created", "CreatedBy", "Description", "IsDeleted", "LastModified", "LastModifiedBy", "Name" },
+                values: new object[] { 1, null, null, "se paga en un determinado tiempo", false, null, null, "Alquiler" });
 
             migrationBuilder.CreateIndex(
                 name: "IX_ImagesProperties_PropertiesId",

@@ -2,6 +2,7 @@
 using RealStateApp.Core.Application.Interface.Services;
 using RealStateApp.Core.Application.Services;
 using System.Reflection;
+using MediatR;
 
 namespace RealStateApp.Core.Application
 {
@@ -10,11 +11,14 @@ namespace RealStateApp.Core.Application
         public static void AddApplicationLayer(this IServiceCollection services)
         {
             #region AutoMapper
-
             services.AddAutoMapper(Assembly.GetExecutingAssembly());
 
             #endregion
+            services.AddMediatR(Assembly.GetExecutingAssembly());
 
+            #region MediatR
+            services.AddMediatR(Assembly.GetExecutingAssembly());
+            #endregion
 
             #region Services
 

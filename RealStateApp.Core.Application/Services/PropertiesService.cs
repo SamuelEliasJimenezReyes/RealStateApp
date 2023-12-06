@@ -2,8 +2,6 @@
 using RealStateApp.Core.Application.Helpers;
 using RealStateApp.Core.Application.Interface.Repositories;
 using RealStateApp.Core.Application.Interface.Services;
-using RealStateApp.Core.Application.ViewModels.ImagesProperties;
-using RealStateApp.Core.Application.ViewModels.Improvements;
 using RealStateApp.Core.Application.ViewModels.ImprovementsProperties;
 using RealStateApp.Core.Application.ViewModels.Properties;
 using RealStateApp.Core.Domain.Entities;
