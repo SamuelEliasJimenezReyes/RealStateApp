@@ -19,29 +19,52 @@ namespace RealStateApp.Core.Application.Features.Properties.Queries.GetAllProper
     public class GetAllPropertiesQueryHandler : IRequestHandler<GetAllPropertiesQuery, IList<PropertiesDTO>>
     {
         private readonly IPropertiesRepository _propertiesRepository;
-        private readonly IMapper mapper;
+        private readonly IMapper _mapper;
         private readonly IAccountService _accountService;
         private readonly IPropertiesImprovementsService _propertiesImprovementsService;
 
         public GetAllPropertiesQueryHandler(IPropertiesRepository propertiesRepository, IMapper mapper, IAccountService accountService, IPropertiesImprovementsService propertiesImprovementsService)
         {
             _propertiesRepository = propertiesRepository;
-            this.mapper = mapper;
+            _mapper = mapper;
             _accountService = accountService;
             _propertiesImprovementsService = propertiesImprovementsService;
         }
 
         public async Task<IList<PropertiesDTO>> Handle(GetAllPropertiesQuery request, CancellationToken cancellationToken)
         {
-            return null;
+            var filter = _mapper.Map<GetAllPropertiesParameter>(request);
+            var propertiesList = await GetAllPropertiesDTOWithFilters(filter);
+            if (propertiesList == null || propertiesList.Count == 0) throw new Exception("No hay Productos");
+
+            return propertiesList;
         }
 
-        public async Task<List<PropertiesDTO>> GetAllPropertiesDTOWithFilters(GetAllPropertiesParameter fitler)
+        public async Task<List<PropertiesDTO>> GetAllPropertiesDTOWithFilters(GetAllPropertiesParameter filter)
         {
             var list = await _propertiesRepository.GetAllWithIncludeAsync(new List<string> { "SaleType", "PropertiesTypes" });
             var dtoList = new List<PropertiesDTO>();
 
-            foreach(var properties in list)
+            if (filter.SalesTypeId > 0)
+            {
+                list = list.Where(x => x.SaleTypeId == filter.SalesTypeId).ToList();
+            }
+
+            if (filter.ImprovementsTypeId > 0 )
+            {
+            }
+
+            if (filter.PropertiesTypeId > 0)
+            {
+                list = list.Where(x => x.PropertiesTypeId == filter.PropertiesTypeId).ToList();
+            }
+
+            if (filter.AgentId != null)
+            {
+                list = list.Where(x => x.AgentId == filter.AgentId).ToList();
+            }
+
+            foreach (var properties in list)
             {
                 var agent = await _accountService.GetUserById(properties.AgentId);
 
@@ -63,6 +86,10 @@ namespace RealStateApp.Core.Application.Features.Properties.Queries.GetAllProper
 
                 dtoList.Add(dtoProperty);
             }
+
+            
+
+
             return dtoList;
         }
     }
