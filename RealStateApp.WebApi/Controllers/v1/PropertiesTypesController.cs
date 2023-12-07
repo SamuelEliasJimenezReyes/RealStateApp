@@ -1,5 +1,4 @@
-﻿using MediatR;
-using Microsoft.AspNetCore.Http;
+﻿
 using Microsoft.AspNetCore.Mvc;
 using RealStateApp.Core.Application.Features.PropertiesTypes.Commands.CreatePropertiesTypes;
 using RealStateApp.Core.Application.Features.PropertiesTypes.Commands.DeletePropertiesTypeById;
