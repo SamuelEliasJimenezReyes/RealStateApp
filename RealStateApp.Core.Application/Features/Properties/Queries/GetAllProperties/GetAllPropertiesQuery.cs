@@ -1,5 +1,4 @@
 ﻿
-
 using AutoMapper;
 using MediatR;
 using RealStateApp.Core.Application.Dtos.Api.Properties;
@@ -81,14 +80,11 @@ namespace RealStateApp.Core.Application.Features.Properties.Queries.GetAllProper
                     SaleType = properties.SaleType.Name,
                     Improvements = await _propertiesImprovementsService.GetImprovementsByPropertyId(properties.Id),
                     AgentId = properties.AgentId,
-                    AgentName = $"{agent.FirstName} + ' ' + {agent.LastName}"
+                    AgentName = $"{agent.FirstName} + + {agent.LastName}"
             };
 
                 dtoList.Add(dtoProperty);
             }
-
-            
-
 
             return dtoList;
         }

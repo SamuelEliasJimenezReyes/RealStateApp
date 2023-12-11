@@ -10,6 +10,9 @@ using RealStateApp.Core.Application.ViewModels.ImagesProperties;
 using RealStateApp.Core.Application.ViewModels.ImprovementsProperties;
 using RealStateApp.Core.Application.Dtos.Api.Properties;
 using RealStateApp.Core.Application.Features.Properties.Queries.GetAllProperties;
+using RealStateApp.Core.Application.Dtos.User;
+using RealStateApp.Core.Application.ViewModels.Agents;
+using RealStateApp.Core.Application.ViewModels.AgentImages;
 
 namespace RealStateApp.Core.Application.Mapping
 {
@@ -31,6 +34,13 @@ namespace RealStateApp.Core.Application.Mapping
                 .ForMember(x => x.HasError, opt => opt.Ignore())
                 .ForMember(x => x.Error, opt => opt.Ignore())
                 .ReverseMap();
+
+            CreateMap<UserDTO, AgentVM>()
+                .ReverseMap()
+                .ForMember(x => x.Roles, opt => opt.Ignore())
+                .ForMember(x => x.IsActive, opt => opt.Ignore())
+                .ForMember(x => x.HasError, opt => opt.Ignore());
+   ;
 
             CreateMap<ResetPasswordRequest, ResetPasswordViewModel>()
                 .ForMember(x => x.HasError, opt => opt.Ignore())
@@ -170,6 +180,16 @@ namespace RealStateApp.Core.Application.Mapping
                    .ForMember(x => x.Improvements, opt => opt.Ignore())
                     .ForMember(x => x.Properties, opt => opt.Ignore())
                    .ReverseMap();
+
+            #endregion
+
+            #region AgentImages
+
+            CreateMap<SaveAgentImagesVM, AgentImages>()
+                .ReverseMap();
+
+            CreateMap<AgentImagesVM, AgentImages>()
+                .ReverseMap();
 
             #endregion
 

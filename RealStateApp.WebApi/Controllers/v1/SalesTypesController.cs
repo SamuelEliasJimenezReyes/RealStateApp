@@ -22,8 +22,8 @@ namespace RealStateApp.WebApi.Controllers.v1
         {
             try
             {
-               var list = await Mediator.Send(new GetAllSalesTypesQuery());
-                
+                var list = await Mediator.Send(new GetAllSalesTypesQuery());
+
                 if (list.Count == 0)
                 {
                     return NoContent();
@@ -47,7 +47,7 @@ namespace RealStateApp.WebApi.Controllers.v1
         {
             try
             {
-                return Ok( await Mediator.Send(new GetSalesTypeByIdQuery { Id = id }));
+                return Ok(await Mediator.Send(new GetSalesTypeByIdQuery { Id = id }));
             }
             catch (Exception ex)
             {
@@ -66,7 +66,7 @@ namespace RealStateApp.WebApi.Controllers.v1
         {
             try
             {
-                if(!ModelState.IsValid)
+                if (!ModelState.IsValid)
                 {
                     return BadRequest();
                 }
@@ -97,12 +97,12 @@ namespace RealStateApp.WebApi.Controllers.v1
                     return BadRequest();
                 }
 
-                if(id != command.Id)
+                if (id != command.Id)
                 {
                     return BadRequest();
                 }
-                
-                return Ok(await Mediator.Send(command)); 
+
+                return Ok(await Mediator.Send(command));
             }
             catch (Exception ex)
             {
@@ -125,7 +125,7 @@ namespace RealStateApp.WebApi.Controllers.v1
             {
                 return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
             }
-            
+
         }
     }
 }

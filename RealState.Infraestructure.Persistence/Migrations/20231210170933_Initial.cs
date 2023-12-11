@@ -14,6 +14,25 @@ namespace RealState.Infraestructure.Persistence.Migrations
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
+                name: "AgentImages",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    AgentId = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    ImagePath = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    IsDeleted = table.Column<bool>(type: "bit", nullable: false),
+                    CreatedBy = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Created = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    LastModifiedBy = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    LastModified = table.Column<DateTime>(type: "datetime2", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_AgentImages", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Improvements",
                 columns: table => new
                 {
@@ -152,7 +171,7 @@ namespace RealState.Infraestructure.Persistence.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "PropertiesImprovementss",
+                name: "PropertiesImprovements",
                 columns: table => new
                 {
                     PropertiesId = table.Column<int>(type: "int", nullable: false),
@@ -160,15 +179,15 @@ namespace RealState.Infraestructure.Persistence.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_PropertiesImprovementss", x => new { x.PropertiesId, x.ImprovementId });
+                    table.PrimaryKey("PK_PropertiesImprovements", x => new { x.PropertiesId, x.ImprovementId });
                     table.ForeignKey(
-                        name: "FK_PropertiesImprovementss_Improvements_ImprovementId",
+                        name: "FK_PropertiesImprovements_Improvements_ImprovementId",
                         column: x => x.ImprovementId,
                         principalTable: "Improvements",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_PropertiesImprovementss_Properties_PropertiesId",
+                        name: "FK_PropertiesImprovements_Properties_PropertiesId",
                         column: x => x.PropertiesId,
                         principalTable: "Properties",
                         principalColumn: "Id",
@@ -210,8 +229,8 @@ namespace RealState.Infraestructure.Persistence.Migrations
                 column: "SaleTypeId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_PropertiesImprovementss_ImprovementId",
-                table: "PropertiesImprovementss",
+                name: "IX_PropertiesImprovements_ImprovementId",
+                table: "PropertiesImprovements",
                 column: "ImprovementId");
         }
 
@@ -219,13 +238,16 @@ namespace RealState.Infraestructure.Persistence.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
+                name: "AgentImages");
+
+            migrationBuilder.DropTable(
                 name: "FavoriteProperties");
 
             migrationBuilder.DropTable(
                 name: "ImagesProperties");
 
             migrationBuilder.DropTable(
-                name: "PropertiesImprovementss");
+                name: "PropertiesImprovements");
 
             migrationBuilder.DropTable(
                 name: "Improvements");

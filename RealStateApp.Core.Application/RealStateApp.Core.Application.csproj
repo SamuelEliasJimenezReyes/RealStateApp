@@ -22,8 +22,6 @@
     <Folder Include="Features\Improvements\Queries\GetImprovementById\" />
     <Folder Include="Helpers\" />
     <Folder Include="Features\Properties\Commands\" />
-    <Folder Include="Features\Properties\Queries\GetPropertiesById\" />
-    <Folder Include="Features\Properties\Queries\GetPropertiesByCode\" />
     <Folder Include="Wrappers\" />
   </ItemGroup>
 

@@ -3,6 +3,8 @@ using RealStateApp.Core.Application.Interface.Services;
 using RealStateApp.Core.Application.Services;
 using System.Reflection;
 using MediatR;
+using RealStateApp.Core.Application.Dtos.Account;
+using Microsoft.AspNetCore.Http;
 
 namespace RealStateApp.Core.Application
 {
@@ -12,10 +14,8 @@ namespace RealStateApp.Core.Application
         {
             #region AutoMapper
             services.AddAutoMapper(Assembly.GetExecutingAssembly());
-
             #endregion
-            services.AddMediatR(Assembly.GetExecutingAssembly());
-
+          
             #region MediatR
             services.AddMediatR(Assembly.GetExecutingAssembly());
             #endregion
@@ -30,6 +30,9 @@ namespace RealStateApp.Core.Application
             services.AddTransient<IImprovementsService, ImprovementsServices>();
             services.AddTransient<IImagesPropertiesService, ImagesPropertiesService>();
             services.AddTransient<IPropertiesImprovementsService, PropertiesImprovementsService>();
+            services.AddTransient<IAgentImagesService, AgentImagesService>();
+            services.AddTransient<AuthenticationResponse>();
+           
             #endregion
 
         }
