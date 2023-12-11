@@ -19,23 +19,18 @@ namespace RealStateApp.WebApi.Extensions
                     Description = "This Api will be responsible for overall data distribution",
                     Contact = new OpenApiContact
                     {
-                        Name = @"Eliott Reyes
-                                 Samuel Jimenez
-                                 Domingo Ruiz",
-                        Email = @"eliottreyes22@gmail.com
-                                  samuelelias13@hotmail.com
-                                  domingojruiz21@gmail.com",
-                        Url = new Uri(@"https://www.instagram.com/ey_reyes17/
-                                        https://www.instagram.com/iam.sam_j/
-                                        https://www.instagram.com/domingojunior21/")
-                        
+                        Name = "Eliott Reyes\nSamuel Jimenez\nDomingo Ruiz",
+                        Email = "eliottreyes22@gmail.com\nsamuelelias13@hotmail.com\ndomingojruiz21@gmail.com",
+                        Url = new Uri("https://www.instagram.com/ey_reyes17/"),
+
+
                     }
-                });
+                }) ;
 
 
 
                    options.DescribeAllParametersInCamelCase();
-                /*     options.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
+                     options.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
                      {
                          Name = "Authorization",
                          In = ParameterLocation.Header,
@@ -60,7 +55,7 @@ namespace RealStateApp.WebApi.Extensions
                              }, new List<string>()
                          },
                      });
-              */
+              
             });
         }
 

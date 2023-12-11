@@ -15,11 +15,6 @@
   <ItemGroup>
     <Folder Include="Enums\" />
     <Folder Include="Exceptions\" />
-    <Folder Include="Features\Improvements\Commands\CreateImprovements\" />
-    <Folder Include="Features\Improvements\Commands\DeleteImprovementById\" />
-    <Folder Include="Features\Improvements\Commands\UpdateImprovement\" />
-    <Folder Include="Features\Improvements\Queries\GetAllImprovements\" />
-    <Folder Include="Features\Improvements\Queries\GetImprovementById\" />
     <Folder Include="Helpers\" />
     <Folder Include="Features\Properties\Commands\" />
     <Folder Include="Wrappers\" />
