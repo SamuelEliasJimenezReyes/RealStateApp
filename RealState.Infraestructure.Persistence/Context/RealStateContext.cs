@@ -20,6 +20,7 @@ namespace RealState.Infraestructure.Persistence.Context
 
         public DbSet<PropertiesImprovements> PropertiesImprovements { get; set; }
         public DbSet<FavoriteProperties> FavoriteProperties { get; set; }
+        public DbSet<AgentImages> AgentImages { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -34,6 +35,7 @@ namespace RealState.Infraestructure.Persistence.Context
             modelBuilder.Entity<SalesTypes>().ToTable("SaleTypes");
             modelBuilder.Entity<PropertiesImprovements>().ToTable("PropertiesImprovements");
             modelBuilder.Entity<FavoriteProperties>().ToTable("FavoriteProperties");
+            modelBuilder.Entity<AgentImages>().ToTable("AgentImages");
             #endregion
 
             #region Primary keys
@@ -44,6 +46,7 @@ namespace RealState.Infraestructure.Persistence.Context
             modelBuilder.Entity<SalesTypes>().HasKey(a => a.Id);
             modelBuilder.Entity<PropertiesImprovements>().HasKey(a => new {a.PropertiesId, a.ImprovementId});
             modelBuilder.Entity<FavoriteProperties>().HasKey(a => new { a.PropertiesId, a.ClientId });
+            modelBuilder.Entity<AgentImages>().HasKey(a => a.Id);
             #endregion
 
             #region Relationships

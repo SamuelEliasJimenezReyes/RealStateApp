@@ -1,5 +1,4 @@
 ﻿
-
 using AutoMapper;
 using MediatR;
 using RealStateApp.Core.Application.Dtos.Api.Properties;
@@ -86,9 +85,6 @@ namespace RealStateApp.Core.Application.Features.Properties.Queries.GetAllProper
 
                 dtoList.Add(dtoProperty);
             }
-
-            
-
 
             return dtoList;
         }

@@ -1,0 +1,39 @@
+﻿@using RealStateApp.Core.Application.ViewModels.Properties
+@model PropertiesVM
+
+@{
+    ViewBag.Title = "Detalle de Propiedad";
+}
+
+<h2>Detalle de Propiedad</h2>
+
+<div class="property-details">
+    <div id="imageSlider">
+        @foreach (var image in Model.ImagesProperties)
+        {
+            <img src="@image" alt="Imagen de Propiedad" />
+        }
+    </div>
+
+    <h3>@Model.PropertiesType - @Model.Code</h3>
+    <p>Tipo de Venta: @Model.SaleType</p>
+    <p>Precio: @Model.Price</p>
+    <p>Habitaciones: @Model.RoomQuantity, Baños: @Model.BathroomQuantity</p>
+    <p>Tamaño: @Model.LandSizeMeter m²</p>
+    <p>Descripción: @Model.Description</p>
+    <p>
+        Mejoras:
+        <ul>
+            @foreach (var improvement in Model.PropertiesImprovements)
+            {
+                <li>@improvement.Name</li>
+            }
+        </ul>
+    </p>
+
+    <h4>Agente Inmobiliario</h4>
+    <p>Nombre: @Model.Agent.FirstName @Model.Agent.LastName</p> 
+    <p>Celular: @Model.Agent.Phone</p>
+    <p>Email: @Model.Agent.Email</p>
+    <img src="@Model.Agent.ImagePath" alt="Foto del Agente" />
+</div>
