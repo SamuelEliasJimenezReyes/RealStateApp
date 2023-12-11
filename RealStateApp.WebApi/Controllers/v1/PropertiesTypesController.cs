@@ -1,5 +1,4 @@
-﻿using MediatR;
-using Microsoft.AspNetCore.Http;
+﻿
 using Microsoft.AspNetCore.Mvc;
 using RealStateApp.Core.Application.Features.PropertiesTypes.Commands.CreatePropertiesTypes;
 using RealStateApp.Core.Application.Features.PropertiesTypes.Commands.DeletePropertiesTypeById;
@@ -48,6 +47,7 @@ namespace RealStateApp.WebApi.Controllers.v1
         public async Task<IActionResult> GetById(int id)
         {
             try
+
             {
                 return Ok(await Mediator.Send(new GetPropertiesTypeByIdQuery { Id = id }));
             }
