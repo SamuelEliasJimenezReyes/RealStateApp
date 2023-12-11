@@ -1,7 +1,6 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿
 using RealStateApp.Core.Application.Dtos.Account;
 using RealStateApp.Core.Application.Helpers;
-using RealStateApp.Core.Application.ViewModels.User;
 
 namespace WebApp.RealStateApp.Middlewares
 {
