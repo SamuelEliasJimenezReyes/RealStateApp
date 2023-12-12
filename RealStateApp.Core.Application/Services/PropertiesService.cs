@@ -143,6 +143,7 @@ namespace RealStateApp.Core.Application.Services
             var properties = list.FirstOrDefault(x => x.Code == code);
 
             var agent = await _accountService.GetUserById(properties.AgentId);
+            agent.ImagePath = await _agentImagesService.GetImagesByAgentId(properties.AgentId);
 
             var dtoProperty = new PropertiesVM
             {

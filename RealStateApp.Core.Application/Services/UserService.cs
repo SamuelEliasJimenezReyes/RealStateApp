@@ -3,6 +3,7 @@ using RealStateApp.Core.Application.Dtos.Account;
 using RealStateApp.Core.Application.ViewModels.User;
 using RealStateApp.Core.Application.Dtos.User;
 using RealStateApp.Core.Application.Interface.Services;
+using RealStateApp.Core.Application.ViewModels.Agents;
 
 namespace RealStateApp.Core.Application.Services
 {
@@ -10,12 +11,15 @@ namespace RealStateApp.Core.Application.Services
     {
         private readonly IAccountService _accountService;
         private readonly IMapper _mapper;
+        private readonly IAgentImagesService _agentImagesService;
 
-        public UserService(IAccountService accountService, IMapper mapper)
+        public UserService(IAccountService accountService, IMapper mapper, IAgentImagesService agentImagesService)
         {
             _accountService = accountService;
             _mapper = mapper;
+            _agentImagesService = agentImagesService;
         }
+
 
         //public async Task ChangeUserStatus(string userName)
         //{
@@ -76,10 +80,25 @@ namespace RealStateApp.Core.Application.Services
         //    return await _accountService.IsaValidUser(UserName);
         //}
 
-        //public async Task<List<UserDTO>> GetAllUsers()
-        //{
-        //    return await _accountService.GetAllUsers();
-        //}
+        public async Task<List<UserDTO>> GetAllUsers()
+        {
+            return await _accountService.GetAllUsers();
+        }
+
+        public async Task<List<AgentVM>> GetAllAgentVM()
+        {
+            var userDTOList = await _accountService.GetAllUsers();
+            var agentList = userDTOList.Where(x => x.Roles.Contains("Agent")).ToList();
+            var agentVMList = new List<AgentVM>();
+           foreach(var agent in agentList)
+            {
+                var agentVM = _mapper.Map<AgentVM>(agent);
+                agentVM.ImagePath = await _agentImagesService.GetImagesByAgentId(agent.UserId);
+                agentVMList.Add(agentVM);
+            }
+
+            return agentVMList;
+        }
 
         //public async Task<UserDTO> UpdateUserByUserId(UserDTO dto)
         //{

@@ -16,7 +16,8 @@
     <title>@ViewData["Title"] - RealStateApp</title>
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
-    <link rel="stylesheet" href="~/RealStateApp.styles.css" asp-append-version="true" />
+   <link rel="stylesheet" href="~/RealStateApp.styles.css" asp-append-version="true" />
+
 </head>
 <body>
   
@@ -43,6 +44,9 @@
                           <li clss="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="User" asp-action="Register">Únete a la app</a>
                         </li>
+                            <li clss="nav-item">
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="AgentHome">Agents</a>
+                            </li>
                     </ul>
                     }
                     @if (User != null && User.Roles.Contains("Agent"))

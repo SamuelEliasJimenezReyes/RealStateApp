@@ -73,6 +73,7 @@ namespace RealStateApp.Infraestructure.Identity.Services
             userDTO.FirstName = user.Name;
             userDTO.Phone = user.PhoneNumber;
             userDTO.UserId = user.Id;
+            userDTO.Email = user.Email;
             return userDTO;
         }
         #endregion
@@ -84,23 +85,13 @@ namespace RealStateApp.Infraestructure.Identity.Services
             var user = await _userManager.FindByEmailAsync(request.Email);
             if (user == null)
             {
-                response.HasError = true;
-                response.Error = $"No Accounts registered with {request.Email}";
-                return response;
-            }
-
-            var result = await _signInManager.PasswordSignInAsync(user.UserName, request.Password, false, lockoutOnFailure: false);
-            if (!result.Succeeded)
-            {
-                response.HasError = true;
-                response.Error = $"Invalid credentials for {request.Email}";
-                return response;
-            }
-            if (!user.EmailConfirmed)
-            {
-                response.HasError = true;
-                response.Error = $"Account no confirmed for {request.Email}";
-                return response;
+                user = await _userManager.FindByNameAsync(request.Email);
+                if (user == null)
+                {
+                    response.HasError = true;
+                    response.Error = $"No Accounts registered with {request.Email}";
+                    return response;
+                }
             }
 
             //JwtSecurityToken jwtSecurityToken = await GenerateJWToken(user);
@@ -153,7 +144,8 @@ namespace RealStateApp.Infraestructure.Identity.Services
                 Email = request.Email,
                 Name = request.FirstName,
                 LastName = request.LastName,
-                UserName = request.UserName
+                UserName = request.UserName,
+                PhoneNumber = request.Phone
             };
 
             var result = await _userManager.CreateAsync(user, request.Password);
