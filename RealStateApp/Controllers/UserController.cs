@@ -2,29 +2,31 @@
 using RealStateApp.Core.Application.ViewModels.User;
 using RealStateApp.Core.Application.Helpers;
 using RealStateApp.Core.Application.Dtos.Account;
-using RealStateApp.Core.Application.Dtos.User;
-using Microsoft.AspNetCore.Authorization;
 using RealStateApp.Core.Application.Interface.Services;
 using WebApp.RealStateApp.Middlewares;
+using DRSocialNetwork.Application.Helpers;
+using RealStateApp.Core.Application.ViewModels.AgentImages;
 
 namespace WebApp.RealStateApp.Controllers
 {
     public class UserController : Controller
     {
         private readonly IUserService _userService;
+        private readonly IAgentImagesService _agentImagesService;
 
-        public UserController(IUserService userService)
+        public UserController(IUserService userService, IAgentImagesService agentImagesService)
         {
             _userService = userService;
+            _agentImagesService = agentImagesService;
         }
 
-        [ServiceFilter(typeof(LoginAuthorize))]
+        //[ServiceFilter(typeof(LoginAuthorize))]
         public IActionResult Index()
         {
             return View(new LoginViewModel());
         }
 
-        [ServiceFilter(typeof(LoginAuthorize))]
+        //[ServiceFilter(typeof(LoginAuthorize))]
         [HttpPost]
         public async Task<IActionResult> Index(LoginViewModel vm)
         {
@@ -76,7 +78,32 @@ namespace WebApp.RealStateApp.Controllers
 
             if (ModelState.IsValid)
             {
-                response = await _userService.RegisterAsync(vm, origin);
+                if (vm.IsAgent)
+                {
+                    response = await _userService.RegisterAsync(vm, origin, "Agent");
+                }
+                else
+                {
+                    response = await _userService.RegisterAsync(vm, origin, "Client");
+
+                }
+                if (!response.HasError && vm.IsAgent)
+                {
+                    var imagesgenerated = FileManager.Upload(vm.File, response.UserId , "Agent");
+                    SaveAgentImagesVM saveAgentImages = new()
+                    {
+                        AgentId = response.UserId, 
+                        ImagePath = imagesgenerated
+                    };
+                    await _agentImagesService.Add(saveAgentImages);
+                }
+                if (response.HasError)
+                {
+                    vm.HasError = true;
+                    vm.ErrorMessage = response.Error;
+                    return View(vm);
+                }
+                
                 return RedirectToRoute(new { controller = "User", action = "Index" });
             }
 
@@ -90,13 +117,13 @@ namespace WebApp.RealStateApp.Controllers
             return View("ConfirmEmail", response);
         }
 
-        [ServiceFilter(typeof(LoginAuthorize))]
+        //[ServiceFilter(typeof(LoginAuthorize))]
         public IActionResult ForgotPassword()
         {
             return View(new ForgotPasswordViewModel());
         }
 
-        [ServiceFilter(typeof(LoginAuthorize))]
+        //[ServiceFilter(typeof(LoginAuthorize))]
         [HttpPost]
         public async Task<IActionResult> ForgotPassword(ForgotPasswordViewModel vm)
         {

@@ -1,9 +1,9 @@
 ﻿
-
 using AutoMapper;
 using MediatR;
 using RealStateApp.Core.Application.Dtos.Api.Properties;
 using RealStateApp.Core.Application.Interface.Repositories;
+using RealStateApp.Core.Application.Interface.Services;
 
 namespace RealStateApp.Core.Application.Features.Properties.Queries.GetAllProperties
 {
@@ -18,26 +18,55 @@ namespace RealStateApp.Core.Application.Features.Properties.Queries.GetAllProper
     public class GetAllPropertiesQueryHandler : IRequestHandler<GetAllPropertiesQuery, IList<PropertiesDTO>>
     {
         private readonly IPropertiesRepository _propertiesRepository;
-        private readonly IMapper mapper;
+        private readonly IMapper _mapper;
+        private readonly IAccountService _accountService;
+        private readonly IPropertiesImprovementsService _propertiesImprovementsService;
 
-        public GetAllPropertiesQueryHandler(IPropertiesRepository propertiesRepository, IMapper mapper)
+        public GetAllPropertiesQueryHandler(IPropertiesRepository propertiesRepository, IMapper mapper, IAccountService accountService, IPropertiesImprovementsService propertiesImprovementsService)
         {
             _propertiesRepository = propertiesRepository;
-            this.mapper = mapper;
+            _mapper = mapper;
+            _accountService = accountService;
+            _propertiesImprovementsService = propertiesImprovementsService;
         }
 
         public async Task<IList<PropertiesDTO>> Handle(GetAllPropertiesQuery request, CancellationToken cancellationToken)
         {
-            return null;
+            var filter = _mapper.Map<GetAllPropertiesParameter>(request);
+            var propertiesList = await GetAllPropertiesDTOWithFilters(filter);
+            if (propertiesList == null || propertiesList.Count == 0) throw new Exception("No hay Productos");
+
+            return propertiesList;
         }
 
-        public async Task<List<PropertiesDTO>> GetAllPropertiesDTOWithFilters(GetAllPropertiesParameter fitler)
+        public async Task<List<PropertiesDTO>> GetAllPropertiesDTOWithFilters(GetAllPropertiesParameter filter)
         {
             var list = await _propertiesRepository.GetAllWithIncludeAsync(new List<string> { "SaleType", "PropertiesTypes" });
             var dtoList = new List<PropertiesDTO>();
 
-            foreach(var properties in list)
+            if (filter.SalesTypeId > 0)
             {
+                list = list.Where(x => x.SaleTypeId == filter.SalesTypeId).ToList();
+            }
+
+            if (filter.ImprovementsTypeId > 0 )
+            {
+            }
+
+            if (filter.PropertiesTypeId > 0)
+            {
+                list = list.Where(x => x.PropertiesTypeId == filter.PropertiesTypeId).ToList();
+            }
+
+            if (filter.AgentId != null)
+            {
+                list = list.Where(x => x.AgentId == filter.AgentId).ToList();
+            }
+
+            foreach (var properties in list)
+            {
+                var agent = await _accountService.GetUserById(properties.AgentId);
+
                 var dtoProperty = new PropertiesDTO
                 {
                     Description = properties.Description,
@@ -49,11 +78,15 @@ namespace RealStateApp.Core.Application.Features.Properties.Queries.GetAllProper
                     Code = properties.Code,
                     PropertiesType = properties.PropertiesTypes.Name,
                     SaleType = properties.SaleType.Name,
-                };
+                    Improvements = await _propertiesImprovementsService.GetImprovementsByPropertyId(properties.Id),
+                    AgentId = properties.AgentId,
+                    AgentName = $"{agent.FirstName} + + {agent.LastName}"
+            };
 
                 dtoList.Add(dtoProperty);
             }
-            return null;
+
+            return dtoList;
         }
     }
 }

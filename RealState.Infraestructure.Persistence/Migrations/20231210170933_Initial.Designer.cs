@@ -12,7 +12,7 @@ using RealState.Infraestructure.Persistence.Context;
 namespace RealState.Infraestructure.Persistence.Migrations
 {
     [DbContext(typeof(RealStateContext))]
-    [Migration("20231202070704_Initial")]
+    [Migration("20231210170933_Initial")]
     partial class Initial
     {
         /// <inheritdoc />
@@ -24,6 +24,41 @@ namespace RealState.Infraestructure.Persistence.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
+
+            modelBuilder.Entity("RealStateApp.Core.Domain.Entities.AgentImages", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("AgentId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime?>("Created")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("CreatedBy")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ImagePath")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<DateTime?>("LastModified")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("LastModifiedBy")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("AgentImages", (string)null);
+                });
 
             modelBuilder.Entity("RealStateApp.Core.Domain.Entities.FavoriteProperties", b =>
                 {
@@ -109,6 +144,22 @@ namespace RealState.Infraestructure.Persistence.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Improvements", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Description = "es una habitación",
+                            IsDeleted = false,
+                            Name = "Habitación"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            Description = "es una Cocina",
+                            IsDeleted = false,
+                            Name = "Cocina"
+                        });
                 });
 
             modelBuilder.Entity("RealStateApp.Core.Domain.Entities.Properties", b =>
@@ -185,7 +236,7 @@ namespace RealState.Infraestructure.Persistence.Migrations
 
                     b.HasIndex("ImprovementId");
 
-                    b.ToTable("PropertiesImprovementss", (string)null);
+                    b.ToTable("PropertiesImprovements", (string)null);
                 });
 
             modelBuilder.Entity("RealStateApp.Core.Domain.Entities.PropertiesTypes", b =>
@@ -222,6 +273,15 @@ namespace RealState.Infraestructure.Persistence.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("PropertiesTypes", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Description = "es una grasa",
+                            IsDeleted = false,
+                            Name = "Apartamento"
+                        });
                 });
 
             modelBuilder.Entity("RealStateApp.Core.Domain.Entities.SalesTypes", b =>
@@ -258,6 +318,15 @@ namespace RealState.Infraestructure.Persistence.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("SaleTypes", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Description = "se paga en un determinado tiempo",
+                            IsDeleted = false,
+                            Name = "Alquiler"
+                        });
                 });
 
             modelBuilder.Entity("RealStateApp.Core.Domain.Entities.FavoriteProperties", b =>
@@ -303,7 +372,7 @@ namespace RealState.Infraestructure.Persistence.Migrations
 
             modelBuilder.Entity("RealStateApp.Core.Domain.Entities.PropertiesImprovements", b =>
                 {
-                    b.HasOne("RealStateApp.Core.Domain.Entities.Improvements", "improvements")
+                    b.HasOne("RealStateApp.Core.Domain.Entities.Improvements", "Improvements")
                         .WithMany("PropertiesImprovements")
                         .HasForeignKey("ImprovementId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -315,9 +384,9 @@ namespace RealState.Infraestructure.Persistence.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("Properties");
+                    b.Navigation("Improvements");
 
-                    b.Navigation("improvements");
+                    b.Navigation("Properties");
                 });
 
             modelBuilder.Entity("RealStateApp.Core.Domain.Entities.Improvements", b =>

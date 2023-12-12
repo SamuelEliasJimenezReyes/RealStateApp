@@ -18,7 +18,12 @@ namespace RealStateApp.Core.Application.Services
             _imagesPropertiesRepository = imagesPropertiesRepository;
             _mapper = mapper;
         }
+        
+        public async Task<List<string>> GetAllImagesByPropertyId(int id)
+        {
+            var list = await _imagesPropertiesRepository.GetAllAsync();
 
-
+           return list.Where(i => i.PropertiesId == id).Select(x => x.ImageUrl).ToList();
+        }
     }
 }

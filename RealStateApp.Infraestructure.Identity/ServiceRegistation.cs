@@ -38,7 +38,7 @@ namespace RealStateApp.Infrastructure.Identity
 
             #region Identity
             services.AddIdentity<AppUser, IdentityRole>()
-                 .AddEntityFrameworkStores<IdentityContext>().AddDefaultTokenProviders();
+                .AddEntityFrameworkStores<IdentityContext>().AddDefaultTokenProviders();
 
             services.ConfigureApplicationCookie(options =>
             {
@@ -94,6 +94,7 @@ namespace RealStateApp.Infrastructure.Identity
                 };
 
             });
+
             #endregion
 
             #region Services

@@ -6,7 +6,7 @@
 
 
 <div class="container">
-    <h1 class="text-light text-center mt-5">Welcome To SED Bank, The Bank of the People</h1>
+    <h1 class="text-light text-center mt-5">Bienvenido a nuestro RealState App</h1>
     <div class="row justify-content-center pt-5 mt-5 m-1">
         <div class="col-md-6 col-sm-8 col-xl-4 col-lg-5 mb-4 formulario">
                 @Html.ValidationSummary(false, "", new { @class = "text-danger" })
@@ -22,10 +22,10 @@
                         <h1 class="text-light text-center">Sign In</h1>
                     </div>
                     <div class="form-group mx-sm-4 pt-3 mt-2 mb-2">
-                    <input asp-for="Email" type="text" class="form-control bg-white col-10" placeholder="Ingrese su Email">
+                    <input asp-for="Email" type="text" class="form-control bg-white col-10" placeholder="Ingrese su Email o su UserName">
                     </div>
                 <div class="form-group mx-sm-4 pb-3 mb-4">
-                    <input asp-for="Password" class="form-control bg-white col-10 " placeholder="Enter your Password" id="passwordInput">
+                    <input asp-for="Password" class="form-control bg-white col-10 " placeholder="Ingrese su Contraseña" id="passwordInput">
                     <span asp-validation-for="Password" class="text-danger"></span>
                     <i class="fa fa-eye-slash" id="togglePassword"></i>
                 </div>

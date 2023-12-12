@@ -73,6 +73,7 @@ namespace RealStateApp.Infraestructure.Identity.Services
             userDTO.FirstName = user.Name;
             userDTO.Phone = user.PhoneNumber;
             userDTO.UserId = user.Id;
+            userDTO.Email = user.Email;
             return userDTO;
         }
         #endregion
@@ -84,26 +85,16 @@ namespace RealStateApp.Infraestructure.Identity.Services
             var user = await _userManager.FindByEmailAsync(request.Email);
             if (user == null)
             {
-                response.HasError = true;
-                response.Error = $"No Accounts registered with {request.Email}";
-                return response;
+                user = await _userManager.FindByNameAsync(request.Email);
+                if (user == null)
+                {
+                    response.HasError = true;
+                    response.Error = $"No Accounts registered with {request.Email}";
+                    return response;
+                }
             }
 
-            var result = await _signInManager.PasswordSignInAsync(user.UserName, request.Password, false, lockoutOnFailure: false);
-            if (!result.Succeeded)
-            {
-                response.HasError = true;
-                response.Error = $"Invalid credentials for {request.Email}";
-                return response;
-            }
-            if (!user.EmailConfirmed)
-            {
-                response.HasError = true;
-                response.Error = $"Account no confirmed for {request.Email}";
-                return response;
-            }
-
-            JwtSecurityToken jwtSecurityToken = await GenerateJWToken(user);
+            //JwtSecurityToken jwtSecurityToken = await GenerateJWToken(user);
 
             response.Id = user.Id;
             response.Email = user.Email;
@@ -113,9 +104,9 @@ namespace RealStateApp.Infraestructure.Identity.Services
 
             response.Roles = rolesList.ToList();
             response.IsVerified = user.EmailConfirmed;
-            response.JWToken = new JwtSecurityTokenHandler().WriteToken(jwtSecurityToken);
-            var refreshToken = GenerateRefreshToken();
-            response.RefreshToken = refreshToken.Token;
+            //response.JWToken = new JwtSecurityTokenHandler().WriteToken(jwtSecurityToken);
+            //var refreshToken = GenerateRefreshToken();
+            //response.RefreshToken = refreshToken.Token;
 
             return response;
         }
@@ -125,7 +116,7 @@ namespace RealStateApp.Infraestructure.Identity.Services
             await _signInManager.SignOutAsync();
         }
 
-        public async Task<RegisterResponse> RegisterBasicUserAsync(RegisterRequest request, string origin)
+        public async Task<RegisterResponse> RegisterBasicUserAsync(RegisterRequest request, string origin, string Role)
         {
             RegisterResponse response = new()
             {
@@ -153,13 +144,13 @@ namespace RealStateApp.Infraestructure.Identity.Services
                 Email = request.Email,
                 Name = request.FirstName,
                 LastName = request.LastName,
-                UserName = request.UserName
+                UserName = request.UserName,
+                PhoneNumber = request.Phone
             };
 
             var result = await _userManager.CreateAsync(user, request.Password);
             if (result.Succeeded)
             {
-                await _userManager.AddToRoleAsync(user, Roles.Client.ToString());
                 var verificationUri = await SendVerificationEmailUri(user, origin);
                 await _emailService.SendAsync(new EmailRequest()
                 {
@@ -167,6 +158,8 @@ namespace RealStateApp.Infraestructure.Identity.Services
                     Body = $"Please confirm your account visiting this URL {verificationUri}",
                     Subject = "Confirm registration"
                 });
+                var getUserForResponse = await _userManager.FindByEmailAsync(user.Email);
+                response.UserId = getUserForResponse.Id;
             }
             else
             {
@@ -174,7 +167,26 @@ namespace RealStateApp.Infraestructure.Identity.Services
                 response.Error = $"An error occurred trying to register the user.";
                 return response;
             }
+            switch (Role)
+            {
+                case "Agent":
+                    await _userManager.AddToRoleAsync(user, Roles.Agent.ToString());
+                    break;
 
+                case "Admin":
+                    await _userManager.AddToRoleAsync(user, Roles.Admin.ToString());
+                    break;
+
+                case "Client":
+                    await _userManager.AddToRoleAsync(user, Roles.Client.ToString());
+                    break;
+
+                case "Developer":
+                    await _userManager.AddToRoleAsync(user, Roles.Developer.ToString());
+                    break;
+
+            }
+            
             return response;
         }
 
