@@ -39,6 +39,8 @@ namespace RealStateApp.Core.Application.ViewModels.User
         [DataType(DataType.ImageUrl)]
         public IFormFile? File { get; set; } = null!;
         public bool IsAgent { get; set; }
+        public bool HasError { get; set; }
+        public string? ErrorMessage { get; set; }
        
     }
 }

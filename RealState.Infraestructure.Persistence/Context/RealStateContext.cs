@@ -18,8 +18,9 @@ namespace RealState.Infraestructure.Persistence.Context
 
         public DbSet<SalesTypes> SaleTypes { get; set; }
 
-        public DbSet<PropertiesImprovements> PropertiesImprovementss { get; set; }
+        public DbSet<PropertiesImprovements> PropertiesImprovements { get; set; }
         public DbSet<FavoriteProperties> FavoriteProperties { get; set; }
+        public DbSet<AgentImages> AgentImages { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -32,8 +33,9 @@ namespace RealState.Infraestructure.Persistence.Context
             modelBuilder.Entity<Properties>().ToTable("Properties");
             modelBuilder.Entity<PropertiesTypes>().ToTable("PropertiesTypes");
             modelBuilder.Entity<SalesTypes>().ToTable("SaleTypes");
-            modelBuilder.Entity<PropertiesImprovements>().ToTable("PropertiesImprovementss");
+            modelBuilder.Entity<PropertiesImprovements>().ToTable("PropertiesImprovements");
             modelBuilder.Entity<FavoriteProperties>().ToTable("FavoriteProperties");
+            modelBuilder.Entity<AgentImages>().ToTable("AgentImages");
             #endregion
 
             #region Primary keys
@@ -44,6 +46,7 @@ namespace RealState.Infraestructure.Persistence.Context
             modelBuilder.Entity<SalesTypes>().HasKey(a => a.Id);
             modelBuilder.Entity<PropertiesImprovements>().HasKey(a => new {a.PropertiesId, a.ImprovementId});
             modelBuilder.Entity<FavoriteProperties>().HasKey(a => new { a.PropertiesId, a.ClientId });
+            modelBuilder.Entity<AgentImages>().HasKey(a => a.Id);
             #endregion
 
             #region Relationships
@@ -69,7 +72,7 @@ namespace RealState.Infraestructure.Persistence.Context
                 .HasForeignKey(a => a.PropertiesId);
 
             modelBuilder.Entity<PropertiesImprovements>()
-                .HasOne(a => a.improvements)
+                .HasOne(a => a.Improvements)
                 .WithMany(a => a.PropertiesImprovements)
                 .HasForeignKey(a => a.ImprovementId);
 

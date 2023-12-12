@@ -9,7 +9,9 @@ namespace RealStateApp.Infrastructure.Identity.Seeds
         public static async Task SeedAsync(UserManager<AppUser> userManager, RoleManager<IdentityRole> roleManager)
         {
             await roleManager.CreateAsync(new IdentityRole(Roles.Admin.ToString()));
+            await roleManager.CreateAsync(new IdentityRole(Roles.Developer.ToString()));
             await roleManager.CreateAsync(new IdentityRole(Roles.Client.ToString()));
+            await roleManager.CreateAsync(new IdentityRole(Roles.Agent.ToString()));
         }
 
     }

@@ -8,6 +8,7 @@
     var isAdmin = User != null ? User.Roles.Any(r => r == "Admin") : false;
     var isBasic = User != null ? User.Roles.Any(r => r == "Client") : false;
 }
+
 <!DOCTYPE html>
 <html lang="en" data-bs-theme="">
     <head>
@@ -31,6 +32,8 @@
                     <span class="navbar-toggler-icon"></span>
                 </button>
                 <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
+                  @if(User == null)
+                {
                     <ul class="navbar-nav flex-grow-1">
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
@@ -38,13 +41,19 @@
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="User" asp-action="Index">Login</a>
                         </li>
-                          <li class="nav-item">
+                          <li clss="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="User" asp-action="Register">Únete a la app</a>
                         </li>
+                    </ul>
+                    }
+                    @if (User != null && User.Roles.Contains("Agent"))
+                    {
+                          <ul class="navbar-nav flex-grow-1">
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="Properties" asp-action="Create">Crear Propiedad</a>
                         </li>
-                    </ul>
+                        </ul>
+                    }
                     @if (User != null)
                     {
                     <ul class="navbar-nav">

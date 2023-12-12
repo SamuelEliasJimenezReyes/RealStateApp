@@ -8,7 +8,7 @@ namespace RealStateApp.Core.Application.Interface.Services
 
     public interface IImagesPropertiesService : IGenericService<SaveImagesPropertiesVM, ImagesPropertiesVM, ImagesProperties>
     {
-
+        Task<List<string>> GetAllImagesByPropertyId(int id);
     }
 
 }

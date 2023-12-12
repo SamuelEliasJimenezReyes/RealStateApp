@@ -22,6 +22,41 @@ namespace RealState.Infraestructure.Persistence.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
+            modelBuilder.Entity("RealStateApp.Core.Domain.Entities.AgentImages", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("AgentId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime?>("Created")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("CreatedBy")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ImagePath")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<DateTime?>("LastModified")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("LastModifiedBy")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("AgentImages", (string)null);
+                });
+
             modelBuilder.Entity("RealStateApp.Core.Domain.Entities.FavoriteProperties", b =>
                 {
                     b.Property<int>("PropertiesId")
@@ -198,7 +233,7 @@ namespace RealState.Infraestructure.Persistence.Migrations
 
                     b.HasIndex("ImprovementId");
 
-                    b.ToTable("PropertiesImprovementss", (string)null);
+                    b.ToTable("PropertiesImprovements", (string)null);
                 });
 
             modelBuilder.Entity("RealStateApp.Core.Domain.Entities.PropertiesTypes", b =>
@@ -334,7 +369,7 @@ namespace RealState.Infraestructure.Persistence.Migrations
 
             modelBuilder.Entity("RealStateApp.Core.Domain.Entities.PropertiesImprovements", b =>
                 {
-                    b.HasOne("RealStateApp.Core.Domain.Entities.Improvements", "improvements")
+                    b.HasOne("RealStateApp.Core.Domain.Entities.Improvements", "Improvements")
                         .WithMany("PropertiesImprovements")
                         .HasForeignKey("ImprovementId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -346,9 +381,9 @@ namespace RealState.Infraestructure.Persistence.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("Properties");
+                    b.Navigation("Improvements");
 
-                    b.Navigation("improvements");
+                    b.Navigation("Properties");
                 });
 
             modelBuilder.Entity("RealStateApp.Core.Domain.Entities.Improvements", b =>
