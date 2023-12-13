@@ -111,7 +111,14 @@
                         </div>
                     </div>
                     <div class="card-footer">
-                        <a asp-controller="Client" asp-action="AddFavoriteProperty" asp-route-clientId="@userInSession.Id"  asp-route-propertyId="@property.Id" class="btn btn-danger"><i class="fa-solid fa-heart"></i></a>
+                        @if (property.IsFavorite)
+                        {
+                            <a asp-controller="Client" asp-action="DeleteFavoriteProperty" asp-route-clientId="@userInSession.Id" asp-route-propertyId="@property.Id" class="btn btn-danger"><i class="fa-solid fa-heart-crack"></i></a>
+                        }
+                        else
+                        {
+                            <a asp-controller="Client" asp-action="AddFavoriteProperty" asp-route-clientId="@userInSession.Id" asp-route-propertyId="@property.Id" class="btn btn-danger"><i class="fa-solid fa-heart"></i></a>
+                        }
                         <a asp-controller="Client" asp-action="PropertyDetail" asp-route-code="@property.Code" class="btn btn-primary">Ver Más</a>
                     </div>
                 </div>
