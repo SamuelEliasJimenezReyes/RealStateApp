@@ -19,6 +19,7 @@ namespace RealStateApp.Core.Application.ViewModels.Properties
         public string PropertiesType { get; set; }
 
         public string SaleType { get; set; }
+        public bool IsFavorite { get; set; }
         public List<ImprovementsVM> PropertiesImprovements { get; set; } = new();
 
         public List<string> ImagesProperties { get; set; } = new();

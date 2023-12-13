@@ -13,7 +13,7 @@ namespace RealStateApp.Core.Application.Interface.Services
         Task<List<UserDTO>> GetAllUsers();
         //Task<RegisterRequest> GetUserDTOAsync(string userId);
         //Task<bool> IsaValidUser(string UserName);
-        Task<AuthenticationResponse> LoginAsync(LoginViewModel vm);
+        Task<AuthenticationResponse> LoginAsync(LoginViewModel vm, bool isForApi);
         Task<RegisterResponse> RegisterAsync(SaveUserViewModel vm, string origin, string Role);
         Task<ResetPasswordResponse> ResetPasswordAsync(ResetPasswordViewModel vm);
         Task<List<AgentVM>> GetAllAgentVM();

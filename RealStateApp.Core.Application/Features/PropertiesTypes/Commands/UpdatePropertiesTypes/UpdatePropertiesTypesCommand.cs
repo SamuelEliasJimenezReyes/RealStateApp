@@ -2,19 +2,22 @@
 
 using AutoMapper;
 using MediatR;
+using RealStateApp.Core.Application.Exceptions;
 using RealStateApp.Core.Application.Features.SalesTypes.Commands.UpdateSalesTypes;
 using RealStateApp.Core.Application.Interface.Repositories;
+using RealStateApp.Core.Application.Wrappers;
+using System.Net;
 
 namespace RealStateApp.Core.Application.Features.PropertiesTypes.Commands.UpdatePropertiesTypes
 {
-        public class UpdatePropertiesTypesCommand : IRequest<PropertiesTypesUpdateResponse>
+        public class UpdatePropertiesTypesCommand : IRequest<Response<PropertiesTypesUpdateResponse>>
         {
             public int Id { get; set; }
             public string Description { get; set; }
             public string Name { get; set; }
         }
 
-        public class UpdatePropertiesTypesCommandHandler : IRequestHandler<UpdatePropertiesTypesCommand, PropertiesTypesUpdateResponse>
+        public class UpdatePropertiesTypesCommandHandler : IRequestHandler<UpdatePropertiesTypesCommand, Response<PropertiesTypesUpdateResponse>>
         {
             private readonly IPropertiesTypesRepository _propertiesTypesRepository;
             private readonly IMapper _mapper;
@@ -23,12 +26,12 @@ namespace RealStateApp.Core.Application.Features.PropertiesTypes.Commands.Update
                 _propertiesTypesRepository = propertiesTypesRepository;
                 _mapper = mapper;
             }
-            public async Task<PropertiesTypesUpdateResponse> Handle(UpdatePropertiesTypesCommand command, CancellationToken cancellationToken)
+            public async Task<Response<PropertiesTypesUpdateResponse>> Handle(UpdatePropertiesTypesCommand command, CancellationToken cancellationToken)
             {
                 var type = await _propertiesTypesRepository.GetByIdAsync(command.Id);
 
 
-                if (type == null) throw new Exception("PropertiesType not found");
+                if (type == null) throw new ApiException("PropertiesType not found", (int)HttpStatusCode.NotFound);
 
                 type = new Domain.Entities.PropertiesTypes
                 {
@@ -46,7 +49,7 @@ namespace RealStateApp.Core.Application.Features.PropertiesTypes.Commands.Update
                     Name = command.Name,
                 };
 
-                return response;
+                return new Response<PropertiesTypesUpdateResponse>(response);
 
             }
         }

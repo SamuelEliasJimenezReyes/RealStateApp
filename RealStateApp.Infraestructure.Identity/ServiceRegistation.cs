@@ -6,8 +6,8 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
 using Newtonsoft.Json;
-using RealStateApp.Core.Application.Dtos.Account;
 using RealStateApp.Core.Application.Interface.Services;
+using RealStateApp.Core.Application.Wrappers;
 using RealStateApp.Core.Domain.Settings;
 using RealStateApp.Infraestructure.Identity.Context;
 using RealStateApp.Infraestructure.Identity.Services;
@@ -18,23 +18,10 @@ namespace RealStateApp.Infrastructure.Identity
 {
     public static class ServiceRegistation
     {
-        public static void AddIdentityInfrastructure(this IServiceCollection services, IConfiguration configuration)
+        public static void AddIdentityInfrastructureForApi(this IServiceCollection services, IConfiguration configuration)
         {
-            #region Contexts
-            if (configuration.GetValue<bool>("UseInMemoryDatabase"))
-            {
-                services.AddDbContext<IdentityContext>(options => options.UseInMemoryDatabase("IdentityDb"));
-            }
-            else
-            {
-                services.AddDbContext<IdentityContext>(options =>
-                {
-                    options.EnableSensitiveDataLogging();
-                    options.UseSqlServer(configuration.GetConnectionString("IdentityConnectionString"),
-                    m => m.MigrationsAssembly(typeof(IdentityContext).Assembly.FullName));
-                });
-            }
-            #endregion
+          
+            ContextConfiguration(services, configuration);
 
             #region Identity
             services.AddIdentity<AppUser, IdentityRole>()
@@ -78,17 +65,17 @@ namespace RealStateApp.Infrastructure.Identity
                     },
                     OnChallenge = c =>
                     {
-                        c.HandleResponse();
+                        c.HandleResponse(); 
                         c.Response.StatusCode = 401;
                         c.Response.ContentType = "application/json";
-                        var result = JsonConvert.SerializeObject(new JwtResponse { HasError = true, Error = "You are not Authorized" });
+                        var result = JsonConvert.SerializeObject(new Response<string> ("You are not Authorized" ));
                         return c.Response.WriteAsync(result);
                     },
                     OnForbidden = c =>
                     {
                         c.Response.StatusCode = 403;
                         c.Response.ContentType = "application/json";
-                        var result = JsonConvert.SerializeObject(new JwtResponse { HasError = true, Error = "You are not Authorized to access this resource" });
+                        var result = JsonConvert.SerializeObject(new Response<string> ("You are not Authorized to access this resource" ));
                         return c.Response.WriteAsync(result);
                     }
                 };
@@ -96,14 +83,67 @@ namespace RealStateApp.Infrastructure.Identity
             });
 
             #endregion
+            ServiceConfiguration(services);
+          
 
+
+        }
+
+        public static void AddIdentityInfrastructureForWeb(this IServiceCollection services, IConfiguration configuration)
+        {
+
+            ContextConfiguration(services, configuration);
+
+            #region Identity
+            services.AddIdentity<AppUser, IdentityRole>()
+                .AddEntityFrameworkStores<IdentityContext>().AddDefaultTokenProviders();
+
+            services.ConfigureApplicationCookie(options =>
+            {
+                options.LoginPath = "/User";
+                options.AccessDeniedPath = "/User/AccessDenied";
+            });
+
+
+
+            services.AddAuthentication();
+
+            #endregion
+            ServiceConfiguration(services);
+
+
+
+        }
+
+        #region "Private methods"
+
+        private static void ContextConfiguration(this IServiceCollection services, IConfiguration configuration)
+        {
+            #region Contexts
+            if (configuration.GetValue<bool>("UseInMemoryDatabase"))
+            {
+                services.AddDbContext<IdentityContext>(options => options.UseInMemoryDatabase("IdentityDb"));
+            }
+            else
+            {
+                services.AddDbContext<IdentityContext>(options =>
+                {
+                    options.EnableSensitiveDataLogging();
+                    options.UseSqlServer(configuration.GetConnectionString("IdentityConnectionString"),
+                    m => m.MigrationsAssembly(typeof(IdentityContext).Assembly.FullName));
+                });
+            }
+            #endregion
+        }
+
+        private static void ServiceConfiguration(this IServiceCollection services)
+        {
             #region Services
 
             services.AddTransient<IAccountService, AccountService>();
             #endregion
-
-
         }
+        #endregion
 
     }
 }

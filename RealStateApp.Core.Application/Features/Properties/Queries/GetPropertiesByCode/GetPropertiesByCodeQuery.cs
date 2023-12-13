@@ -2,18 +2,21 @@
 
 using MediatR;
 using RealStateApp.Core.Application.Dtos.Api.Properties;
+using RealStateApp.Core.Application.Exceptions;
 using RealStateApp.Core.Application.Features.Properties.Queries.GetPropertiesById;
 using RealStateApp.Core.Application.Interface.Repositories;
 using RealStateApp.Core.Application.Interface.Services;
+using RealStateApp.Core.Application.Wrappers;
+using System.Net;
 
 namespace RealStateApp.Core.Application.Features.Properties.Queries.GetPropertiesByCode
 {
-    public class GetPropertiesByCodeQuery: IRequest<PropertiesDTO>
+    public class GetPropertiesByCodeQuery: IRequest<Response<PropertiesDTO>>
     {
         public string Code { get; set; }
     }
 
-    public class GetPropertiesByCodeQueryHandler : IRequestHandler<GetPropertiesByCodeQuery, PropertiesDTO>
+    public class GetPropertiesByCodeQueryHandler : IRequestHandler<GetPropertiesByCodeQuery, Response<PropertiesDTO>>
     {
         private readonly IPropertiesRepository _propertiesRepository;
         private readonly IPropertiesImprovementsService _propertiesImprovementsService;
@@ -29,11 +32,11 @@ namespace RealStateApp.Core.Application.Features.Properties.Queries.GetPropertie
         }
 
 
-        public async Task<PropertiesDTO> Handle(GetPropertiesByCodeQuery request, CancellationToken cancellationToken)
+        public async Task<Response<PropertiesDTO>> Handle(GetPropertiesByCodeQuery request, CancellationToken cancellationToken)
         {
             var property = await GetPropertyByCode(request.Code);
-            if (property == null) throw new Exception("Property Not Found");
-            return property;
+            if (property == null) throw new ApiException("Property Not Found", (int)HttpStatusCode.NotFound);
+            return new Response<PropertiesDTO>(property);
         }
 
         protected async Task<PropertiesDTO> GetPropertyByCode(string code)

@@ -2,18 +2,21 @@
 
 using MediatR;
 using RealStateApp.Core.Application.Dtos.Api.Improvements;
+using RealStateApp.Core.Application.Exceptions;
 using RealStateApp.Core.Application.Interface.Repositories;
+using RealStateApp.Core.Application.Wrappers;
+using System.Net;
 
 namespace RealStateApp.Core.Application.Features.Improvements.Commands.UpdateImprovement
 {
-    public class UpdateImprovementsCommand : IRequest<ImprovementsUpdateResponse>
+    public class UpdateImprovementsCommand : IRequest<Response<ImprovementsUpdateResponse>>
     {
         public int Id { get; set; }
         public string Description { get; set; }
         public string Name { get; set; }
     }
 
-    public class UpdateImprovementsCommandHandler : IRequestHandler<UpdateImprovementsCommand, ImprovementsUpdateResponse>
+    public class UpdateImprovementsCommandHandler : IRequestHandler<UpdateImprovementsCommand, Response<ImprovementsUpdateResponse>>
     {
         private readonly IImprovementsRepository _repository;
 
@@ -22,12 +25,12 @@ namespace RealStateApp.Core.Application.Features.Improvements.Commands.UpdateImp
             _repository = repository;
         }
 
-        public async Task<ImprovementsUpdateResponse> Handle(UpdateImprovementsCommand command, CancellationToken cancellationToken)
+        public async Task<Response<ImprovementsUpdateResponse>> Handle(UpdateImprovementsCommand command, CancellationToken cancellationToken)
         {
             var type = await _repository.GetByIdAsync(command.Id);
 
 
-            if (type == null) throw new Exception("PropertiesType not found");
+            if (type == null) throw new ApiException("Improvements not found", (int)HttpStatusCode.NotFound);
 
             type = new Domain.Entities.Improvements
             {
@@ -45,7 +48,7 @@ namespace RealStateApp.Core.Application.Features.Improvements.Commands.UpdateImp
                 Name = command.Name,
             };
 
-            return response;
+            return new Response<ImprovementsUpdateResponse>(response);
         }
     }
 }

@@ -14,10 +14,8 @@
 
   <ItemGroup>
     <Folder Include="Enums\" />
-    <Folder Include="Exceptions\" />
     <Folder Include="Helpers\" />
     <Folder Include="Features\Properties\Commands\" />
-    <Folder Include="Wrappers\" />
   </ItemGroup>
 
   <ItemGroup>

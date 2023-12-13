@@ -2,12 +2,15 @@
 using AutoMapper;
 using MediatR;
 using RealStateApp.Core.Application.Dtos.Api.Properties;
+using RealStateApp.Core.Application.Exceptions;
 using RealStateApp.Core.Application.Interface.Repositories;
 using RealStateApp.Core.Application.Interface.Services;
+using RealStateApp.Core.Application.Wrappers;
+using System.Net;
 
 namespace RealStateApp.Core.Application.Features.Properties.Queries.GetAllProperties
 {
-    public class GetAllPropertiesQuery : IRequest<IList<PropertiesDTO>>
+    public class GetAllPropertiesQuery : IRequest<Response<IList<PropertiesDTO>>>
     {
         public int? SalesTypeId { get; set; }
         public int? PropertiesTypeId { get; set; }
@@ -15,7 +18,7 @@ namespace RealStateApp.Core.Application.Features.Properties.Queries.GetAllProper
         public string? AgentId { get; set; }
     }
 
-    public class GetAllPropertiesQueryHandler : IRequestHandler<GetAllPropertiesQuery, IList<PropertiesDTO>>
+    public class GetAllPropertiesQueryHandler : IRequestHandler<GetAllPropertiesQuery, Response<IList<PropertiesDTO>>>
     {
         private readonly IPropertiesRepository _propertiesRepository;
         private readonly IMapper _mapper;
@@ -30,13 +33,13 @@ namespace RealStateApp.Core.Application.Features.Properties.Queries.GetAllProper
             _propertiesImprovementsService = propertiesImprovementsService;
         }
 
-        public async Task<IList<PropertiesDTO>> Handle(GetAllPropertiesQuery request, CancellationToken cancellationToken)
+        public async Task<Response<IList<PropertiesDTO>>> Handle(GetAllPropertiesQuery request, CancellationToken cancellationToken)
         {
             var filter = _mapper.Map<GetAllPropertiesParameter>(request);
             var propertiesList = await GetAllPropertiesDTOWithFilters(filter);
-            if (propertiesList == null || propertiesList.Count == 0) throw new Exception("No hay Productos");
+            if (propertiesList == null || propertiesList.Count == 0) throw new ApiException("No hay Productos", (int)HttpStatusCode.NoContent);
 
-            return propertiesList;
+            return new Response<IList<PropertiesDTO>>(propertiesList);
         }
 
         public async Task<List<PropertiesDTO>> GetAllPropertiesDTOWithFilters(GetAllPropertiesParameter filter)
