@@ -93,6 +93,25 @@ namespace RealStateApp.Infraestructure.Identity.Services
                     return response;
                 }
             }
+            var result = await _signInManager.PasswordSignInAsync(user.UserName, request.Password, false, lockoutOnFailure: false);
+            if (!result.Succeeded)
+            {
+                response.HasError = true;
+                response.Error = $"Invalid credentials for {request.Email}";
+                return response;
+            }
+            if (!user.EmailConfirmed)
+            {
+                response.HasError = true;
+                response.Error = $"Account no confirmed for {request.Email}";
+                return response;
+            }
+            if (!user.IsActive)
+            {
+                response.HasError = true;
+                response.Error = $"Account Is Inactived for {request.Email}. You need to Contact The Admin 'domingoadmin@email.com'";
+                return response;
+            }
 
             //JwtSecurityToken jwtSecurityToken = await GenerateJWToken(user);
 
