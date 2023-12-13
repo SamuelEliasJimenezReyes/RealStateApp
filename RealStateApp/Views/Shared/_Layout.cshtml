@@ -47,6 +47,9 @@
                             <li clss="nav-item">
                                 <a class="nav-link text-dark"  asp-controller="Home" asp-action="AgentHome">Agentes</a>
                             </li>
+                            <li clss="nav-item">
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Admin" asp-action="Index">Admin</a>
+                            </li>
                     </ul>
                     }
                     @if (User != null && User.Roles.Contains("Agent"))
