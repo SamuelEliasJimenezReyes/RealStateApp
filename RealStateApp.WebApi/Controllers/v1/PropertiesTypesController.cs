@@ -1,5 +1,7 @@
 ﻿
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using RealStateApp.Core.Application.Enums;
 using RealStateApp.Core.Application.Features.PropertiesTypes.Commands.CreatePropertiesTypes;
 using RealStateApp.Core.Application.Features.PropertiesTypes.Commands.DeletePropertiesTypeById;
 using RealStateApp.Core.Application.Features.PropertiesTypes.Commands.UpdatePropertiesTypes;
@@ -13,7 +15,7 @@ namespace RealStateApp.WebApi.Controllers.v1
     [ApiController]
     public class PropertiesTypesController : BaseApiController
     {
-
+        [Authorize(Roles = "Admin, Developer")]
         [HttpGet]
         [Route("List")]
         [ProducesResponseType(StatusCodes.Status200OK)]
@@ -21,24 +23,12 @@ namespace RealStateApp.WebApi.Controllers.v1
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<IActionResult> List()
         {
-            try
-            {
-                var list = await Mediator.Send(new GetAllPropertiesTypesQuery());
-
-                if (list.Count == 0)
-                {
-                    return NoContent();
-                }
-
-                return Ok(list);
-            }
-            catch (Exception ex)
-            {
-
-                return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
-            }
+            
+          return Ok(await Mediator.Send(new GetAllPropertiesTypesQuery()));
+           
         }
 
+        [Authorize(Roles = "Admin, Developer")]
         [HttpGet]
         [Route("GetById/{id}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
@@ -46,18 +36,12 @@ namespace RealStateApp.WebApi.Controllers.v1
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<IActionResult> GetById(int id)
         {
-            try
-
-            {
+            
                 return Ok(await Mediator.Send(new GetPropertiesTypeByIdQuery { Id = id }));
-            }
-            catch (Exception ex)
-            {
-
-                return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
-            }
+            
+           
         }
-
+        [Authorize(Roles = "Admin")]
         [HttpPost]
         [Route("Create")]
         [ProducesResponseType(StatusCodes.Status201Created)]
@@ -66,8 +50,7 @@ namespace RealStateApp.WebApi.Controllers.v1
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<IActionResult> Create(CreatePropertiesTypesCommand command)
         {
-            try
-            {
+            
                 if (!ModelState.IsValid)
                 {
                     return BadRequest();
@@ -75,15 +58,11 @@ namespace RealStateApp.WebApi.Controllers.v1
 
                 await Mediator.Send(command);
                 return NoContent();
-            }
-            catch (Exception ex)
-            {
-
-                return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
-            }
+          
 
         }
-
+        
+        [Authorize(Roles = "Admin")]
         [HttpPut]
         [Route("Update/{id}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
@@ -92,8 +71,7 @@ namespace RealStateApp.WebApi.Controllers.v1
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<IActionResult> Update(int id, UpdatePropertiesTypesCommand command)
         {
-            try
-            {
+            
                 if (!ModelState.IsValid)
                 {
                     return BadRequest();
@@ -105,28 +83,18 @@ namespace RealStateApp.WebApi.Controllers.v1
                 }
 
                 return Ok(await Mediator.Send(command));
-            }
-            catch (Exception ex)
-            {
-
-                return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
-            }
+          
         }
-
+        [Authorize(Roles = "Admin")]
         [HttpDelete]
         [Route("Delete/{id}")]
         public async Task<IActionResult> Delete(int id)
         {
-            try
-            {
+           
                 await Mediator.Send(new DeletePropertiesTypesByIdCommand { Id = id });
                 return NoContent();
 
-            }
-            catch (Exception ex)
-            {
-                return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
-            }
+         
 
         }
     }

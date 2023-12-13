@@ -1,18 +1,21 @@
 ﻿
 using AutoMapper;
 using MediatR;
+using RealStateApp.Core.Application.Exceptions;
 using RealStateApp.Core.Application.Interface.Repositories;
+using RealStateApp.Core.Application.Wrappers;
+using System.Net;
 using static Microsoft.EntityFrameworkCore.DbLoggerCategory.Database;
 
 namespace RealStateApp.Core.Application.Features.SalesTypes.Commands.DeleteSalesTypeById
 {
-    public class DeleteSalesTypeByIdCommand : IRequest<int>
+    public class DeleteSalesTypeByIdCommand : IRequest<Response<int>>
     {
         public int Id { get; set; }
 
     }
 
-    public class DeleteSalesTypeByIdCommandHandler : IRequestHandler<DeleteSalesTypeByIdCommand, int>
+    public class DeleteSalesTypeByIdCommandHandler : IRequestHandler<DeleteSalesTypeByIdCommand, Response<int>>
     {
         private readonly ISalesTypeRepository _salesTypeRepository;
         
@@ -21,15 +24,15 @@ namespace RealStateApp.Core.Application.Features.SalesTypes.Commands.DeleteSales
             _salesTypeRepository = salesTypeRepository;
         }
 
-        public async Task<int> Handle(DeleteSalesTypeByIdCommand command, CancellationToken cancellationToken)
+        public async Task<Response<int>> Handle(DeleteSalesTypeByIdCommand command, CancellationToken cancellationToken)
         {
 
             var type = await _salesTypeRepository.GetByIdAsync(command.Id);
-            if (type == null) throw new Exception("SalesType not found");
+            if (type == null) throw new ApiException("SalesType not found", (int)HttpStatusCode.NotFound);
 
             await _salesTypeRepository.DeleteAsync(type);
 
-            return type.Id;
+            return new Response<int>(type.Id);
         }
     }
 }
