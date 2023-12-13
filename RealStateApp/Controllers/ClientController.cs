@@ -57,5 +57,13 @@ namespace RealStateApp.Controllers
             return View("Index", new PropertiesFilterVM());
         }
 
+        public async Task<IActionResult> DeleteFavoriteProperty(string clientId, int propertyId)
+        {
+            await _propertiesService.AddFavoriteProperties(propertyId, clientId);
+            ViewBag.PropertyTypes = await _propertiesTypesService.GetAllViewModel();
+            ViewBag.PropertiesList = await _propertiesService.GetAllPropertiesVM(new PropertiesFilterVM());
+            return View("Index", new PropertiesFilterVM());
+        }
+
     }
 }
