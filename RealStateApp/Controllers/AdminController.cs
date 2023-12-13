@@ -11,17 +11,19 @@ namespace RealStateApp.Controllers
         private readonly IAccountService _service;
         private readonly AuthenticationResponse _userSession;
         private readonly IHttpContextAccessor _httpContextAccessor;
+        private readonly IStatisticsService _statisticsService;
 
-        public AdminController(IAccountService service, AuthenticationResponse userSession, IHttpContextAccessor httpContextAccessor)
+        public AdminController(IAccountService service, AuthenticationResponse userSession, IHttpContextAccessor httpContextAccessor, IStatisticsService statisticsService)
         {
             _service = service;
             _httpContextAccessor = httpContextAccessor;
             _userSession = _httpContextAccessor.HttpContext.Session.Get<AuthenticationResponse>("user");
+            _statisticsService = statisticsService;
         }
 
-        public async Task<IActionResult> IndexAsync()
+        public async Task<IActionResult> Index()
         {
-            var list = await _service.GetAllUsers();
+            var list = await _statisticsService.GetDashBoard();
             return View(list);
         }
     }
