@@ -14,7 +14,6 @@
 
   <ItemGroup>
     <Folder Include="Enums\" />
-    <Folder Include="Exceptions\" />
     <Folder Include="Helpers\" />
     <Folder Include="Features\Properties\Commands\" />
   </ItemGroup>

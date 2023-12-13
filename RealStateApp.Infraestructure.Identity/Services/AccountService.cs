@@ -117,6 +117,8 @@ namespace RealStateApp.Infraestructure.Identity.Services
             var refreshToken = GenerateRefreshToken();
             response.RefreshToken = refreshToken.Token;
 
+            
+
             return response;
         }
 

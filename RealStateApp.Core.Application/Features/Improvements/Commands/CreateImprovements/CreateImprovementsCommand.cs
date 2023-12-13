@@ -4,10 +4,11 @@
 using MediatR;
 using RealStateApp.Core.Application.Dtos.Api.Improvements;
 using RealStateApp.Core.Application.Interface.Repositories;
+using RealStateApp.Core.Application.Wrappers;
 
 namespace RealStateApp.Core.Application.Features.Improvements.Commands.CreateImprovements
 {
-    public class CreateImprovementsCommand : IRequest<int>
+    public class CreateImprovementsCommand : IRequest<Response<int>>
     {
         public string Name { get; set; }
 
@@ -15,7 +16,7 @@ namespace RealStateApp.Core.Application.Features.Improvements.Commands.CreateImp
 
     }
 
-    public class CreateImprovementsCommandHandler : IRequestHandler<CreateImprovementsCommand, int>
+    public class CreateImprovementsCommandHandler : IRequestHandler<CreateImprovementsCommand, Response<int>>
     {
         private readonly IImprovementsRepository _repository;
 
@@ -24,7 +25,7 @@ namespace RealStateApp.Core.Application.Features.Improvements.Commands.CreateImp
             _repository = repository;
         }
 
-        public async Task<int> Handle(CreateImprovementsCommand command, CancellationToken cancellationToken)
+        public async Task<Response<int>> Handle(CreateImprovementsCommand command, CancellationToken cancellationToken)
         {
             var add = new RealStateApp.Core.Domain.Entities.Improvements
             {
@@ -34,7 +35,7 @@ namespace RealStateApp.Core.Application.Features.Improvements.Commands.CreateImp
 
             await _repository.AddAsync(add);
 
-            return add.Id;
+            return new Response<int>(add.Id);
         }
     }
 }
