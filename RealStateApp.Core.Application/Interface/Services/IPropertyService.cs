@@ -1,6 +1,5 @@
 ﻿
 
-using RealStateApp.Core.Application.Dtos.Api.Properties;
 using RealStateApp.Core.Application.ViewModels.Properties;
 using RealStateApp.Core.Domain.Entities;
 
@@ -10,5 +9,7 @@ namespace RealStateApp.Core.Application.Interface.Services
     {
         public Task<List<PropertiesVM>> GetAllPropertiesVM(PropertiesFilterVM filter);
         public Task<PropertiesVM> GetPropertyByCode(string code);
+        public Task AddFavoriteProperties(int propertyId, string clientId);
+        Task<List<PropertiesVM>> GetPropertiesForClient();
     }
 }

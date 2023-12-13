@@ -1,14 +1,12 @@
 using RealStateApp.Core.Application;
-using RealStateApp.Infraestructure.Identity;
 using RealStateApp.Infraestructure.Shared;
-using System.Reflection;
-
+using RealStateApp.WebApi.Extensions;
 using Microsoft.AspNetCore.Identity;
 using RealStateApp.Infrastructure.Identity.Entities;
 using RealStateApp.Infrastructure.Identity.Seeds;
 using RealStateApp.Infrastructure.Identity;
 using RealState.Infraestructure.Persistence;
-using RealStateApp.WebApi.Extensions;
+
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -18,7 +16,7 @@ builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
-builder.Services.AddIdentityInfrastructure(builder.Configuration);
+builder.Services.AddIdentityInfrastructureForApi(builder.Configuration);
 builder.Services.AddPersistenceInfrastructure(builder.Configuration);
 builder.Services.AddSharedLayer(builder.Configuration);
 builder.Services.AddApplicationLayer();
@@ -77,7 +75,8 @@ app.UseSession();
 app.UseHttpsRedirection();
 app.UseAuthentication();
 app.UseAuthorization();
-
+app.UseSwaggerExtension();
+app.UseErrorHandlingMiddleware();
 app.MapControllers();
 
 app.Run();

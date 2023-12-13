@@ -73,22 +73,26 @@ namespace RealStateApp.Infraestructure.Identity.Services
             userDTO.FirstName = user.Name;
             userDTO.Phone = user.PhoneNumber;
             userDTO.UserId = user.Id;
+            userDTO.Email = user.Email;
             return userDTO;
         }
         #endregion
 
-        public async Task<AuthenticationResponse> AuthenticateAsync(AuthenticationRequest request)
+        public async Task<AuthenticationResponse> AuthenticateAsync(AuthenticationRequest request, bool IsForApi)
         {
             AuthenticationResponse response = new();
 
             var user = await _userManager.FindByEmailAsync(request.Email);
             if (user == null)
             {
-                response.HasError = true;
-                response.Error = $"No Accounts registered with {request.Email}";
-                return response;
+                user = await _userManager.FindByNameAsync(request.Email);
+                if (user == null)
+                {
+                    response.HasError = true;
+                    response.Error = $"No Accounts registered with {request.Email}";
+                    return response;
+                }
             }
-
             var result = await _signInManager.PasswordSignInAsync(user.UserName, request.Password, false, lockoutOnFailure: false);
             if (!result.Succeeded)
             {
@@ -102,8 +106,12 @@ namespace RealStateApp.Infraestructure.Identity.Services
                 response.Error = $"Account no confirmed for {request.Email}";
                 return response;
             }
-
-            //JwtSecurityToken jwtSecurityToken = await GenerateJWToken(user);
+            if (!user.IsActive)
+            {
+                response.HasError = true;
+                response.Error = $"Account Is Inactived for {request.Email}. You need to Contact The Admin 'domingoadmin@email.com'";
+                return response;
+            }
 
             response.Id = user.Id;
             response.Email = user.Email;
@@ -113,9 +121,16 @@ namespace RealStateApp.Infraestructure.Identity.Services
 
             response.Roles = rolesList.ToList();
             response.IsVerified = user.EmailConfirmed;
-            //response.JWToken = new JwtSecurityTokenHandler().WriteToken(jwtSecurityToken);
-            //var refreshToken = GenerateRefreshToken();
-            //response.RefreshToken = refreshToken.Token;
+
+            if (IsForApi)
+            {
+                JwtSecurityToken jwtSecurityToken = await GenerateJWToken(user);
+
+                response.JWToken = new JwtSecurityTokenHandler().WriteToken(jwtSecurityToken);
+                var refreshToken = GenerateRefreshToken();
+                response.RefreshToken = refreshToken.Token;
+
+            }
 
             return response;
         }
@@ -153,7 +168,8 @@ namespace RealStateApp.Infraestructure.Identity.Services
                 Email = request.Email,
                 Name = request.FirstName,
                 LastName = request.LastName,
-                UserName = request.UserName
+                UserName = request.UserName,
+                PhoneNumber = request.Phone
             };
 
             var result = await _userManager.CreateAsync(user, request.Password);

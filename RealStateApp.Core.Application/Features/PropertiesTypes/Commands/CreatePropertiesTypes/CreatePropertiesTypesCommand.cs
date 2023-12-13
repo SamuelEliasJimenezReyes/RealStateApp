@@ -3,15 +3,16 @@
 using AutoMapper;
 using MediatR;
 using RealStateApp.Core.Application.Interface.Repositories;
+using RealStateApp.Core.Application.Wrappers;
 
 namespace RealStateApp.Core.Application.Features.PropertiesTypes.Commands.CreatePropertiesTypes
 {
-    public class CreatePropertiesTypesCommand : IRequest<int>
+    public class CreatePropertiesTypesCommand : IRequest<Response<int>>
     {
         public string Description { get; set; }
         public string Name { get; set; }
     }
-    public class CreatePropertiesTypesCommandHandler : IRequestHandler<CreatePropertiesTypesCommand, int>
+    public class CreatePropertiesTypesCommandHandler : IRequestHandler<CreatePropertiesTypesCommand, Response<int>>
     {
         private readonly IPropertiesTypesRepository _propertiesTypesRepository;
         private readonly IMapper _mapper;
@@ -20,7 +21,7 @@ namespace RealStateApp.Core.Application.Features.PropertiesTypes.Commands.Create
             _propertiesTypesRepository = propertiesTypesRepository;
             _mapper = mapper;
         }
-        public async Task<int> Handle(CreatePropertiesTypesCommand command, CancellationToken cancellationToken)
+        public async Task<Response<int>> Handle(CreatePropertiesTypesCommand command, CancellationToken cancellationToken)
         {
 
             var add = new RealStateApp.Core.Domain.Entities.PropertiesTypes
@@ -32,7 +33,7 @@ namespace RealStateApp.Core.Application.Features.PropertiesTypes.Commands.Create
 
             add = await _propertiesTypesRepository.AddAsync(add);
 
-            return add.Id;
+            return new Response<int>(add.Id);
 
         }
     }

@@ -2,17 +2,20 @@
 using AutoMapper;
 using MediatR;
 using RealStateApp.Core.Application.Dtos.Api.SalesTypes;
+using RealStateApp.Core.Application.Exceptions;
 using RealStateApp.Core.Application.Interface.Repositories;
+using RealStateApp.Core.Application.Wrappers;
+using System.Net;
 
 namespace RealStateApp.Core.Application.Features.SalesTypes.Queries.GetSalesTypeById
 {
 
-    public class GetSalesTypeByIdQuery : IRequest<SalesTypesDTO>
+    public class GetSalesTypeByIdQuery : IRequest<Response<SalesTypesDTO>>
     {
         public int Id { get; set; }
     }
 
-    public class GetSalesTypeByIdQueryHandler : IRequestHandler<GetSalesTypeByIdQuery, SalesTypesDTO>
+    public class GetSalesTypeByIdQueryHandler : IRequestHandler<GetSalesTypeByIdQuery, Response<SalesTypesDTO>>
     {
         private readonly ISalesTypeRepository _salesTypeRepository;
         private readonly IMapper _mapper;
@@ -21,16 +24,17 @@ namespace RealStateApp.Core.Application.Features.SalesTypes.Queries.GetSalesType
             _salesTypeRepository = salesTypeRepository;
             _mapper = mapper;
         }
-        public async Task<SalesTypesDTO> Handle(GetSalesTypeByIdQuery request, CancellationToken cancell)
+        public async Task<Response<SalesTypesDTO>> Handle(GetSalesTypeByIdQuery request, CancellationToken cancell)
         {
             var type = await GetById(request.Id);
-            if (type == null) throw new Exception("SalesType not found");
-            return type;
+            if (type == null) throw new ApiException("SalesType not found", (int)HttpStatusCode.NotFound);
+            return new Response<SalesTypesDTO>(type);
         }
 
         private async Task<SalesTypesDTO> GetById(int id)
         {
             var type = await _salesTypeRepository.GetByIdAsync(id);
+            if (type == null) throw new ApiException("SalesType not found", (int)HttpStatusCode.NotFound);
 
             SalesTypesDTO dto = new SalesTypesDTO
             {

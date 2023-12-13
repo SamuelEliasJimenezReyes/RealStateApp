@@ -1,0 +1,48 @@
+﻿@using RealStateApp.Core.Application.ViewModels.Agents;
+@model List<AgentVM>
+
+<div class="container mb-2 col-4 offset-4 mt-3">
+    <div class="row">
+        @foreach (var agent in Model)
+        {
+            <div class="col-12 mb-4">
+                <div class="card text-center">
+                    <div class="row">
+                        <div class="col-12">
+                            @if (agent.ImagePath != null)
+                            {
+                                <img src="@agent.ImagePath" alt="Foto del Agente" class="agent-image rounded-2" />
+                            }
+                            else
+                            {
+                                <img src="Images\Agent\Anonimo\AgentAnonimo.png" alt="Foto anonima" class="agent-image" />
+                            }
+                            <p>Nombre: @agent.FirstName @agent.LastName</p>
+                            <p>Celular: @agent.Phone</p>
+                            <p>Email: @agent.Email</p>
+                            <a class="btn btn-outline-primary mt-2 mb-4 col-10" asp-controller="Home" asp-action="AgentProperties" asp-route-agentId="@agent.UserId">Ver Propiedades</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+</div>
+
+<style>
+    .agent-image-container {
+        width: 100px;
+        height: 100px;
+        border-radius: 50%;
+        overflow: hidden;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .agent-image {
+        width: 100%;
+        height: 300px;
+        object-fit: cover;
+    }
+</style>

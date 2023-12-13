@@ -24,13 +24,15 @@ namespace RealStateApp.Core.Application.Services
         private readonly AuthenticationResponse _userSession;
         private readonly IHttpContextAccessor _httpContextAccessor;
         private readonly IAgentImagesService _agentImagesService;
+        private readonly IFavoritePropertiesRepository _favoritePropertiesRepository;
 
         public PropertiesService(IAgentImagesService agentImagesService,IPropertiesRepository propertiesRepository,
             IMapper mapper,
             IPropertiesImprovementsService propertiesImprovementsService, 
             IAccountService accountService,
             IImagesPropertiesService imagesPropertiesService,
-            IHttpContextAccessor httpContextAccessor) : base(propertiesRepository, mapper)
+            IHttpContextAccessor httpContextAccessor,
+            IFavoritePropertiesRepository favoritePropertiesRepository) : base(propertiesRepository, mapper)
         {
             _propertiesRepository = propertiesRepository;
             _mapper = mapper;
@@ -40,6 +42,7 @@ namespace RealStateApp.Core.Application.Services
             _httpContextAccessor = httpContextAccessor;
             _userSession = _httpContextAccessor.HttpContext.Session.Get<AuthenticationResponse>("user");
             _agentImagesService = agentImagesService;
+            _favoritePropertiesRepository = favoritePropertiesRepository;
         }
 
         public override async Task<SavePropertiesVM> Add(SavePropertiesVM vm)
@@ -143,6 +146,7 @@ namespace RealStateApp.Core.Application.Services
             var properties = list.FirstOrDefault(x => x.Code == code);
 
             var agent = await _accountService.GetUserById(properties.AgentId);
+            agent.ImagePath = await _agentImagesService.GetImagesByAgentId(properties.AgentId);
 
             var dtoProperty = new PropertiesVM
             {
@@ -163,7 +167,36 @@ namespace RealStateApp.Core.Application.Services
             return dtoProperty;
         }
 
-      
+        public async Task AddFavoriteProperties(int propertyId, string clientId) 
+        {
+            FavoriteProperties favoriteProperties = new()
+            {
+                PropertiesId = propertyId,
+                ClientId = clientId
+            };
+
+            await _favoritePropertiesRepository.AddAsync(favoriteProperties);
+        }
+
+        public async Task<List<PropertiesVM>> GetPropertiesForClient()
+        {
+            var list = await GetAllPropertiesVM(new PropertiesFilterVM());
+
+            var favoriteIds = await _favoritePropertiesRepository.GetFavoritePropertiesId(_userSession.Id);
+
+            foreach(var  favoriteId in favoriteIds)
+            {
+                foreach (var property in list)
+                {
+                    if(property.Id == favoriteId)
+                    {
+                        property.IsFavorite = true;
+                    }
+                }
+            }
+
+            return list;
+        }
     }
 }
 

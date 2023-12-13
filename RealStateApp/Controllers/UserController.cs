@@ -35,7 +35,7 @@ namespace WebApp.RealStateApp.Controllers
                 return View(vm);
             }
 
-            AuthenticationResponse userVm = await _userService.LoginAsync(vm);
+            AuthenticationResponse userVm = await _userService.LoginAsync(vm, false);
             if (userVm != null && userVm.HasError != true)
             {
                 HttpContext.Session.Set<AuthenticationResponse>("user", userVm);
