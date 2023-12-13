@@ -78,7 +78,7 @@ namespace RealStateApp.Infraestructure.Identity.Services
         }
         #endregion
 
-        public async Task<AuthenticationResponse> AuthenticateAsync(AuthenticationRequest request)
+        public async Task<AuthenticationResponse> AuthenticateAsync(AuthenticationRequest request, bool IsForApi)
         {
             AuthenticationResponse response = new();
 
@@ -113,8 +113,6 @@ namespace RealStateApp.Infraestructure.Identity.Services
                 return response;
             }
 
-            JwtSecurityToken jwtSecurityToken = await GenerateJWToken(user);
-
             response.Id = user.Id;
             response.Email = user.Email;
             response.UserName = user.UserName;
@@ -123,11 +121,16 @@ namespace RealStateApp.Infraestructure.Identity.Services
 
             response.Roles = rolesList.ToList();
             response.IsVerified = user.EmailConfirmed;
-            response.JWToken = new JwtSecurityTokenHandler().WriteToken(jwtSecurityToken);
-            var refreshToken = GenerateRefreshToken();
-            response.RefreshToken = refreshToken.Token;
 
-            
+            if (IsForApi)
+            {
+                JwtSecurityToken jwtSecurityToken = await GenerateJWToken(user);
+
+                response.JWToken = new JwtSecurityTokenHandler().WriteToken(jwtSecurityToken);
+                var refreshToken = GenerateRefreshToken();
+                response.RefreshToken = refreshToken.Token;
+
+            }
 
             return response;
         }

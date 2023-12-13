@@ -26,10 +26,10 @@ namespace RealStateApp.Core.Application.Services
         //    await _accountService.ChangeUserStatus(userName);
         //}
 
-        public async Task<AuthenticationResponse> LoginAsync(LoginViewModel vm)
+        public async Task<AuthenticationResponse> LoginAsync(LoginViewModel vm, bool isForApi)
         {
             AuthenticationRequest loginRequest = _mapper.Map<AuthenticationRequest>(vm);
-            AuthenticationResponse userResponse = await _accountService.AuthenticateAsync(loginRequest);
+            AuthenticationResponse userResponse = await _accountService.AuthenticateAsync(loginRequest,isForApi );
             return userResponse;
         }
         //public async Task UpdateUser(SaveUserViewModel user)

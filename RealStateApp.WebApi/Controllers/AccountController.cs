@@ -19,7 +19,7 @@ namespace RealStateApp.WebApi.Controllers
         [HttpPost("authenticate")]
         public async Task<IActionResult> AuthenticateAsync(AuthenticationRequest request)
         {
-            var account = await _accountService.AuthenticateAsync(request);
+            var account = await _accountService.AuthenticateAsync(request, true);
         
             if (account.Roles.Contains("Agent") || account.Roles.Contains("Client"))  
             {
