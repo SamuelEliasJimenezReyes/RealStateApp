@@ -1,0 +1,13 @@
+﻿@using RealStateApp.Core.Application.Dtos.User;
+@model List<UserDTO>
+
+@foreach (var item in Model)
+{
+    if (item.Roles.Contains("Agent"))
+    {
+        <p>@item.FirstName</p>
+        <p>@item.LastName</p>
+        <p>@item.UserName</p>
+        <p>@item.ImagePath</p>
+    }
+}
