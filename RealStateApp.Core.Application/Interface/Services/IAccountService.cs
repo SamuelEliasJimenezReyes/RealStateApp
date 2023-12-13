@@ -6,7 +6,7 @@ namespace RealStateApp.Core.Application.Interface.Services
 {
     public interface IAccountService
     {
-        Task<AuthenticationResponse> AuthenticateAsync(AuthenticationRequest request);
+        Task<AuthenticationResponse> AuthenticateAsync(AuthenticationRequest request, bool isForApi);
         Task<string> ConfirmAccountAsync(string userId, string token);
         Task<ForgotPasswordResponse> ForgotPasswordAsync(ForgotPasswordRequest request, string origin);
         Task<RegisterResponse> RegisterBasicUserAsync(RegisterRequest request, string origin, string user);

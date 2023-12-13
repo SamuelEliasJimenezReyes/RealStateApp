@@ -27,7 +27,6 @@ namespace RealStateApp.Controllers
 
         [HttpPost]
         public async Task <IActionResult> Search(PropertiesFilterVM filter)
-        
         {
             ViewBag.PropertyTypes = await _propertiesTypesService.GetAllViewModel();
             ViewBag.PropertiesList = await _propertiesService.GetAllPropertiesVM(filter);
@@ -46,6 +45,14 @@ namespace RealStateApp.Controllers
         {
             var agentList = await _userService.GetAllAgentVM();
             return View(agentList);
+        }
+
+        public async Task<IActionResult> AgentProperties(string agentId)
+        {
+            ViewBag.PropertyTypes = await _propertiesTypesService.GetAllViewModel();
+            var list = await _propertiesService.GetAllPropertiesVM(new PropertiesFilterVM { AgentId = agentId} );
+            ViewBag.PropertiesList = list.OrderByDescending(x => x.Id).ToList();
+            return View("Index",new PropertiesFilterVM());
         }
 
         public async Task<IActionResult> PropertyDetail(string code)

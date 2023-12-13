@@ -1,18 +1,21 @@
 ﻿
 using AutoMapper;
 using MediatR;
+using RealStateApp.Core.Application.Exceptions;
 using RealStateApp.Core.Application.Interface.Repositories;
+using RealStateApp.Core.Application.Wrappers;
+using System.Net;
 
 namespace RealStateApp.Core.Application.Features.SalesTypes.Commands.UpdateSalesTypes
 {
-    public class UpdateSalesTypesCommand : IRequest<SalesTypesUpdateResponse>
+    public class UpdateSalesTypesCommand : IRequest<Response<SalesTypesUpdateResponse>>
     {
         public int Id { get; set; }
         public string Description { get; set; }
         public string Name { get; set; }
     }
 
-    public class UpdateSalesTypesCommandHandler : IRequestHandler<UpdateSalesTypesCommand, SalesTypesUpdateResponse>
+    public class UpdateSalesTypesCommandHandler : IRequestHandler<UpdateSalesTypesCommand, Response<SalesTypesUpdateResponse>>
     {
         private readonly ISalesTypeRepository _salesTypeRepository;
         private readonly IMapper _mapper;
@@ -21,12 +24,12 @@ namespace RealStateApp.Core.Application.Features.SalesTypes.Commands.UpdateSales
             _salesTypeRepository = salesTypeRepository;
             _mapper = mapper;
         }
-        public async Task<SalesTypesUpdateResponse> Handle(UpdateSalesTypesCommand command, CancellationToken cancellationToken)
+        public async Task<Response<SalesTypesUpdateResponse>> Handle(UpdateSalesTypesCommand command, CancellationToken cancellationToken)
         {
             var type = await _salesTypeRepository.GetByIdAsync(command.Id);
 
             
-                if (type == null) throw new Exception("SalesType not found");
+                if (type == null) throw new ApiException("SalesType not found", (int)HttpStatusCode.NotFound);
 
             type = new Domain.Entities.SalesTypes
             {
@@ -44,7 +47,7 @@ namespace RealStateApp.Core.Application.Features.SalesTypes.Commands.UpdateSales
                 Name = command.Name,
             };
 
-            return response;
+            return new Response<SalesTypesUpdateResponse>(response);
             
         }
     }

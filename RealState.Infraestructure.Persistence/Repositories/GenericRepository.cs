@@ -43,7 +43,13 @@ namespace RealState.Infraestructure.Persistence.Repositories
 
         public virtual async Task<T> GetByIdAsync(int id)
         {
-            return await _dbContext.Set<T>().FindAsync(id);
+            if (await _dbContext.Set<T>().FindAsync(id) != null){
+               
+                return await _dbContext.Set<T>().FindAsync(id);
+            }
+
+            return null;
+            
         }
 
         public virtual async Task UpdateAsync(T entity, int id)
