@@ -1,9 +1,7 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Http;
-using Microsoft.EntityFrameworkCore.ChangeTracking;
+
 using RealStateApp.Core.Application.Dtos.Account;
-using RealStateApp.Core.Application.Dtos.Api.Properties;
-using RealStateApp.Core.Application.Features.Properties.Queries.GetAllProperties;
 using RealStateApp.Core.Application.Helpers;
 using RealStateApp.Core.Application.Interface.Repositories;
 using RealStateApp.Core.Application.Interface.Services;
@@ -178,13 +176,18 @@ namespace RealStateApp.Core.Application.Services
             await _favoritePropertiesRepository.AddAsync(favoriteProperties);
         }
 
+        public async Task RemoveFavoriteProperty(string clientId, int propertyId)
+        {
+            await _favoritePropertiesRepository.RemoveFavoriteProperty(clientId, propertyId);
+        }
+
         public async Task<List<PropertiesVM>> GetPropertiesForClient()
         {
             var list = await GetAllPropertiesVM(new PropertiesFilterVM());
 
             var favoriteIds = await _favoritePropertiesRepository.GetFavoritePropertiesId(_userSession.Id);
 
-            foreach(var  favoriteId in favoriteIds)
+            foreach(var favoriteId in favoriteIds)
             {
                 foreach (var property in list)
                 {
@@ -197,6 +200,30 @@ namespace RealStateApp.Core.Application.Services
 
             return list;
         }
+
+        public async Task<List<PropertiesVM>> GetFavoritePropertiesForClient()
+        {
+            var list = await GetAllPropertiesVM(new PropertiesFilterVM());
+
+            var favoriteIds = await _favoritePropertiesRepository.GetFavoritePropertiesId(_userSession.Id);
+            var favoriteList = new List<PropertiesVM>();
+
+            foreach (var favoriteId in favoriteIds)
+            {
+                foreach (var property in list)
+                {
+                    if (property.Id == favoriteId)
+                    {
+                        property.IsFavorite = true;
+                        favoriteList.Add(property);
+                    }
+                }
+            }
+
+            return favoriteList;
+        }
+
+
     }
 }
 

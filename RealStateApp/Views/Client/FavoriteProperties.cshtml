@@ -1,0 +1,112 @@
+﻿@using RealStateApp.Core.Application.ViewModels.Properties
+@using RealStateApp.Core.Application.ViewModels.PropertiesTypes
+@model PropertiesFilterVM
+@using Microsoft.JSInterop;
+@using RealStateApp.Core.Application.Dtos.Account;
+@using RealStateApp.Core.Application.Dtos.User;
+@using RealStateApp.Core.Application.Helpers;
+@using Microsoft.AspNetCore.Http
+@inject IHttpContextAccessor httpContextAccessor
+
+@{
+    ViewBag.Title = "Inicio";
+    var userInSession = httpContextAccessor.HttpContext.Session.Get<AuthenticationResponse>("user");
+    List<PropertiesVM> propertiesList = ViewBag.PropertiesList;
+    List<PropertiesTypesVM> propertiesTypesList = ViewBag.PropertyTypes;
+}
+
+
+<div class="container">
+    <div class="row">
+        @if(propertiesList.Count >= 1)
+        {
+            <h1 class="text-center mt-3 mb-4">Mis Propiedades Favoritas</h1>
+            @foreach (var property in propertiesList)
+            {
+                <div class="col-md-4 mb-4">
+                    <div class="card h-100">
+                        <img src="@property.ImagesProperties.First()" class="card-img-top img" alt="Imagen de la propiedad">
+                        <div class="card-body">
+                            <div class="d-flex justify-content-between">
+                                <h5 class="card-title col-6"><strong>Tipo de Propiedad</strong> @property.PropertiesType</h5>
+                                <h5 class="card-title col-6"><strong>Tipo de Venta:</strong> @property.SaleType</h5>
+                            </div>
+                            <p class="card-text"><strong class="text-muted mt-2">Código: @property.Code</strong></p>
+                            <p class="card-text">RD$ @property.Price</p>
+                            <div class="d-flex">
+                                <div class="me-3"><i class="fas fa-bed"></i>@property.RoomQuantity</div>
+                                <div class="me-3"><i class="fas fa-bath"></i>@property.BathroomQuantity</div>
+                                <div><i class="fas fa-expand-arrows-alt"></i>@property.LandSizeMeter</div>
+
+                            </div>
+                        </div>
+                        <div class="card-footer">
+                            @if (property.IsFavorite)
+                            {
+                                <a asp-controller="Client" asp-action="DeleteFavoriteProperty" asp-route-clientId="@userInSession.Id" asp-route-propertyId="@property.Id" asp-route-isForFavorite="@true" class="btn btn-danger"><i class="fa-solid fa-heart-crack"></i></a>
+                            }
+                            else
+                            {
+                                <a asp-controller="Client" asp-action="AddFavoriteProperty" asp-route-clientId="@userInSession.Id" asp-route-propertyId="@property.Id" class="btn btn-danger"><i class="fa-solid fa-heart"></i></a>
+                            }
+                            <a asp-controller="Client" asp-action="PropertyDetail" asp-route-code="@property.Code" class="btn btn-primary">Ver Más</a>
+                        </div>
+                    </div>
+                </div>
+            }
+        }else
+        {
+            <div class="alert alert-danger">
+                <h1>No tiene Propiedades Favoritas</h1>
+                </div>
+        }
+
+    </div>
+    <script src="https://kit.fontawesome.com/47ea8ef61d.js" crossorigin="anonymous"></script>
+
+
+</div>
+
+
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.3/css/all.css">
+<script>
+    document.getElementById('searchInput').addEventListener('input', function () {
+        var searchValue = this.value;
+
+
+        fetch('/tuControlador/Accion', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ search: searchValue })
+        })
+            .then(response => response.json())
+            .then(data => {
+                console.log(data);
+            })
+            .catch((error) => {
+                console.error('Error:', error);
+            });
+    });
+
+
+    document.getElementById('roomsRange').oninput = function () {
+        document.getElementById('roomsValue').textContent = this.value;
+    }
+
+    document.getElementById('bathroomsRange').oninput = function () {
+        document.getElementById('bathroomsValue').textContent = this.value;
+    }
+
+</script>
+
+<style>
+    .card img {
+        width: 100%;
+        height: 300px;
+        object-fit: cover;
+    }
+
+</style>
+

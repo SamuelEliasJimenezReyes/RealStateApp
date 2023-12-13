@@ -42,10 +42,10 @@
                             <a class="nav-link text-dark" asp-area="" asp-controller="User" asp-action="Index">Login</a>
                         </li>
                           <li clss="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="User" asp-action="Register">Únete a la app</a>
+                            <a class="nav-link text-dark" asp-controller="User" asp-action="Register">Únete a la app</a>
                         </li>
                             <li clss="nav-item">
-                                <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="AgentHome">Agents</a>
+                                <a class="nav-link text-dark"  asp-controller="Home" asp-action="AgentHome">Agentes</a>
                             </li>
                     </ul>
                     }
@@ -53,8 +53,22 @@
                     {
                           <ul class="navbar-nav flex-grow-1">
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Properties" asp-action="Create">Crear Propiedad</a>
+                            <a class="nav-link text-dark" asp-controller="Properties" asp-action="Create">Crear Propiedad</a>
                         </li>
+                        </ul>
+                    }
+                    @if (User != null && User.Roles.Contains("Client"))
+                    {
+                        <ul class="navbar-nav flex-grow-1">
+                            <li class="nav-item">
+                                <a class="nav-link text-dark"  asp-controller="Client" asp-action="Index">Home</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-controller="Client" asp-action="FavoriteProperties">Mis Propiedades</a>
+                            </li>
+                            <li clss="nav-item">
+                                <a class="nav-link text-dark" asp-controller="Home" asp-action="AgentHome">Agentes</a>
+                            </li>
                         </ul>
                     }
                     @if (User != null)

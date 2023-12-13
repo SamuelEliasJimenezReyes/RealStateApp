@@ -11,5 +11,7 @@ namespace RealStateApp.Core.Application.Interface.Services
         public Task<PropertiesVM> GetPropertyByCode(string code);
         public Task AddFavoriteProperties(int propertyId, string clientId);
         Task<List<PropertiesVM>> GetPropertiesForClient();
+        Task RemoveFavoriteProperty(string clientId, int propertyId);
+        Task<List<PropertiesVM>> GetFavoritePropertiesForClient();
     }
 }
