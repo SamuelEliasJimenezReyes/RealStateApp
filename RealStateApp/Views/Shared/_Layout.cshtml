@@ -58,9 +58,15 @@
                     @if (User != null && User.Roles.Contains("Agent"))
                     {
                           <ul class="navbar-nav flex-grow-1">
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Properties" asp-action="Create">Crear Propiedad</a>
-                        </li>
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-controller="Home" asp-action="AgentProperties" asp-route-agentId="@User.Id">Mis Propiedades</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-controller="Agent" asp-action="MyProfile">Mi Perfil</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-controller="Properties" asp-action="Index" asp-route-agentId="@User.Id">Mant. Propiedades</a>
+                            </li>
                         </ul>
                     }
                     else if (User != null && User.Roles.Contains("Admin"))

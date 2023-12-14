@@ -16,7 +16,7 @@ namespace RealStateApp.Core.Domain.Entities
         public int SaleTypeId { get; set; }
 
         //Navigation Properties
-        public SalesTypes SaleType { get; set; }
+        public SalesTypes SaleTypes { get; set; }
 
         public PropertiesTypes PropertiesTypes { get; set; }
         public ICollection<PropertiesImprovements> PropertiesImprovements { get; set; }

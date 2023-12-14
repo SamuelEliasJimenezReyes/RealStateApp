@@ -1,26 +1,33 @@
 ﻿
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using RealStateApp.Core.Application.Enums;
 using RealStateApp.Core.Application.Features.PropertiesTypes.Commands.CreatePropertiesTypes;
 using RealStateApp.Core.Application.Features.PropertiesTypes.Commands.DeletePropertiesTypeById;
 using RealStateApp.Core.Application.Features.PropertiesTypes.Commands.UpdatePropertiesTypes;
 using RealStateApp.Core.Application.Features.PropertiesTypes.Queries.GetAllPropertiesTypes;
 using RealStateApp.Core.Application.Features.PropertiesTypes.Queries.GetPropertiesTypeById;
-
+using Swashbuckle.AspNetCore.Annotations;
+using System.Net.Mime;
 
 namespace RealStateApp.WebApi.Controllers.v1
 {
     [ApiVersion("1.0")]
     [ApiController]
+    [SwaggerTag("Mantenimiento de Tipo de Propiedades")]
     public class PropertiesTypesController : BaseApiController
     {
         [Authorize(Roles = "Admin, Developer")]
         [HttpGet]
-        [Route("List")]
+        
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        [Consumes(MediaTypeNames.Application.Json)]
+        [SwaggerOperation(
+            Summary = "Obtener Todo",
+            Description = "Obtenemos todas los tipos de propiedades"
+
+          )]
         public async Task<IActionResult> List()
         {
             
@@ -34,6 +41,12 @@ namespace RealStateApp.WebApi.Controllers.v1
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        [Consumes(MediaTypeNames.Application.Json)]
+        [SwaggerOperation(
+            Summary = "Obtener por id",
+            Description = "Obtenemos un tipo de propiedad a traves de un id"
+
+          )]
         public async Task<IActionResult> GetById(int id)
         {
             
@@ -42,13 +55,19 @@ namespace RealStateApp.WebApi.Controllers.v1
            
         }
         [Authorize(Roles = "Admin")]
+        [Consumes(MediaTypeNames.Application.Json)]
         [HttpPost]
         [Route("Create")]
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public async Task<IActionResult> Create(CreatePropertiesTypesCommand command)
+        [SwaggerOperation(
+            Summary = "Crear un tipo de propiedad",
+            Description = "Creamos un tipo de propiedad"
+
+          )]
+        public async Task<IActionResult> Create([FromQuery] CreatePropertiesTypesCommand command)
         {
             
                 if (!ModelState.IsValid)
@@ -69,7 +88,13 @@ namespace RealStateApp.WebApi.Controllers.v1
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public async Task<IActionResult> Update(int id, UpdatePropertiesTypesCommand command)
+        [Consumes(MediaTypeNames.Application.Json)]
+        [SwaggerOperation(
+            Summary = "Editar un tipo de Propiedad",
+            Description = "Modificamos las propiedades del tipo de propiedad"
+
+          )]
+        public async Task<IActionResult> Update([FromQuery] UpdatePropertiesTypesCommand command, int id)
         {
             
                 if (!ModelState.IsValid)
@@ -88,6 +113,12 @@ namespace RealStateApp.WebApi.Controllers.v1
         [Authorize(Roles = "Admin")]
         [HttpDelete]
         [Route("Delete/{id}")]
+        [Consumes(MediaTypeNames.Application.Json)]
+        [SwaggerOperation(
+            Summary = "Eliminar Tipos de Propiedad",
+            Description = "A traves de un id borramos un tipo de propiedad"
+
+          )]
         public async Task<IActionResult> Delete(int id)
         {
            

@@ -29,6 +29,7 @@ namespace RealStateApp.WebApi.Extensions
 
 
 
+                   options.EnableAnnotations();
                    options.DescribeAllParametersInCamelCase();
                      options.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
                      {

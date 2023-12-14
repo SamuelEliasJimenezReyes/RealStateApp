@@ -66,15 +66,9 @@ namespace RealStateApp.Core.Application.Mapping
                      .ForMember(x => x.IsDeleted, opt => opt.Ignore())
                       .ForMember(x => x.LastModified, opt => opt.Ignore())
                        .ForMember(x => x.LastModifiedBy, opt => opt.Ignore())
-                        .ForMember(x => x.SaleType, opt => opt.Ignore());
+                        .ForMember(x => x.SaleTypes, opt => opt.Ignore());
 
             CreateMap<Properties, PropertiesVM>()
-              //.ForMember(x => x.PropertiesTypes, opt => opt.Ignore())
-              //.ForMember(x => x.PropertiesImprovementsId, opt => opt.Ignore())
-              //.ForMember(x => x.Improvements, opt => opt.Ignore())
-              //.ForMember(x => x.ImagesProperties, opt => opt.Ignore())
-              // .ForMember(x => x.SalesTypes, opt => opt.Ignore())
-              //  .ForMember(x => x.File, opt => opt.Ignore())
                .ReverseMap()
                 .ForMember(x => x.Created, opt => opt.Ignore())
                  .ForMember(x => x.PropertiesTypes, opt => opt.Ignore())
@@ -83,7 +77,7 @@ namespace RealStateApp.Core.Application.Mapping
                    .ForMember(x => x.IsDeleted, opt => opt.Ignore())
                     .ForMember(x => x.LastModified, opt => opt.Ignore())
                      .ForMember(x => x.LastModifiedBy, opt => opt.Ignore())
-                      .ForMember(x => x.SaleType, opt => opt.Ignore());
+                      .ForMember(x => x.SaleTypes, opt => opt.Ignore());
 
             CreateMap<GetAllPropertiesParameter, GetAllPropertiesQuery>()
                 .ReverseMap();
