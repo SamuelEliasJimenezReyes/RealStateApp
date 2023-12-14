@@ -41,42 +41,37 @@
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="User" asp-action="Index">Login</a>
                         </li>
+                          <li class="nav-item">
+                            <a class="nav-link text-dark" asp-area="" asp-controller="User" asp-action="Register">Únete a la app</a>
                           <li clss="nav-item">
                             <a class="nav-link text-dark" asp-controller="User" asp-action="Register">Únete a la app</a>
                         </li>
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="AgentHome">Agents</a>
                             <li clss="nav-item">
                                 <a class="nav-link text-dark"  asp-controller="Home" asp-action="AgentHome">Agentes</a>
                             </li>
-                            <li clss="nav-item">
-                                <a class="nav-link text-dark" asp-area="" asp-controller="Admin" asp-action="Index">Admin</a>
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Admin" asp-action="AgentList">Agents List</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Admin" asp-action="Index">DashBoard</a>
                             </li>
                     </ul>
                     }
                     @if (User != null && User.Roles.Contains("Agent"))
                     {
                           <ul class="navbar-nav flex-grow-1">
-                            <li class="nav-item">
-                                <a class="nav-link text-dark" asp-controller="Home" asp-action="AgentProperties" asp-route-agentId="@User.Id">Mis Propiedades</a>
-                            </li>
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-controller="Properties" asp-action="Create">Crear Propiedad</a>
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Properties" asp-action="Create">Crear Propiedad</a>
                         </li>
-                            <li class="nav-item">
-                                <a class="nav-link text-dark" asp-controller="Agent" asp-action="MyProfile">Mi Perfil</a>
-                            </li>
                         </ul>
                     }
-                    @if (User != null && User.Roles.Contains("Client"))
+                    else if (User != null && User.Roles.Contains("Admin"))
                     {
-                        <ul class="navbar-nav flex-grow-1">
+                        <ul>
                             <li class="nav-item">
-                                <a class="nav-link text-dark"  asp-controller="Client" asp-action="Index">Home</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link text-dark" asp-controller="Client" asp-action="FavoriteProperties">Mis Propiedades</a>
-                            </li>
-                            <li clss="nav-item">
-                                <a class="nav-link text-dark" asp-controller="Home" asp-action="AgentHome">Agentes</a>
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Admin" asp-action="Index">DashBoard</a>
                             </li>
                         </ul>
                     }

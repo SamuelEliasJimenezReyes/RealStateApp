@@ -1,6 +1,4 @@
-﻿
-
-using RealStateApp.Core.Application.ViewModels.Properties;
+﻿using RealStateApp.Core.Application.ViewModels.Properties;
 
 namespace RealStateApp.Core.Application.Helpers
 {

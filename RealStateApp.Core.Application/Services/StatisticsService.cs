@@ -4,11 +4,6 @@ using RealStateApp.Core.Application.Dtos.Account;
 using RealStateApp.Core.Application.Helpers;
 using RealStateApp.Core.Application.Interface.Services;
 using RealStateApp.Core.Application.ViewModels.Statistics;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace RealStateApp.Core.Application.Services
 {
@@ -45,10 +40,10 @@ namespace RealStateApp.Core.Application.Services
                 Propierties=propierties.Count(),
                 ActiveAgents=activeAgent.Where(x=>x.IsActive==true).Count(),
                 InActiveAgents= inActiveAgent.Where(x=>x.IsActive==false).Count(),
-                ActiveClients= activeClient.Where(x=>x.IsActive==true).Count(),
-                InActiveClients= InActiveClient.Where(x=>x.IsActive=false).Count(),
-                ActiveDeveloper= activeAgent.Where(x=>x.IsActive==true).Count(),
-                InActiveDeveloper=InActiveDeveloper.Where(x=>x.IsActive==false ).Count()
+                ActiveClients= activeClient.Where(x=>x.IsActive==true && x.Roles.Contains("Client")).Count(),
+                InActiveClients= InActiveClient.Where(x=>x.IsActive=false && x.Roles.Contains("Client")).Count(),
+                ActiveDeveloper= activeDeveloper.Where(x=>x.IsActive==true && x.Roles.Contains("Developer")).Count(),
+                InActiveDeveloper=InActiveDeveloper.Where(x=>x.IsActive==false && x.Roles.Contains("Developer")).Count()
             };
             
             return statistics;
