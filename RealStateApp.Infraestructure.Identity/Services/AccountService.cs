@@ -301,6 +301,30 @@ namespace RealStateApp.Infraestructure.Identity.Services
             return response;
         }
 
+        public async Task<AuthenticationResponse> ChangeStatus(bool status, string id)
+        {
+            AuthenticationResponse response = new()
+            {
+                HasError = false
+            };
+            var agent = await _userManager.FindByIdAsync(id);
+
+            if (agent == null)
+            {
+                response.HasError = true;
+                response.Error = $"This Agent doest Exist";
+                return response;
+
+            }          
+            
+                agent.IsActive = status;
+
+            await _userManager.UpdateAsync(agent);
+
+            return response;           
+
+        }
+
         #region PrivateMethods
 
         private async Task<JwtSecurityToken> GenerateJWToken(AppUser user)
