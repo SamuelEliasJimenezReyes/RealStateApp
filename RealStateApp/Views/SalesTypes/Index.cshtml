@@ -1,14 +1,14 @@
-﻿@using RealStateApp.Core.Application.ViewModels.PropertiesTypes
-@model List<PropertiesTypesVM>
+﻿@using RealStateApp.Core.Application.ViewModels.SalesTypes
+@model List<SalesTypesVM>
 
 <div class="row align-content-center">
     <div class="col-10 offset-1">
 
         <div class="card">
             <div class="card-header bg-primary text-light">
-                Estados de Caso
+               Tipos de Ventas
                 <div class="text-end">
-                    <a class="btn btn-success float-end text-black" style="background-color: #f6eaff; color: white;" asp-controller="PropertiesTypes" asp-action="AddPropertiesTypes">Nuevo Tipo de Propiedades</a>
+                    <a class="btn btn-success float-end text-black" style="background-color: #f6eaff; color: white;" asp-controller="SalesTypes" asp-action="AddSalesTypes">Nuevo Tipo de Ventas</a>
                 </div>
             </div>
             <div class="card-body">
@@ -30,10 +30,9 @@
                                 <tr>
                                     <td>@item.Name</td>
                                     <td>@item.Description</td>
-                                    <td><a class="btn btn-outline-success" asp-action="EditPropertiesTypes" asp-route-id="@item.Id">Editar</a></td>
+                                    <td><a class="btn btn-outline-success" asp-action="EditSalesTypes" asp-route-id="@item.Id">Editar</a></td>
                                     <td><a class="btn btn-outline-danger" asp-action="Delete" asp-route-id="@item.Id">Delete</a></td>
                                 </tr>
-
                             }
                         </tbody>
                     </table>
