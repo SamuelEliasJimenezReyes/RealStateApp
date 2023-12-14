@@ -49,12 +49,7 @@ namespace RealStateApp.Core.Application.Services
             _propertiesImprovementsRepository = propertiesImprovementsRepository;
         }
 
-        //public override async Task Delete(int id)
-        //{
-        //    var saveEntity = await GetByIdSaveViewModel(id);
-        //    var entity = _mapper.Map<Properties>(saveEntity);
-        //    await _propertiesRepository.DeleteAsync(entity);
-        //}
+
 
         public override async Task<SavePropertiesVM> Add(SavePropertiesVM vm)
         {
@@ -135,7 +130,7 @@ namespace RealStateApp.Core.Application.Services
                     Id = properties.Id,
                     Code = properties.Code,
                     PropertiesType = properties.PropertiesTypes.Name,
-                    SaleType = properties.SaleTypes.Name,
+                    SaleType = properties.SaleType.Name,
                     PropertiesImprovements = await _propertiesImprovementsService.GetImprovementsByPropertyId(properties.Id),
                     Agent = _mapper.Map<AgentVM>(agent),
                     ImagesProperties = await _imagesPropertiesService.GetAllImagesByPropertyId(properties.Id)
@@ -169,7 +164,7 @@ namespace RealStateApp.Core.Application.Services
                 Id = properties.Id,
                 Code = properties.Code,
                 PropertiesType = properties.PropertiesTypes.Name,
-                SaleType = properties.SaleTypes.Name,
+                SaleType = properties.SaleType.Name,
                 PropertiesImprovements = await _propertiesImprovementsService.GetImprovementsByPropertyId(properties.Id),
                 Agent = _mapper.Map<AgentVM>(agent),
                 ImagesProperties = await _imagesPropertiesService.GetAllImagesByPropertyId(properties.Id),
@@ -268,7 +263,7 @@ namespace RealStateApp.Core.Application.Services
             return favoriteList;
         }
 
-
+        
     }
 }
 

@@ -7,7 +7,7 @@ namespace RealStateApp.Core.Application.Interface.Services
 {
     public interface IUserService
     {
-        //Task ChangeUserStatus(string userName);
+        Task ChangeUserStatus(string userID);
         Task<string> ConfirmEmailAsync(string userId, string token);
         Task<ForgotPasswordResponse> ForgotPasswordAsync(ForgotPasswordViewModel vm, string origin);
         Task<List<UserDTO>> GetAllUsers();

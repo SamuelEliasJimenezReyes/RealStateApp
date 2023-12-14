@@ -300,6 +300,21 @@ namespace RealStateApp.Infraestructure.Identity.Services
 
             return response;
         }
+        public async Task ChangeUserStatus(string userID)
+        {
+            var user = await _userManager.FindByIdAsync(userID);
+            if (user.IsActive == true)
+            {
+                user.IsActive = false;
+                await _userManager.UpdateAsync(user);
+            }
+            else
+            {
+                user.IsActive = true;
+                await _userManager.UpdateAsync(user);
+            }
+
+        }
 
         public async Task<AuthenticationResponse> ChangeStatus(bool status, string id)
         {
