@@ -124,7 +124,7 @@ namespace RealStateApp.Core.Application.Services
                     Id = properties.Id,
                     Code = properties.Code,
                     PropertiesType = properties.PropertiesTypes.Name,
-                    SaleType = properties.SaleType.Name,
+                    SaleType = properties.SaleTypes.Name,
                     PropertiesImprovements = await _propertiesImprovementsService.GetImprovementsByPropertyId(properties.Id),
                     Agent = _mapper.Map<AgentVM>(agent),
                     ImagesProperties = await _imagesPropertiesService.GetAllImagesByPropertyId(properties.Id)
@@ -158,7 +158,7 @@ namespace RealStateApp.Core.Application.Services
                 Id = properties.Id,
                 Code = properties.Code,
                 PropertiesType = properties.PropertiesTypes.Name,
-                SaleType = properties.SaleType.Name,
+                SaleType = properties.SaleTypes.Name,
                 PropertiesImprovements = await _propertiesImprovementsService.GetImprovementsByPropertyId(properties.Id),
                 Agent = _mapper.Map<AgentVM>(agent),
                 ImagesProperties = await _imagesPropertiesService.GetAllImagesByPropertyId(properties.Id),

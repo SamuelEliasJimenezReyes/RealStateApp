@@ -6,13 +6,17 @@ using RealStateApp.Infrastructure.Identity.Entities;
 using RealStateApp.Infrastructure.Identity.Seeds;
 using RealStateApp.Infrastructure.Identity;
 using RealState.Infraestructure.Persistence;
-
+using Microsoft.AspNetCore.Mvc;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 
-builder.Services.AddControllers();
+builder.Services.AddControllers(options => { options.Filters.Add(new ProducesAttribute("application/json")); })
+    .ConfigureApiBehaviorOptions(options => {
+        options.SuppressInferBindingSourcesForParameters = true;
+        
+});
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
