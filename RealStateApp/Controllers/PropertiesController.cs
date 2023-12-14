@@ -27,9 +27,11 @@ namespace RealStateApp.Controllers
             _imagesPropertiesService = imagesPropertiesService;
         }
 
-        public IActionResult Index()
+        public async Task<IActionResult> Index(string agentId)
         {
-            return View();
+            var list = await _propertiesService.GetAllPropertiesVM(new PropertiesFilterVM { AgentId = agentId });
+            ViewBag.PropertiesList = list.OrderByDescending(x => x.Id).ToList();
+            return View(new PropertiesFilterVM());
         }
 
         public async Task<IActionResult> Create()
@@ -83,7 +85,7 @@ namespace RealStateApp.Controllers
 
                 }
 
-                return RedirectToRoute(new {controller = "Properties", action = "Index" });
+                return RedirectToRoute(new {controller = "Properties", action = "Index", agentId = svm.AgentId });
 
             }
 

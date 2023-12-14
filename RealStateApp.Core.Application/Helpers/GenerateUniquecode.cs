@@ -18,7 +18,7 @@ namespace RealStateApp.Core.Application.Helpers
             do
             {
                 string randomLetters = new string(Enumerable.Repeat("ABCDEFGHIJKLMNOPQRSTUVWXYZ", 2).Select(s => s[random.Next(s.Length)]).ToArray());
-                string randomDigits = random.Next(10000, 99999).ToString();
+                string randomDigits = random.Next(1000, 9999).ToString();
 
                 fullCode = $"{randomLetters}{randomDigits}";
             } while (existingCodes.Contains(fullCode));
