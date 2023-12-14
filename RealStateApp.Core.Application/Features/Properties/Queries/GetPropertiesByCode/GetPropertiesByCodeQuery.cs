@@ -57,7 +57,7 @@ namespace RealStateApp.Core.Application.Features.Properties.Queries.GetPropertie
                 Id = properties.Id,
                 Code = properties.Code,
                 PropertiesType = properties.PropertiesTypes.Name,
-                SaleType = properties.SaleTypes.Name,
+                SaleType = properties.SaleType.Name,
                 Improvements = await _propertiesImprovementsService.GetImprovementsByPropertyId(properties.Id),
                 AgentId = properties.AgentId,
                 AgentName = $"{agent.FirstName} + + {agent.LastName}"
