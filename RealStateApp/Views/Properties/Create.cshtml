@@ -71,7 +71,7 @@
                         </div>
                         <div class="form-group mb-3 text-dark">
                             <label asp-for="PropertiesImprovementsId" class="control-label mb-1"><strong>Mejoras</strong></label>
-                            <select asp-for="PropertiesImprovementsId" id="select2" class="form-control mb-3 text-dark">
+                            <select asp-for="PropertiesImprovementsId" id="select2" class="form-control mb-3 text-dark" required>
                                 @foreach (var item in Model.Improvements)
                                 {
                                     <option value="@item.Id" class="text-dark">@item.Name</option>

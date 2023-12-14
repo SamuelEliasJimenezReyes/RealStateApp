@@ -5,6 +5,7 @@ using RealStateApp.Core.Application.Dtos.Api.SalesTypes;
 using RealStateApp.Core.Application.Exceptions;
 using RealStateApp.Core.Application.Interface.Repositories;
 using RealStateApp.Core.Application.Wrappers;
+using Swashbuckle.AspNetCore.Annotations;
 using System.Net;
 
 namespace RealStateApp.Core.Application.Features.SalesTypes.Queries.GetSalesTypeById
@@ -12,6 +13,7 @@ namespace RealStateApp.Core.Application.Features.SalesTypes.Queries.GetSalesType
 
     public class GetSalesTypeByIdQuery : IRequest<Response<SalesTypesDTO>>
     {
+        [SwaggerParameter(Description = "Id Del tipo de venta a obtener")]
         public int Id { get; set; }
     }
 

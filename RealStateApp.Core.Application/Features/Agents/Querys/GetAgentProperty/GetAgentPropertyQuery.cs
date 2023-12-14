@@ -5,12 +5,14 @@ using RealStateApp.Core.Application.Exceptions;
 using RealStateApp.Core.Application.Interface.Repositories;
 using RealStateApp.Core.Application.Interface.Services;
 using RealStateApp.Core.Application.Wrappers;
+using Swashbuckle.AspNetCore.Annotations;
 using System.Net;
 
 namespace RealStateApp.Core.Application.Features.Agents.Querys.GetAgentProperty
 {
     public class GetAgentPropertyQuery : IRequest<Response<IList<PropertiesDTO>>>
     {
+        [SwaggerParameter(Description = "Id Del Agente")]
         public string Id { get; set; }
 
     }

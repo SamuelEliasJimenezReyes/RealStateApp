@@ -6,15 +6,21 @@ using RealStateApp.Core.Application.Exceptions;
 using RealStateApp.Core.Application.Features.SalesTypes.Commands.UpdateSalesTypes;
 using RealStateApp.Core.Application.Interface.Repositories;
 using RealStateApp.Core.Application.Wrappers;
+using Swashbuckle.AspNetCore.Annotations;
 using System.Net;
 
 namespace RealStateApp.Core.Application.Features.PropertiesTypes.Commands.UpdatePropertiesTypes
 {
         public class UpdatePropertiesTypesCommand : IRequest<Response<PropertiesTypesUpdateResponse>>
         {
+        [SwaggerParameter(Description = "Id Del tipo de propiedad a modificar")]
             public int Id { get; set; }
-            public string Description { get; set; }
-            public string Name { get; set; }
+
+        [SwaggerParameter(Description = "nueva descripcion para el tipo de propiedad")]
+        public string Description { get; set; }
+
+        [SwaggerParameter(Description = "nuevo nombre para el tipo de propiedad")]
+        public string Name { get; set; }
         }
 
         public class UpdatePropertiesTypesCommandHandler : IRequestHandler<UpdatePropertiesTypesCommand, Response<PropertiesTypesUpdateResponse>>

@@ -6,6 +6,7 @@ using RealStateApp.Core.Application.Interface.Services;
 using WebApp.RealStateApp.Middlewares;
 using DRSocialNetwork.Application.Helpers;
 using RealStateApp.Core.Application.ViewModels.AgentImages;
+using Microsoft.AspNetCore.Authorization;
 
 namespace WebApp.RealStateApp.Controllers
 {
@@ -20,13 +21,13 @@ namespace WebApp.RealStateApp.Controllers
             _agentImagesService = agentImagesService;
         }
 
-        //[ServiceFilter(typeof(LoginAuthorize))]
+        [ServiceFilter(typeof(LoginAuthorize))]
         public IActionResult Index()
         {
             return View(new LoginViewModel());
         }
 
-        //[ServiceFilter(typeof(LoginAuthorize))]
+        [ServiceFilter(typeof(LoginAuthorize))]
         [HttpPost]
         public async Task<IActionResult> Index(LoginViewModel vm)
         {
@@ -61,14 +62,14 @@ namespace WebApp.RealStateApp.Controllers
             return RedirectToRoute(new { controller = "Home", action = "Index" });
         }
 
-        //[Authorize(Roles = "Admin")]
+        [Authorize(Roles = "Admin")]
         public IActionResult Register()
         {
             return View(new SaveUserViewModel());
         }
 
 
-        //[Authorize(Roles = "Admin")]
+        [Authorize(Roles = "Admin")]
         [HttpPost]
         public async Task<IActionResult> Register(SaveUserViewModel vm)
         {
@@ -117,13 +118,13 @@ namespace WebApp.RealStateApp.Controllers
             return View("ConfirmEmail", response);
         }
 
-        //[ServiceFilter(typeof(LoginAuthorize))]
+        [ServiceFilter(typeof(LoginAuthorize))]
         public IActionResult ForgotPassword()
         {
             return View(new ForgotPasswordViewModel());
         }
 
-        //[ServiceFilter(typeof(LoginAuthorize))]
+        [ServiceFilter(typeof(LoginAuthorize))]
         [HttpPost]
         public async Task<IActionResult> ForgotPassword(ForgotPasswordViewModel vm)
         {
@@ -170,68 +171,6 @@ namespace WebApp.RealStateApp.Controllers
             return View();
         }
 
-        //    public async Task<IActionResult> UpdateUser(string userId)
-        //    {
-        //        var user = await _userService.GetUserDTOAsync(userId);
-        //        var editUser = new EditUserViewModel()
-        //        {
-        //            Email = user.Email,
-        //            FirstName = user.FirstName,
-        //            LastName = user.LastName,
-        //            Phone = user.Phone,
-        //            Username = user.UserName,
-        //        };
-        //    return View(editUser);
-        //}
-
-        //[HttpPost]
-        //public async Task<IActionResult> UpdateUser(EditUserViewModel vm)
-        //{
-        //    UserDTO value = new();
-
-
-        //    value.Phone = vm.Phone;
-        //    value.Email = vm.Email;
-        //    value.FirstName = vm.FirstName;
-        //    value.LastName = vm.LastName;
-        //    value.UserName = vm.Username;
-        //    value.UserId = vm.UserId;
-
-        //    await _userService.UpdateUserByUserId(value);
-        //    return RedirectToRoute(new { controller = "Home", action = "Index" });
-        //}
-
-
-        //public async Task<IActionResult> UpdateClient(string userId)
-        //    {
-        //       var user = await _userService.GetUserDTOAsync(userId);
-        //        var editUser = new EditUserViewModel()
-        //        {
-        //            Email = user.Email,
-        //            FirstName = user.FirstName,
-        //            LastName = user.LastName,
-        //            Phone = user.Phone,
-        //            Username = user.UserName,
-        //        };
-        //        return View(editUser);
-        //    }
-
-            //[HttpPost]
-            //public async Task<IActionResult> UpdateClient(EditUserViewModel vm)
-            //{
-            //    UserDTO value = new();
-            
-            //    value.Phone= vm.Phone;
-            //    value.Email= vm.Email;
-            //    value.FirstName = vm.FirstName;
-            //    value.LastName= vm.LastName;
-            //    value.UserName = vm.Username;
-            //      value.UserId = vm.UserId;
-
-            //  var user = await _userService.UpdateUserByUserId(value);
-
-            //return RedirectToRoute(new {controller = "Home", action= "Index" });
-            //}
     }
 }
 

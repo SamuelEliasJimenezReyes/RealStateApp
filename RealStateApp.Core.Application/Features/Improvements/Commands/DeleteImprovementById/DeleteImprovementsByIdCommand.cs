@@ -3,12 +3,14 @@ using MediatR;
 using RealStateApp.Core.Application.Exceptions;
 using RealStateApp.Core.Application.Interface.Repositories;
 using RealStateApp.Core.Application.Wrappers;
+using Swashbuckle.AspNetCore.Annotations;
 using System.Net;
 
 namespace RealStateApp.Core.Application.Features.Improvements.Commands.DeleteImprovementById
 {
     public class DeleteImprovementsByIdCommand : IRequest<Response<int>>
     {
+        [SwaggerParameter(Description = "Id De la mejora a eliminar")]
         public int Id { get; set; } 
     }
 

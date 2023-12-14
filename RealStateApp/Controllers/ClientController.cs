@@ -1,9 +1,12 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+using RealStateApp.Core.Application.Enums;
 using RealStateApp.Core.Application.Interface.Services;
 using RealStateApp.Core.Application.ViewModels.Properties;
 
 namespace RealStateApp.Controllers
 {
+    [Authorize(Roles = "Client")]
     public class ClientController : Controller
     {
         private readonly IPropertiesService _propertiesService;

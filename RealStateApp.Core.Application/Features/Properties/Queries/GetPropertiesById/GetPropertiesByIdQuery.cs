@@ -6,12 +6,14 @@ using RealStateApp.Core.Application.Exceptions;
 using RealStateApp.Core.Application.Interface.Repositories;
 using RealStateApp.Core.Application.Interface.Services;
 using RealStateApp.Core.Application.Wrappers;
+using Swashbuckle.AspNetCore.Annotations;
 using System.Net;
 
 namespace RealStateApp.Core.Application.Features.Properties.Queries.GetPropertiesById
 {
     public class GetPropertiesByIdQuery : IRequest<Response<PropertiesDTO>>
     {
+        [SwaggerParameter(Description = "Id De la Propiedad a obtner")]
         public int Id { get; set; }
 
     }

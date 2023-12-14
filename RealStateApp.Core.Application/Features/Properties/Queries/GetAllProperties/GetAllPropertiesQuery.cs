@@ -6,15 +6,24 @@ using RealStateApp.Core.Application.Exceptions;
 using RealStateApp.Core.Application.Interface.Repositories;
 using RealStateApp.Core.Application.Interface.Services;
 using RealStateApp.Core.Application.Wrappers;
+using Swashbuckle.AspNetCore.Annotations;
 using System.Net;
 
 namespace RealStateApp.Core.Application.Features.Properties.Queries.GetAllProperties
 {
     public class GetAllPropertiesQuery : IRequest<Response<IList<PropertiesDTO>>>
     {
+
+        [SwaggerParameter(Description = "Id Del tipo de venta")]
         public int? SalesTypeId { get; set; }
+
+        [SwaggerParameter(Description = "Id Del Tipo de propiedad")]
         public int? PropertiesTypeId { get; set; }
+
+        [SwaggerParameter(Description = "Id Del Tipo de Mejora")]
         public int? ImprovementsTypeId { get; set; }
+
+        [SwaggerParameter(Description = "Id Del Agente")]
         public string? AgentId { get; set; }
     }
 

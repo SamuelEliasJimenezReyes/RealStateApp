@@ -1,6 +1,8 @@
 ﻿using DRSocialNetwork.Application.Helpers;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using RealStateApp.Core.Application.Dtos.User;
+using RealStateApp.Core.Application.Enums;
 using RealStateApp.Core.Application.Interface.Services;
 using RealStateApp.Core.Application.ViewModels.Agents;
 using RealStateApp.Core.Application.ViewModels.Properties;
@@ -8,6 +10,7 @@ using RealStateApp.Core.Application.ViewModels.Properties;
 
 namespace RealStateApp.Controllers
 {
+    [Authorize(Roles = "Agent")]
     public class AgentController : Controller
     {
         private readonly IUserService _userService;

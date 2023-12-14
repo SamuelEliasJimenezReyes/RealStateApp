@@ -4,12 +4,16 @@ using AutoMapper;
 using MediatR;
 using RealStateApp.Core.Application.Interface.Repositories;
 using RealStateApp.Core.Application.Wrappers;
+using Swashbuckle.AspNetCore.Annotations;
 
 namespace RealStateApp.Core.Application.Features.PropertiesTypes.Commands.CreatePropertiesTypes
 {
     public class CreatePropertiesTypesCommand : IRequest<Response<int>>
     {
+        [SwaggerParameter(Description = "crear Descripcion del tipo de propiedad")]
         public string Description { get; set; }
+
+        [SwaggerParameter(Description = "crear Nombre del tipo de propiedad")]
         public string Name { get; set; }
     }
     public class CreatePropertiesTypesCommandHandler : IRequestHandler<CreatePropertiesTypesCommand, Response<int>>

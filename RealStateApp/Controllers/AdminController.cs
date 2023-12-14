@@ -1,11 +1,14 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using RealStateApp.Core.Application.Dtos.Account;
+using RealStateApp.Core.Application.Enums;
 using RealStateApp.Core.Application.Helpers;
 using RealStateApp.Core.Application.Interface.Services;
 
 namespace RealStateApp.Controllers
 {
+    [Authorize(Roles = "Admin")]
     public class AdminController : Controller
     {
         private readonly IAccountService _service;

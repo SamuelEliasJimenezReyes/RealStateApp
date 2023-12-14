@@ -4,12 +4,14 @@ using MediatR;
 using RealStateApp.Core.Application.Exceptions;
 using RealStateApp.Core.Application.Interface.Repositories;
 using RealStateApp.Core.Application.Wrappers;
+using Swashbuckle.AspNetCore.Annotations;
 using System.Net;
 
 namespace RealStateApp.Core.Application.Features.PropertiesTypes.Commands.DeletePropertiesTypeById
 {
     public class DeletePropertiesTypesByIdCommand : IRequest<Response<int>>
     {
+        [SwaggerParameter(Description = "Id Del tipo de propiedad a eliminar")]
         public int Id { get; set; }
 
     }
