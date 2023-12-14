@@ -44,7 +44,7 @@ namespace RealStateApp.Core.Application.Features.Properties.Queries.GetAllProper
 
         public async Task<List<PropertiesDTO>> GetAllPropertiesDTOWithFilters(GetAllPropertiesParameter filter)
         {
-            var list = await _propertiesRepository.GetAllWithIncludeAsync(new List<string> { "SaleTypes", "PropertiesTypes" });
+            var list = await _propertiesRepository.GetAllWithIncludeAsync(new List<string> { "SaleType", "PropertiesTypes" });
             var dtoList = new List<PropertiesDTO>();
 
             if (filter.SalesTypeId > 0)
@@ -83,7 +83,7 @@ namespace RealStateApp.Core.Application.Features.Properties.Queries.GetAllProper
                     SaleType = properties.SaleType.Name,
                     Improvements = await _propertiesImprovementsService.GetImprovementsByPropertyId(properties.Id),
                     AgentId = properties.AgentId,
-                    AgentName = $"{agent.FirstName} + + {agent.LastName}"
+                    AgentName = $"{agent.FirstName} {agent.LastName}"
             };
 
                 dtoList.Add(dtoProperty);
