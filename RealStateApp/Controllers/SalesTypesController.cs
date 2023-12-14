@@ -2,7 +2,6 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using RealStateApp.Core.Application.Interface.Services;
-using RealStateApp.Core.Application.ViewModels.PropertiesTypes;
 using RealStateApp.Core.Application.ViewModels.SalesTypes;
 
 namespace realstateapp.Controllers
