@@ -1,115 +1,145 @@
 ﻿@using RealStateApp.Core.Application.ViewModels.Properties
 @using RealStateApp.Core.Application.ViewModels.PropertiesTypes
+@using Microsoft.JSInterop;
+@using RealStateApp.Core.Application.Dtos.Account;
+@using RealStateApp.Core.Application.Dtos.User;
+@using RealStateApp.Core.Application.Helpers;
+@using Microsoft.AspNetCore.Http
+@inject IHttpContextAccessor httpContextAccessor
 @model PropertiesFilterVM
 
 @{
     ViewBag.Title = "Inicio";
     List<PropertiesVM> propertiesList = ViewBag.PropertiesList;
     List<PropertiesTypesVM>  propertiesTypesList = ViewBag.PropertyTypes;
+    var userInSession = httpContextAccessor.HttpContext.Session.Get<AuthenticationResponse>("user");
+
+}
+  @if (propertiesList.Count >= 1)
+{
+        <div class="container mt-3 mb-3">
+            <div class="row">
+                <div class="col">
+                    <form method="post" asp-controller="Home" asp-action="Search">
+
+                        <input type="text" id="searchInput" class="form-control" asp-for="PropertyCode" class="form-control" placeholder="Buscar por código de propiedad..." aria-label="Buscar">
+
+                        <div class="col-auto mb-2 mt-2">
+                            <button class="btn btn-danger" type="submit"><i class="fa-solid btn-outline-white fa-magnifying-glass"></i></button>
+                            <input hidden asp-for="AgentId" />
+                        </div>
+                    </form>
+                </div>
+                <div class="col-auto">
+                    <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#filtersModal">
+                        <i class="fa-solid fa-filter"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Modal -->
+        <div class="modal fade" id="filtersModal" tabindex="-1" aria-labelledby="filtersModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="filtersModalLabel">Filtros</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <form method="post" asp-controller="Home" asp-action="Filter">
+
+                        <div class="modal-body">
+                            <div class="mb-3">
+                                <label for="propertyType" class="form-label">Tipo de Propiedad</label>
+                                <select asp-for="PropertiesTypeId" asp-items="@(new SelectList(propertiesTypesList,"Id", "Name"))" type="text" class="form-select mb-3">
+                                    <option value="0">Seleccione el Tipo de Propiedad</option>
+                                </select>
+                            </div>
+
+                            <div class="mb-3 row">
+                                <div class="col">
+                                    <label for="minPrice" class="form-label">Precio Mínimo ($)</label>
+                                    <input asp-for="Min" type="number" id="minPrice" class="form-control" placeholder="0">
+                                </div>
+                                <div class="col">
+                                    <label for="maxPrice" class="form-label">Precio Máximo ($)</label>
+                                    <input asp-for="Max" type="number" id="maxPrice" class="form-control" placeholder="500000">
+                                </div>
+                            </div>
+
+                            <label class="form-label col-4 offset-4 mt-3 mb-2">Cantidad de Habitaciones</label>
+                            <input type="range" asp-for="BedroomQuantity" value="0" class="form-range col-10" min="0" max="10" id="roomsRange">
+                            <span id="roomsValue" class="col-1 offset-5 mb-2 value=" 0" text-center">0</span>
+
+                            <label class="form-label mb-2 col-4 mt-2 offset-4">Cantidad de Baños</label>
+                            <input type="range" asp-for="BathroomQuantity" value="0" class="form-range col-10" min="0" max="10" id="bathroomsRange">
+                            <span id="bathroomsValue" class="col-1 offset-5 text-center mb-2">0</span>
+                        </div>
+
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                            <button type="submit" class="btn btn-primary">Aplicar Filtros</button>
+                        </div>
+                        <input hidden asp-for="AgentId" />
+                    </form>
+
+
+                </div>
+
+            </div>
+            <script src="https://kit.fontawesome.com/47ea8ef61d.js" crossorigin="anonymous"></script>
+        </div>
+
+    <div class="container">
+        <div class="row">
+
+            @foreach (var property in propertiesList)
+            {
+                <div class="col-md-4 mb-4">
+                    <div class="card h-100">
+                        <img src="@property.ImagesProperties.First()" class="card-img-top img" alt="Imagen de la propiedad">
+                        <div class="card-body">
+                            <div class="d-flex justify-content-between">
+                                <h5 class="card-title col-6"><strong>Tipo de Propiedad</strong> @property.PropertiesType</h5>
+                                <h5 class="card-title col-6"><strong>Tipo de Venta:</strong> @property.SaleType</h5>
+                            </div>
+                            <p class="card-text"><strong class="text-muted mt-2">Código: @property.Code</strong></p>
+                            <p class="card-text">RD$ @property.Price</p>
+                            <div class="d-flex">
+                                <div class="me-3"><i class="fas fa-bed"></i>@property.RoomQuantity</div>
+                                <div class="me-3"><i class="fas fa-bath"></i>@property.BathroomQuantity</div>
+                                <div><i class="fas fa-expand-arrows-alt"></i>@property.LandSizeMeter</div>
+
+                            </div>
+                        </div>
+                        <div class="card-footer">
+                            <a asp-controller="Home" asp-action="PropertyDetail" asp-route-code="@property.Code" class="btn btn-primary">Ver Más</a>
+                        </div>
+                    </div>
+                </div>
+            }
+           
+        </div>
+    </div>
+}
+else
+{
+    @if (userInSession.Roles.Contains("Agent"))
+    {
+
+        <div class="alert alert-danger">
+            <h1>Usted no tiene Propiedades</h1>
+        </div>
+    }
+    else
+    {
+        <div class="alert alert-danger">
+            <h1>No Hay Propiedades en el Sistema</h1>
+        </div>
+    }
+
 }
 
-<div class="container mt-3 mb-3">
-    <div class="row">
-        <div class="col">
-            <form method="post" asp-controller="Home" asp-action="Search">
-            
-                <input type="text" id="searchInput" class="form-control" asp-for="PropertyCode" class="form-control" placeholder="Buscar por código de propiedad..." aria-label="Buscar">
-
-                <div class="col-auto mb-2 mt-2">
-             <button class="btn btn-danger" type="submit"><i class="fa-solid btn-outline-white fa-magnifying-glass"></i></button>
-            <input hidden asp-for="AgentId" />
-           </div>
-        </form>
-        </div>
-        <div class="col-auto">
-            <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#filtersModal">
-                <i class="fa-solid fa-filter"></i>
-            </button>
-        </div>
-    </div>
-</div>
-
-<!-- Modal -->
-<div class="modal fade" id="filtersModal" tabindex="-1" aria-labelledby="filtersModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-lg">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="filtersModalLabel">Filtros</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <form method="post" asp-controller="Home" asp-action="Filter">
-
-             <div class="modal-body">
-                 <div class="mb-3">
-                    <label for="propertyType" class="form-label">Tipo de Propiedad</label>
-                    <select asp-for="PropertiesTypeId" asp-items="@(new SelectList(propertiesTypesList,"Id", "Name"))" type="text" class="form-select mb-3">
-                        <option value="0">Seleccione el Tipo de Propiedad</option>
-                    </select>
-                  </div>
-
-                <div class="mb-3 row">
-                    <div class="col">
-                        <label for="minPrice" class="form-label">Precio Mínimo ($)</label>
-                        <input asp-for="Min" type="number" id="minPrice" class="form-control" placeholder="0">
-                    </div>
-                    <div class="col">
-                        <label for="maxPrice" class="form-label">Precio Máximo ($)</label>
-                        <input asp-for="Max" type="number" id="maxPrice" class="form-control" placeholder="500000">
-                    </div>
-                </div>
-
-                <label class="form-label col-4 offset-4 mt-3 mb-2">Cantidad de Habitaciones</label>
-                <input type="range" asp-for="BedroomQuantity" value="0" class="form-range col-10" min="0" max="10" id="roomsRange">
-                <span id="roomsValue" class="col-1 offset-5 mb-2 value="0" text-center">1</span>
-
-                <label class="form-label mb-2 col-4 mt-2 offset-4">Cantidad de Baños</label>
-                    <input type="range" asp-for="BathroomQuantity" value="0" class="form-range col-10" min="0" max="10" id="bathroomsRange">
-                <span id="bathroomsValue" class="col-1 offset-5 text-center mb-2">1</span>
-            </div>
-
-             <div class="modal-footer">
-                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
-                    <button type="submit" class="btn btn-primary">Aplicar Filtros</button>
-                </div>
-                <input hidden asp-for="AgentId" />
-                </form>
-               
-                
-        </div>
-
-    </div>
-    <script src="https://kit.fontawesome.com/47ea8ef61d.js" crossorigin="anonymous"></script>
-</div>
-
-
-<div class="container">
-    <div class="row">
-        @foreach (var property in propertiesList)
-        {
-            <div class="col-md-4 mb-4">
-                <div class="card h-100">
-                    <img src="@property.ImagesProperties.First()" class="card-img-top img" alt="Imagen de la propiedad">
-                    <div class="card-body">
-                        <div class="d-flex justify-content-between">
-                            <h5 class="card-title col-6"><strong>Tipo de Propiedad</strong> @property.PropertiesType</h5>
-                            <h5 class="card-title col-6"><strong>Tipo de Venta:</strong> @property.SaleType</h5>
-                        </div>
-                        <p class="card-text"><strong class="text-muted mt-2">Código: @property.Code</strong></p>
-                        <p class="card-text">RD$ @property.Price</p>
-                        <div class="d-flex">
-                            <div class="me-3"><i class="fas fa-bed"></i>@property.RoomQuantity</div>
-                            <div class="me-3"><i class="fas fa-bath"></i>@property.BathroomQuantity</div>
-                            <div><i class="fas fa-expand-arrows-alt"></i>@property.LandSizeMeter</div>
-                        </div>
-                    </div>
-                    <div class="card-footer">
-                        <a asp-controller="Home" asp-action="PropertyDetail" asp-route-code="@property.Code" class="btn btn-primary">Ver Más</a>
-                    </div>
-                </div>
-            </div>
-        }
-    </div>
-</div>
 
 
 <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.3/css/all.css">

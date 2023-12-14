@@ -1,0 +1,17 @@
+﻿@using RealStateApp.Core.Application.Dtos.Account
+@using RealStateApp.Core.Application.Helpers
+@using RealStateApp.Core.Application.ViewModels.Agents;
+@using Microsoft.AspNetCore.Http;
+@inject IHttpContextAccessor httpContextAccessor;
+@model List<AgentVM>
+@{
+    var userInSession = httpContextAccessor.HttpContext.Session.Get<AuthenticationResponse>("user");
+}
+
+@foreach (var item in Model)
+{
+    <p class="strong">@item.Email</p>
+    <p class="strong">@item.FirstName</p>
+    <p class="strong">@item.LastName</p>
+    <p class="strong">@item.UserName</p>
+}

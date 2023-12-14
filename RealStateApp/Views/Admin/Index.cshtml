@@ -1,13 +1,91 @@
-﻿@using RealStateApp.Core.Application.Dtos.User;
-@model List<UserDTO>
+﻿@using RealStateApp.Core.Application.ViewModels.Statistics;
+@model DashBoard;
 
-@foreach (var item in Model)
-{
-    if (item.Roles.Contains("Agent"))
-    {
-        <p>@item.FirstName</p>
-        <p>@item.LastName</p>
-        <p>@item.UserName</p>
-        <p>@item.ImagePath</p>
-    }
-}
+<div>
+    <div class="container mt-2">
+        <h1 class="text-center">Dashboard</h1>
+        <div class="row col-12">
+            <div class="col-6 mt-2 mb-2">
+                <label class="form-label offset-2 text-center">Cantidad de propiedades</label>
+                <canvas id="propertiesChart"></canvas>
+            </div>
+            <div class="col-6 mt-2 mb-2">
+                <label class="form-label offset-3 text-center">Cantidad de agentes activos e inactivos</label>
+                <canvas id="agentsChart"></canvas>
+            </div>
+            <div class="col-6 mt-2">
+                <label class="form-label offset-3 text-center">Cantidad de clientes activos e inactivos</label>
+                <canvas id="clientsChart"></canvas>
+            </div>
+            <div class="col-6 mt-2">
+                <label class="form-label offset-2 text-center">Cantidad de desarrolladores activos e inactivos</label>
+                <canvas id="developersChart"></canvas>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<script>
+    const properties = document.getElementById('propertiesChart');
+    const agents = document.getElementById('agentsChart');
+    const clients = document.getElementById('clientsChart');
+    const developers = document.getElementById('developersChart');
+
+    new Chart(properties, {
+        type: 'bar',
+        data: {
+            labels: ['Propiedades'],
+            datasets: [{
+                label: 'Cantidad de propiedades',
+                data: [@Model.Propierties],
+                backgroundColor: ['#0ffff7'],
+                borderColor: ['#0d566f'],
+                borderWidth: 1
+            }]
+        }
+    });
+
+    new Chart(agents, {
+        type: 'bar',
+        data: {
+            labels: ['Agentes Activos', 'Agentes Inactivos'],
+            datasets: [{
+                label: 'Agentes',
+                data: [@Model.ActiveAgents, @Model.InActiveAgents],
+                backgroundColor: ['#0ffff7', '#0f3047'],
+                borderColor: ['#0d566f', '#0d566f'],
+                borderWidth: 1
+            }]
+        }
+    });
+
+    new Chart(clients, {
+        type: 'bar',
+        data: {
+            labels: ['Clientes Activos', 'Clientes Inactivos'],
+            datasets: [{
+                label: 'Clientes',
+                data: [@Model.ActiveClients, @Model.InActiveClients],
+                backgroundColor: ['#0ffff7', '#0f3047'],
+                borderColor: ['#0d566f', '#0d566f'],
+                borderWidth: 1
+            }]
+        }
+    });
+
+    new Chart(developers, {
+        type: 'bar',
+        data: {
+            labels: ['Desarrolladores Activos', 'Desarrolladores Inactivos'],
+            datasets: [{
+                label: 'Desarrolladores',
+                data: [@Model.ActiveDeveloper, @Model.InActiveDeveloper],
+                backgroundColor: ['#0ffff7', '#0f3047'],
+                borderColor: ['#0d566f', '#0d566f'],
+                borderWidth: 1
+            }]
+        }
+    });
+</script>

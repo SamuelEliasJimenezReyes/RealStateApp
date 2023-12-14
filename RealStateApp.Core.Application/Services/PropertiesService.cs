@@ -1,16 +1,16 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Http;
-using Microsoft.EntityFrameworkCore.ChangeTracking;
+
 using RealStateApp.Core.Application.Dtos.Account;
-using RealStateApp.Core.Application.Dtos.Api.Properties;
-using RealStateApp.Core.Application.Features.Properties.Queries.GetAllProperties;
 using RealStateApp.Core.Application.Helpers;
 using RealStateApp.Core.Application.Interface.Repositories;
 using RealStateApp.Core.Application.Interface.Services;
 using RealStateApp.Core.Application.ViewModels.Agents;
+using RealStateApp.Core.Application.ViewModels.Improvements;
 using RealStateApp.Core.Application.ViewModels.ImprovementsProperties;
 using RealStateApp.Core.Application.ViewModels.Properties;
 using RealStateApp.Core.Domain.Entities;
+using System.Collections.Generic;
 
 namespace RealStateApp.Core.Application.Services
 {
@@ -25,13 +25,16 @@ namespace RealStateApp.Core.Application.Services
         private readonly IHttpContextAccessor _httpContextAccessor;
         private readonly IAgentImagesService _agentImagesService;
         private readonly IFavoritePropertiesRepository _favoritePropertiesRepository;
+        private readonly IPropertiesImprovementsRepository _propertiesImprovementsRepository;
 
         public PropertiesService(IAgentImagesService agentImagesService,IPropertiesRepository propertiesRepository,
             IMapper mapper,
             IPropertiesImprovementsService propertiesImprovementsService, 
             IAccountService accountService,
             IImagesPropertiesService imagesPropertiesService,
-            IHttpContextAccessor httpContextAccessor,
+            IPropertiesImprovementsRepository propertiesImprovementsRepository,
+        IHttpContextAccessor httpContextAccessor,
+
             IFavoritePropertiesRepository favoritePropertiesRepository) : base(propertiesRepository, mapper)
         {
             _propertiesRepository = propertiesRepository;
@@ -43,7 +46,15 @@ namespace RealStateApp.Core.Application.Services
             _userSession = _httpContextAccessor.HttpContext.Session.Get<AuthenticationResponse>("user");
             _agentImagesService = agentImagesService;
             _favoritePropertiesRepository = favoritePropertiesRepository;
+            _propertiesImprovementsRepository = propertiesImprovementsRepository;
         }
+
+        //public override async Task Delete(int id)
+        //{
+        //    var saveEntity = await GetByIdSaveViewModel(id);
+        //    var entity = _mapper.Map<Properties>(saveEntity);
+        //    await _propertiesRepository.DeleteAsync(entity);
+        //}
 
         public override async Task<SavePropertiesVM> Add(SavePropertiesVM vm)
         {
@@ -167,6 +178,38 @@ namespace RealStateApp.Core.Application.Services
             return dtoProperty;
         }
 
+        public override async Task Update(SavePropertiesVM vm, int id)
+        {
+            var listImprovements = await _propertiesImprovementsRepository
+                                           .GetAllAsync();
+
+            var existingImprovements = listImprovements.Where(x => x.PropertiesId == id)
+                                           .Select(x => x.ImprovementId)
+                                           .ToList();
+
+              var improvementsToRemove = existingImprovements.Except(vm.PropertiesImprovementsId).ToList();
+
+             foreach (var improvementId in improvementsToRemove)
+            {
+                await _propertiesImprovementsRepository.DeletePropertiesImprovements(vm.Id, improvementId);
+            }
+
+             var newImprovementsToAdd = vm.PropertiesImprovementsId.Except(existingImprovements).ToList();
+
+            foreach (var newImprovementId in newImprovementsToAdd)
+            {
+                var saveImprovementsProperties = new SavePropertiesImprovementsVM
+                {
+                    PropertiesId = vm.Id,
+                    ImprovementId = newImprovementId
+                };
+
+                await _propertiesImprovementsService.Add(saveImprovementsProperties);
+            }
+
+            await base.Update(vm, id);
+        }
+
         public async Task AddFavoriteProperties(int propertyId, string clientId) 
         {
             FavoriteProperties favoriteProperties = new()
@@ -178,13 +221,18 @@ namespace RealStateApp.Core.Application.Services
             await _favoritePropertiesRepository.AddAsync(favoriteProperties);
         }
 
+        public async Task RemoveFavoriteProperty(string clientId, int propertyId)
+        {
+            await _favoritePropertiesRepository.RemoveFavoriteProperty(clientId, propertyId);
+        }
+
         public async Task<List<PropertiesVM>> GetPropertiesForClient()
         {
             var list = await GetAllPropertiesVM(new PropertiesFilterVM());
 
             var favoriteIds = await _favoritePropertiesRepository.GetFavoritePropertiesId(_userSession.Id);
 
-            foreach(var  favoriteId in favoriteIds)
+            foreach(var favoriteId in favoriteIds)
             {
                 foreach (var property in list)
                 {
@@ -197,6 +245,30 @@ namespace RealStateApp.Core.Application.Services
 
             return list;
         }
+
+        public async Task<List<PropertiesVM>> GetFavoritePropertiesForClient()
+        {
+            var list = await GetAllPropertiesVM(new PropertiesFilterVM());
+
+            var favoriteIds = await _favoritePropertiesRepository.GetFavoritePropertiesId(_userSession.Id);
+            var favoriteList = new List<PropertiesVM>();
+
+            foreach (var favoriteId in favoriteIds)
+            {
+                foreach (var property in list)
+                {
+                    if (property.Id == favoriteId)
+                    {
+                        property.IsFavorite = true;
+                        favoriteList.Add(property);
+                    }
+                }
+            }
+
+            return favoriteList;
+        }
+
+
     }
 }
 

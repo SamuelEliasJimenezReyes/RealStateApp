@@ -31,6 +31,7 @@ namespace RealStateApp.Core.Application
             services.AddTransient<IImagesPropertiesService, ImagesPropertiesService>();
             services.AddTransient<IPropertiesImprovementsService, PropertiesImprovementsService>();
             services.AddTransient<IAgentImagesService, AgentImagesService>();
+            services.AddTransient<IStatisticsService, StatisticsService>();
             services.AddTransient<AuthenticationResponse>();
            
             #endregion

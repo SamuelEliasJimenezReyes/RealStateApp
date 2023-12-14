@@ -4,6 +4,8 @@ using RealStateApp.Core.Application.ViewModels.User;
 using RealStateApp.Core.Application.Dtos.User;
 using RealStateApp.Core.Application.Interface.Services;
 using RealStateApp.Core.Application.ViewModels.Agents;
+using Microsoft.AspNetCore.Http;
+using RealStateApp.Core.Application.Helpers;
 
 namespace RealStateApp.Core.Application.Services
 {
@@ -12,13 +14,24 @@ namespace RealStateApp.Core.Application.Services
         private readonly IAccountService _accountService;
         private readonly IMapper _mapper;
         private readonly IAgentImagesService _agentImagesService;
+        private readonly AuthenticationResponse _userSession;
+        private readonly IHttpContextAccessor _httpContextAccessor;
 
-        public UserService(IAccountService accountService, IMapper mapper, IAgentImagesService agentImagesService)
+        public UserService(IAccountService accountService,
+            IMapper mapper,
+            IAgentImagesService agentImagesService, 
+            AuthenticationResponse userSession, 
+            IHttpContextAccessor httpContextAccessor)
         {
             _accountService = accountService;
             _mapper = mapper;
             _agentImagesService = agentImagesService;
+            _httpContextAccessor = httpContextAccessor;
+            _userSession = _httpContextAccessor.HttpContext.Session.Get<AuthenticationResponse>("user");
+
         }
+
+
 
 
         //public async Task ChangeUserStatus(string userName)
@@ -70,10 +83,11 @@ namespace RealStateApp.Core.Application.Services
             return await _accountService.ResetPasswordAsync(resetRequest);
         }
 
-        //public async Task<RegisterRequest> GetUserDTOAsync(string userId)
-        //{
-        //    return await _accountService.GetUserById(userId);
-        //}
+        public async Task<AgentVM> GetUserDTOAsync()
+        {
+            var list = await GetAllAgentVM();
+            return list.FirstOrDefault(x => x.UserId == _userSession.Id);
+        }
 
         //public async Task<bool> IsaValidUser(string UserName)
         //{
@@ -100,9 +114,11 @@ namespace RealStateApp.Core.Application.Services
             return agentVMList;
         }
 
-        //public async Task<UserDTO> UpdateUserByUserId(UserDTO dto)
-        //{
-        //    return await _accountService.UpdateUser(dto);
-        //}
+        public async Task UpdateUserByUserId(UserDTO dto)
+        {
+            await _agentImagesService.UpdateAgentImagesByAgentId(_userSession.Id, dto.ImagePath);
+            dto.UserId = _userSession.Id;
+            await _accountService.UpdateUser(dto);
+        }
     }
-}
+    }

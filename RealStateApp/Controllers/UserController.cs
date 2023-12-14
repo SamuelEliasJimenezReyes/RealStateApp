@@ -43,7 +43,7 @@ namespace WebApp.RealStateApp.Controllers
                 {
                     return RedirectToRoute(new { controller = "Client", action = "Index" });
                 }
-                return RedirectToRoute(new { controller = "Agent", action = "Index" });
+                return RedirectToRoute(new { controller = "Home", action = "AgentProperties",agentId = userVm.Id });
             }
             else
             {
@@ -58,7 +58,7 @@ namespace WebApp.RealStateApp.Controllers
         {
             await _userService.SignOutAsync();
             HttpContext.Session.Remove("user");
-            return RedirectToRoute(new { controller = "User", action = "Index" });
+            return RedirectToRoute(new { controller = "Home", action = "Index" });
         }
 
         //[Authorize(Roles = "Admin")]

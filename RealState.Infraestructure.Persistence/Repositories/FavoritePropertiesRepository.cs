@@ -18,5 +18,12 @@ namespace RealState.Infraestructure.Persistence.Repositories
             var list = await GetAllAsync();
             return list.Where(x => x.ClientId == clientId).Select(x => x.PropertiesId).ToList();
         }
+
+        public async Task RemoveFavoriteProperty(string clientId, int propertyId)
+        {
+            var entity = _context.FavoriteProperties.Where(x => x.PropertiesId == propertyId && x.ClientId == clientId).FirstOrDefault();
+            _context.FavoriteProperties.Remove(entity);
+            await _context.SaveChangesAsync();
+        }
     }
 }

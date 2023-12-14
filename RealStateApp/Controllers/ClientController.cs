@@ -49,20 +49,33 @@ namespace RealStateApp.Controllers
             return View(property);
         }
 
+        public async Task<IActionResult> FavoriteProperties()
+        {
+            var list = await _propertiesService.GetFavoritePropertiesForClient();
+            ViewBag.PropertiesList = list.OrderByDescending(x => x.Id).ToList();
+            return View(new PropertiesFilterVM());
+        }
+
         public async Task<IActionResult> AddFavoriteProperty(string clientId, int propertyId)
         {
             await _propertiesService.AddFavoriteProperties(propertyId, clientId);
             ViewBag.PropertyTypes = await _propertiesTypesService.GetAllViewModel();
-            ViewBag.PropertiesList = await _propertiesService.GetAllPropertiesVM(new PropertiesFilterVM());
-            return View("Index", new PropertiesFilterVM());
+            ViewBag.PropertiesList = await _propertiesService.GetPropertiesForClient();
+            return View("Index",new PropertiesFilterVM());
         }
 
-        public async Task<IActionResult> DeleteFavoriteProperty(string clientId, int propertyId)
+        public async Task<IActionResult> DeleteFavoriteProperty(string clientId, int propertyId, bool isForFavorite)
         {
-            await _propertiesService.AddFavoriteProperties(propertyId, clientId);
+            await _propertiesService.RemoveFavoriteProperty(clientId, propertyId);
             ViewBag.PropertyTypes = await _propertiesTypesService.GetAllViewModel();
-            ViewBag.PropertiesList = await _propertiesService.GetAllPropertiesVM(new PropertiesFilterVM());
+            if (isForFavorite)
+            {
+                ViewBag.PropertiesList = await _propertiesService.GetFavoritePropertiesForClient();
+                return View("FavoriteProperties", new PropertiesFilterVM());
+            }
+            ViewBag.PropertiesList = await _propertiesService.GetPropertiesForClient();
             return View("Index", new PropertiesFilterVM());
+
         }
 
     }

@@ -1,10 +1,16 @@
 ﻿@using RealStateApp.Core.Application.ViewModels.Properties
 @model SavePropertiesVM
+@using Microsoft.JSInterop;
+@using RealStateApp.Core.Application.Dtos.Account;
+@using RealStateApp.Core.Application.Dtos.User;
+@using RealStateApp.Core.Application.Helpers;
 @using Microsoft.AspNetCore.Http
+@inject IHttpContextAccessor httpContextAccessor
 
 @{
     ViewData["Title"] = "Crear Propiedades";
     List<IFormFile> Images = new List<IFormFile>();
+    var userInSession = httpContextAccessor.HttpContext.Session.Get<AuthenticationResponse>("user");
 }
 
 <body>
@@ -82,7 +88,7 @@
                         </div>
                         <div class="form-group text-center mt-4 mb-5">
                             <button type="submit" asp-route-File="@Model.File" class="btn btn-primary btn-outline-dark" style="background-color: #2f5b75; color: white;">Crear Propiedad</button>
-                            <a asp-controller="Properties" asp-action="Index" class="btn btn-dark">Volver atras</a>
+                            <a asp-controller="Properties" asp-action="Index" asp-route-agentId="@userInSession.Id" class="btn btn-dark">Volver atras</a>
                         </div>
                         <label class="mb-5"></label>
                     </form>
@@ -111,40 +117,6 @@
     </script>
 
    
-@* 
-    <script>
-        $(document).ready(function () {
-            var imagenes = [];
-
-            $('#image').on('change', function (e) {
-                imagenes = [];
-
-                for (var i = 0; i < e.target.files.length; i++) {
-                    imagenes.push(e.target.files[i]);
-                }
-            });
-
-            $('#miFormulario').on('submit', function (e) {
-                $('<input />').attr('type', 'hidden')
-                    .attr('name', 'Imagenes')
-                    .attr('value', JSON.stringify(imagenes))
-                    .appendTo('#miFormulario');
-            });
-        });
-    </script>
-    <script>
-        function previewImages(event) {
-            var imageContainer = document.getElementById('imageContainer');
-            imageContainer.innerHTML = '';
-
-            for (var i = 0; i < event.target.files.length; i++) {
-                var image = document.createElement('img');
-                image.src = URL.createObjectURL(event.target.files[i]);
-                image.className = 'selectedImage';
-                imageContainer.appendChild(image);
-            }
-        }
-    </script> *@
 }
 
 

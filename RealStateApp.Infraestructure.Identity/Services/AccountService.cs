@@ -37,6 +37,15 @@ namespace RealStateApp.Infraestructure.Identity.Services
             _jwtSettings = jwtSettings.Value;
         }
 
+        public async Task UpdateUser(UserDTO dto)
+        {
+            var user = await _userManager.FindByIdAsync(dto.UserId);
+            user.PhoneNumber = dto.Phone;
+            user.Name = dto.FirstName;
+            user.LastName = dto.LastName;
+            await _userManager.UpdateAsync(user);
+        }
+
         #region Tengo que usar AutoMapper en estos Metodos
         public async Task<List<UserDTO>> GetAllUsers()
         {

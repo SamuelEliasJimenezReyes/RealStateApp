@@ -27,6 +27,7 @@ namespace RealState.Infraestructure.Persistence.Repositories
         }
 
         public virtual async Task<List<T>> GetAllAsync()
+
         {
             return await _dbContext.Set<T>().ToListAsync();
         }
