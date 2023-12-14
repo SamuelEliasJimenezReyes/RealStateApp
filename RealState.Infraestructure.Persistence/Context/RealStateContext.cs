@@ -57,7 +57,7 @@ namespace RealState.Infraestructure.Persistence.Context
                 .HasForeignKey(a => a.PropertiesId);
 
             modelBuilder.Entity<Properties>()
-               .HasOne(a => a.SaleTypes)
+               .HasOne(a => a.SaleType)
                .WithMany(a => a.Properties)
                .HasForeignKey(a => a.SaleTypeId);
                 

@@ -34,10 +34,10 @@ namespace RealStateApp.Core.Application.Services
 
 
 
-        //public async Task ChangeUserStatus(string userName)
-        //{
-        //    await _accountService.ChangeUserStatus(userName);
-        //}
+        public async Task ChangeUserStatus(string userID)
+        {
+            await _accountService.ChangeUserStatus(userID);
+        }
 
         public async Task<AuthenticationResponse> LoginAsync(LoginViewModel vm, bool isForApi)
         {
