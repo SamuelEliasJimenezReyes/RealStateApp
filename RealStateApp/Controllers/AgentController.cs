@@ -52,9 +52,13 @@ namespace RealStateApp.Controllers
             value.Phone = vm.Phone;
             value.FirstName = vm.FirstName;
             value.LastName = vm.LastName;
-            var imagesgenerated = FileManager.Upload(vm.File, vm.agentId, "Agent");
-            value.ImagePath = imagesgenerated;
-            
+            if(vm.File != null)
+            {
+                var imagesgenerated = FileManager.Upload(vm.File, vm.agentId, "Agent");
+                value.ImagePath = imagesgenerated;
+
+            }
+
             await _userService.UpdateUserByUserId(value);
 
             return RedirectToRoute(new { controller = "Home", action = "AgentProperties" });
