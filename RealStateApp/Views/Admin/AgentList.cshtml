@@ -28,12 +28,43 @@
                     <td>@item.FirstName</td>
                     <td>@item.LastName</td>
                     <td>@item.UserName</td>
-                    @if (item.IsActive == true)
-                    {
-                        <td>
-                            <form 
-                        </td>
-                    }
+                    <td>
+                        @if (item.IsActive)
+                        {
+                            <button type="button" class="btn btn-sm btn-outline-danger" data-bs-toggle="modal" data-bs-target="#statusChangeModal_@item.Id">
+                                Inactivar
+                            </button>
+                        }
+                        else
+                        {
+                            <button type="button" class="btn btn-sm btn-outline-success" data-bs-toggle="modal" data-bs-target="#statusChangeModal_@item.Id">
+                                Activar
+                            </button>
+                        }
+                    </td>
+                    <td>
+                        <!-- Modal para confirmar el cambio de estado -->
+                        <div class="modal fade" id="statusChangeModal_@item.Id" tabindex="-1" aria-labelledby="statusChangeModalLabel" aria-hidden="true">
+                            <div class="modal-dialog modal-dialog-centered">
+                                <div class="modal-content">
+                                    <div class="modal-header bg-danger">
+                                        <h5 class="modal-title" id="statusChangeModalLabel">Confirmar cambio de estado</h5>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                    </div>
+                                    <div class="modal-body">
+                                        ¿Está seguro de que desea cambiar el estado del usuario?
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                                        <form id="userStatusForm_@item.Id" asp-controller="Admin" asp-action="ChangeUserStatus" method="post">
+                                            <input type="hidden" name="userId" value="@item.UserId" />
+                                            <button type="submit" class="btn btn-primary">Confirmar</button>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </td>
                 </tr>
             }
         </tbody>
