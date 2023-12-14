@@ -12,6 +12,8 @@ namespace RealStateApp.Core.Application.Interface.Services
         Task<RegisterResponse> RegisterBasicUserAsync(RegisterRequest request, string origin, string user);
         Task<ResetPasswordResponse> ResetPasswordAsync(ResetPasswordRequest request);
         Task<UserDTO> GetUserById(string UserId);
+
+        Task<AuthenticationResponse> ChangeStatus(bool status, string id);
         Task<List<UserDTO>> GetAllUsers();
         Task SignOutAsync();
         Task UpdateUser(UserDTO dto);

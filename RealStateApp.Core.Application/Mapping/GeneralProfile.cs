@@ -66,8 +66,7 @@ namespace RealStateApp.Core.Application.Mapping
                      .ForMember(x => x.IsDeleted, opt => opt.Ignore())
                       .ForMember(x => x.LastModified, opt => opt.Ignore())
                        .ForMember(x => x.LastModifiedBy, opt => opt.Ignore())
-                        .ForMember(x => x.SaleType, opt => opt.Ignore())
-            .ReverseMap();
+                        .ForMember(x => x.SaleTypes, opt => opt.Ignore());
 
             CreateMap<Properties, PropertiesVM>()
                .ReverseMap()
@@ -78,7 +77,7 @@ namespace RealStateApp.Core.Application.Mapping
                    .ForMember(x => x.IsDeleted, opt => opt.Ignore())
                     .ForMember(x => x.LastModified, opt => opt.Ignore())
                      .ForMember(x => x.LastModifiedBy, opt => opt.Ignore())
-                      .ForMember(x => x.SaleType, opt => opt.Ignore());
+                      .ForMember(x => x.SaleTypes, opt => opt.Ignore());
 
             CreateMap<GetAllPropertiesParameter, GetAllPropertiesQuery>()
                 .ReverseMap();
