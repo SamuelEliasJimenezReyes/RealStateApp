@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using RealStateApp.Core.Application.Dtos.Account;
 using RealStateApp.Core.Application.Helpers;
 using RealStateApp.Core.Application.Interface.Services;
+using System.Collections.Generic;
 
 namespace RealStateApp.Controllers
 {
@@ -40,6 +41,17 @@ namespace RealStateApp.Controllers
             return View("AgentList", list);
         }
 
+        public async Task<IActionResult> DeleteAgents(int ID)
+        {
+            var list = await _userService.GetAllAgentVM();
 
+            var agentToDelete = list.FirstOrDefault(x => x.Id == ID);
+            if (agentToDelete != null)
+            {
+                list.Remove(agentToDelete);
+            }
+
+            return View("AgentList", list);
+        }
     }
 }
