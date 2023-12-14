@@ -76,7 +76,7 @@ namespace RealStateApp.Core.Application.Services
 
         public async Task<List<PropertiesVM>> GetAllPropertiesVM(PropertiesFilterVM filter)
         {
-            var list = await _propertiesRepository.GetAllWithIncludeAsync(new List<string> { "SaleTypes", "PropertiesTypes" });
+            var list = await _propertiesRepository.GetAllWithIncludeAsync(new List<string> { "SaleType", "PropertiesTypes" });
             var vmList = new List<PropertiesVM>();
 
 
@@ -147,7 +147,7 @@ namespace RealStateApp.Core.Application.Services
 
         public async Task<PropertiesVM> GetPropertyByCode(string code)
         {
-            var list = await _propertiesRepository.GetAllWithIncludeAsync(new List<string> { "SaleTypes", "PropertiesTypes" });
+            var list = await _propertiesRepository.GetAllWithIncludeAsync(new List<string> { "SaleType", "PropertiesTypes" });
 
             var properties = list.FirstOrDefault(x => x.Code == code);
 
