@@ -11,7 +11,7 @@ namespace RealStateApp.Core.Application.Interface.Services
         Task<string> ConfirmEmailAsync(string userId, string token);
         Task<ForgotPasswordResponse> ForgotPasswordAsync(ForgotPasswordViewModel vm, string origin);
         Task<List<UserDTO>> GetAllUsers();
-        //Task<RegisterRequest> GetUserDTOAsync(string userId);
+        Task<AgentVM> GetUserDTOAsync();
         //Task<bool> IsaValidUser(string UserName);
         Task<AuthenticationResponse> LoginAsync(LoginViewModel vm, bool isForApi);
         Task<RegisterResponse> RegisterAsync(SaveUserViewModel vm, string origin, string Role);
@@ -19,6 +19,6 @@ namespace RealStateApp.Core.Application.Interface.Services
         Task<List<AgentVM>> GetAllAgentVM();
         Task SignOutAsync();
         //Task UpdateUser(SaveUserViewModel user);
-        //Task<UserDTO> UpdateUserByUserId(UserDTO dto);
+        Task UpdateUserByUserId(UserDTO dto);
     }
 }

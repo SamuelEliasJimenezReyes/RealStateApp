@@ -43,7 +43,7 @@ namespace WebApp.RealStateApp.Controllers
                 {
                     return RedirectToRoute(new { controller = "Client", action = "Index" });
                 }
-                return RedirectToRoute(new { controller = "Agent", action = "Index" });
+                return RedirectToRoute(new { controller = "Home", action = "AgentProperties",agentId = userVm.Id });
             }
             else
             {

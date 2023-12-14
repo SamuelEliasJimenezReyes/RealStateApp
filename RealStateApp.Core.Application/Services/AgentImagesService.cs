@@ -26,5 +26,10 @@ namespace RealStateApp.Core.Application.Services
 
             return list.Where(x => x.AgentId == agentId).Select(x => x.ImagePath).FirstOrDefault();
         }
+
+       public async Task UpdateAgentImagesByAgentId(string agentId, string imagesPath)
+        {
+            await _agentImagesRepository.UpdateAgentImages(agentId, imagesPath);
+        }
     }
 }

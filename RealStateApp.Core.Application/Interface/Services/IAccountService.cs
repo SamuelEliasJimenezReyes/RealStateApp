@@ -14,5 +14,6 @@ namespace RealStateApp.Core.Application.Interface.Services
         Task<UserDTO> GetUserById(string UserId);
         Task<List<UserDTO>> GetAllUsers();
         Task SignOutAsync();
+        Task UpdateUser(UserDTO dto);
     }
 }

@@ -111,40 +111,6 @@
     </script>
 
    
-@* 
-    <script>
-        $(document).ready(function () {
-            var imagenes = [];
-
-            $('#image').on('change', function (e) {
-                imagenes = [];
-
-                for (var i = 0; i < e.target.files.length; i++) {
-                    imagenes.push(e.target.files[i]);
-                }
-            });
-
-            $('#miFormulario').on('submit', function (e) {
-                $('<input />').attr('type', 'hidden')
-                    .attr('name', 'Imagenes')
-                    .attr('value', JSON.stringify(imagenes))
-                    .appendTo('#miFormulario');
-            });
-        });
-    </script>
-    <script>
-        function previewImages(event) {
-            var imageContainer = document.getElementById('imageContainer');
-            imageContainer.innerHTML = '';
-
-            for (var i = 0; i < event.target.files.length; i++) {
-                var image = document.createElement('img');
-                image.src = URL.createObjectURL(event.target.files[i]);
-                image.className = 'selectedImage';
-                imageContainer.appendChild(image);
-            }
-        }
-    </script> *@
 }
 
 
