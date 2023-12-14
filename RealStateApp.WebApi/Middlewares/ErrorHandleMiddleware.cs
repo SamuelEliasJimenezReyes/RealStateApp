@@ -66,6 +66,7 @@ namespace RealStateApp.WebApi.Middlewares
                 await response.WriteAsync(result);
 
 
+
             }
         }
 
