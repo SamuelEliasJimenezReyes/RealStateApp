@@ -10,6 +10,7 @@ namespace RealState.Infraestructure.Persistence.Repositories
         private readonly RealStateContext _context;
         public FavoritePropertiesRepository(RealStateContext dbContext) : base(dbContext)
         {
+
             _context = dbContext;
         }
 
