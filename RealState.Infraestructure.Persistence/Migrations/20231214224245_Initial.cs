@@ -132,7 +132,13 @@ namespace RealState.Infraestructure.Persistence.Migrations
                 columns: table => new
                 {
                     ClientId = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    PropertiesId = table.Column<int>(type: "int", nullable: false)
+                    PropertiesId = table.Column<int>(type: "int", nullable: false),
+                    Id = table.Column<int>(type: "int", nullable: false),
+                    IsDeleted = table.Column<bool>(type: "bit", nullable: false),
+                    CreatedBy = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Created = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    LastModifiedBy = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    LastModified = table.Column<DateTime>(type: "datetime2", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -175,7 +181,13 @@ namespace RealState.Infraestructure.Persistence.Migrations
                 columns: table => new
                 {
                     PropertiesId = table.Column<int>(type: "int", nullable: false),
-                    ImprovementId = table.Column<int>(type: "int", nullable: false)
+                    ImprovementId = table.Column<int>(type: "int", nullable: false),
+                    Id = table.Column<int>(type: "int", nullable: false),
+                    IsDeleted = table.Column<bool>(type: "bit", nullable: false),
+                    CreatedBy = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Created = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    LastModifiedBy = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    LastModified = table.Column<DateTime>(type: "datetime2", nullable: true)
                 },
                 constraints: table =>
                 {

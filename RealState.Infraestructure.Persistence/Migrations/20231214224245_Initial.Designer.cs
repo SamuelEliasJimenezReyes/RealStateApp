@@ -12,7 +12,7 @@ using RealState.Infraestructure.Persistence.Context;
 namespace RealState.Infraestructure.Persistence.Migrations
 {
     [DbContext(typeof(RealStateContext))]
-    [Migration("20231210170933_Initial")]
+    [Migration("20231214224245_Initial")]
     partial class Initial
     {
         /// <inheritdoc />
@@ -67,6 +67,24 @@ namespace RealState.Infraestructure.Persistence.Migrations
 
                     b.Property<string>("ClientId")
                         .HasColumnType("nvarchar(450)");
+
+                    b.Property<DateTime?>("Created")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("CreatedBy")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("Id")
+                        .HasColumnType("int");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<DateTime?>("LastModified")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("LastModifiedBy")
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("PropertiesId", "ClientId");
 
@@ -231,6 +249,24 @@ namespace RealState.Infraestructure.Persistence.Migrations
 
                     b.Property<int>("ImprovementId")
                         .HasColumnType("int");
+
+                    b.Property<DateTime?>("Created")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("CreatedBy")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("Id")
+                        .HasColumnType("int");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<DateTime?>("LastModified")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("LastModifiedBy")
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("PropertiesId", "ImprovementId");
 

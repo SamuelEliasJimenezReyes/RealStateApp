@@ -1,8 +1,10 @@
 ﻿
 
+using RealStateApp.Core.Domain.Common;
+
 namespace RealStateApp.Core.Domain.Entities
 {
-    public class PropertiesImprovements
+    public class PropertiesImprovements : BaseEntity
     {
         public int PropertiesId { get; set; }
         public Properties Properties { get; set; }

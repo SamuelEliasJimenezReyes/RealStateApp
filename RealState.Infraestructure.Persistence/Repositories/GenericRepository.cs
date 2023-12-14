@@ -1,10 +1,11 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using RealState.Infraestructure.Persistence.Context;
 using RealStateApp.Core.Application.Interface.Repositories;
+using RealStateApp.Core.Domain.Common;
 
 namespace RealState.Infraestructure.Persistence.Repositories
 {
-    public class GenericRepository<T> : IGenericRepository<T> where T : class
+    public class GenericRepository<T> : IGenericRepository<T> where T : BaseEntity
     {
         private readonly RealStateContext _dbContext;
 
@@ -22,7 +23,8 @@ namespace RealState.Infraestructure.Persistence.Repositories
 
         public virtual async Task DeleteAsync(T entity)
         {
-            _dbContext.Entry(entity).Property("IsDeleted").CurrentValue = true;
+            entity.IsDeleted = true;
+            await UpdateAsync(entity, entity.Id);
             await _dbContext.SaveChangesAsync();
         }
 
