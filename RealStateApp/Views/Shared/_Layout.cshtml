@@ -41,23 +41,34 @@
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="User" asp-action="Index">Login</a>
                         </li>
-                          <li clss="nav-item">
+                          <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="User" asp-action="Register">Únete a la app</a>
                         </li>
-                            <li clss="nav-item">
+                            <li class="nav-item">
                                 <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="AgentHome">Agents</a>
                             </li>
-                            <li clss="nav-item">
-                                <a class="nav-link text-dark" asp-area="" asp-controller="Admin" asp-action="Index">Admin</a>
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Admin" asp-action="AgentList">Agents List</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Admin" asp-action="Index">DashBoard</a>
                             </li>
                     </ul>
                     }
                     @if (User != null && User.Roles.Contains("Agent"))
                     {
-                          <ul class="navbar-nav flex-grow-1">
-                        <li class="nav-item">
+                      <ul class="navbar-nav flex-grow-1">
+                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="Properties" asp-action="Create">Crear Propiedad</a>
                         </li>
+                      </ul>
+                    }
+                    else if (User != null && User.Roles.Contains("Admin"))
+                    {
+                        <ul>
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Admin" asp-action="Index">DashBoard</a>
+                            </li>
                         </ul>
                     }
                     @if (User != null)
