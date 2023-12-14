@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using RealStateApp.Core.Application.Dtos.User;
 using RealStateApp.Core.Application.Interface.Services;
 using RealStateApp.Core.Application.ViewModels.Agents;
+using RealStateApp.Core.Application.ViewModels.Properties;
 
 
 namespace RealStateApp.Controllers
@@ -10,10 +11,12 @@ namespace RealStateApp.Controllers
     public class AgentController : Controller
     {
         private readonly IUserService _userService;
+        private readonly IPropertiesService _propertiesService;
 
-        public AgentController(IUserService userService)
+        public AgentController(IUserService userService, IPropertiesService propertiesService)
         {
             _userService = userService;
+            _propertiesService = propertiesService;
         }
 
         public IActionResult Index()
@@ -56,5 +59,7 @@ namespace RealStateApp.Controllers
 
             return RedirectToRoute(new { controller = "Home", action = "AgentProperties" });
         }
+
+      
     }
 }

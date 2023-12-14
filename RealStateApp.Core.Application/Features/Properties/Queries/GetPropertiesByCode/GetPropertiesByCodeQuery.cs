@@ -41,7 +41,7 @@ namespace RealStateApp.Core.Application.Features.Properties.Queries.GetPropertie
 
         protected async Task<PropertiesDTO> GetPropertyByCode(string code)
         {
-            var list = await _propertiesRepository.GetAllWithIncludeAsync(new List<string> { "SaleType", "PropertiesTypes" });
+            var list = await _propertiesRepository.GetAllWithIncludeAsync(new List<string> { "SaleTypes", "PropertiesTypes" });
 
             var properties = list.FirstOrDefault(x => x.Code == code);
 
@@ -57,7 +57,7 @@ namespace RealStateApp.Core.Application.Features.Properties.Queries.GetPropertie
                 Id = properties.Id,
                 Code = properties.Code,
                 PropertiesType = properties.PropertiesTypes.Name,
-                SaleType = properties.SaleType.Name,
+                SaleType = properties.SaleTypes.Name,
                 Improvements = await _propertiesImprovementsService.GetImprovementsByPropertyId(properties.Id),
                 AgentId = properties.AgentId,
                 AgentName = $"{agent.FirstName} + + {agent.LastName}"

@@ -1,16 +1,11 @@
 ﻿@using RealStateApp.Core.Application.ViewModels.Properties
 @model SavePropertiesVM
-@using Microsoft.JSInterop;
-@using RealStateApp.Core.Application.Dtos.Account;
-@using RealStateApp.Core.Application.Dtos.User;
-@using RealStateApp.Core.Application.Helpers;
 @using Microsoft.AspNetCore.Http
-@inject IHttpContextAccessor httpContextAccessor
 
 @{
     ViewData["Title"] = "Crear Propiedades";
     List<IFormFile> Images = new List<IFormFile>();
-    var userInSession = httpContextAccessor.HttpContext.Session.Get<AuthenticationResponse>("user");
+    IFormFile newImagesPath;
 }
 
 <body>
@@ -26,9 +21,9 @@
         <div class="container ">
             <div class="row justify-content-center pt-5 mt-5 m-1">
                 <div class="col-md-6 col-sm-8 col-xl-4 col-lg-5 formulario">
-                    <form method="post" asp-controller="Properties" asp-action="Create" enctype="multipart/form-data">
+                    <form method="post" asp-controller="Properties" asp-action="Edit" enctype="multipart/form-data">
                         <div class="form-group text-center pt-3">
-                            <h1 class="text-light">Crear Propiedad</h1>
+                            <h1 class="text-light">Editar Propiedad</h1>
                         </div>
                         <div class="form-group mx-sm-4 pt-3 mb-2">
                             <select asp-for="PropertiesTypeId" asp-items="@(new SelectList(Model.PropertiesTypes,"Id", "Name"))" type="text" class="form-select mb-3">
@@ -78,20 +73,33 @@
                             </select>
                             <span asp-validation-for="PropertiesImprovementsId" class="text-danger"></span>
                         </div>
-                       <div>
-                            <label asp-for="File">Selecciona hasta 4 imágenes:</label>
+                        <input type="file" id="new-image-input" name="newImagesPath" style="display: none;" />
+                        <div>
+                            <div>
+                                @foreach (var image in Model.ImagesProperties)
+                                {
+                                    <div class="image-container">
+                                        <img src="@image" alt="Imagen de propiedad" class="mb-3" />
+                                        <a class="btn btn-danger delete-btn" asp-controller="Properties" asp-action="DeleteImages" asp-route-oldImagesPath="@image" asp-route-propertyId="@Model.Id" data-image-src="@image">Eliminar</a>
+                                    </div>
+                                }
+                            </div>
+                            <label asp-for="File">Selecciona hasta @(4 - Model.ImagesProperties.Count)  imágenes:</label>
                             <input type="file" asp-for="File" lang="es" name="File" class="d-none mb-2" id="image" multiple />
                             <button type="button" class="btn btn-outline-dark btn-lg btn-block btn-outline-light" onclick="document.getElementById('image').click()">
                                 <i class="fa-regular fa-image text-dark"></i>
                             </button>
                             <span asp-validation-for="File" class="text-white mb-2"></span>
                         </div>
+
+                        <input asp-for="Id" hidden />
+                        <input asp-for="AgentId" hidden />
+                        <input asp-for="Code" hidden/>
                         <div class="form-group text-center mt-4 mb-5">
-                            <button type="submit" asp-route-File="@Model.File" class="btn btn-primary btn-outline-dark" style="background-color: #2f5b75; color: white;">Crear Propiedad</button>
-                            <a asp-controller="Properties" asp-action="Index" asp-route-agentId="@userInSession.Id" class="btn btn-dark">Volver atras</a>
+                            <button type="submit" class="btn btn-primary btn-outline-dark" style="background-color: #2f5b75; color: white;">Editar Propiedad</button>
+                            <a asp-controller="Properties" asp-action="Index" asp-route-agentId="@Model.AgentId" class="btn btn-dark">Volver atras</a>
                         </div>
-                        <label class="mb-5"></label>
-                    </form>
+           </form>
                 </div>
             </div>
         </div>
@@ -195,21 +203,7 @@
             cursor: pointer;
         }
 
-    /* .select2-container--default .select2-selection--multiple {
-        border: 1px solid #007bff;
-        border-radius: .25rem;
-    }
-
-        .select2-container--default .select2-selection--multiple .select2-selection__choice {
-            background-color: #007bff;
-            border: 1px solid #0069d9;
-            color: #007bff;
-            margin-right: 5px;
-        }
-
-        .select2-container--default .select2-selection--multiple .select2-selection__choice__remove {
-            color: #007bff;
-        } */
+  
 </style>
 
 

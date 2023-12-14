@@ -25,5 +25,12 @@ namespace RealStateApp.Core.Application.Services
 
            return list.Where(i => i.PropertiesId == id).Select(x => x.ImageUrl).ToList();
         }
+
+        public async Task DeleteImagesProperties(int propertyId, string imagesPath)
+        {
+            await _imagesPropertiesRepository.DeleteImagesProperties(propertyId, imagesPath);
+        }
     }
+
+
 }

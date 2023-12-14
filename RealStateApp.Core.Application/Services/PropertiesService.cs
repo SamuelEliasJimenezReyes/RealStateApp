@@ -6,9 +6,11 @@ using RealStateApp.Core.Application.Helpers;
 using RealStateApp.Core.Application.Interface.Repositories;
 using RealStateApp.Core.Application.Interface.Services;
 using RealStateApp.Core.Application.ViewModels.Agents;
+using RealStateApp.Core.Application.ViewModels.Improvements;
 using RealStateApp.Core.Application.ViewModels.ImprovementsProperties;
 using RealStateApp.Core.Application.ViewModels.Properties;
 using RealStateApp.Core.Domain.Entities;
+using System.Collections.Generic;
 
 namespace RealStateApp.Core.Application.Services
 {
@@ -23,13 +25,16 @@ namespace RealStateApp.Core.Application.Services
         private readonly IHttpContextAccessor _httpContextAccessor;
         private readonly IAgentImagesService _agentImagesService;
         private readonly IFavoritePropertiesRepository _favoritePropertiesRepository;
+        private readonly IPropertiesImprovementsRepository _propertiesImprovementsRepository;
 
         public PropertiesService(IAgentImagesService agentImagesService,IPropertiesRepository propertiesRepository,
             IMapper mapper,
             IPropertiesImprovementsService propertiesImprovementsService, 
             IAccountService accountService,
             IImagesPropertiesService imagesPropertiesService,
-            IHttpContextAccessor httpContextAccessor,
+            IPropertiesImprovementsRepository propertiesImprovementsRepository,
+        IHttpContextAccessor httpContextAccessor,
+
             IFavoritePropertiesRepository favoritePropertiesRepository) : base(propertiesRepository, mapper)
         {
             _propertiesRepository = propertiesRepository;
@@ -41,7 +46,15 @@ namespace RealStateApp.Core.Application.Services
             _userSession = _httpContextAccessor.HttpContext.Session.Get<AuthenticationResponse>("user");
             _agentImagesService = agentImagesService;
             _favoritePropertiesRepository = favoritePropertiesRepository;
+            _propertiesImprovementsRepository = propertiesImprovementsRepository;
         }
+
+        //public override async Task Delete(int id)
+        //{
+        //    var saveEntity = await GetByIdSaveViewModel(id);
+        //    var entity = _mapper.Map<Properties>(saveEntity);
+        //    await _propertiesRepository.DeleteAsync(entity);
+        //}
 
         public override async Task<SavePropertiesVM> Add(SavePropertiesVM vm)
         {
@@ -122,7 +135,7 @@ namespace RealStateApp.Core.Application.Services
                     Id = properties.Id,
                     Code = properties.Code,
                     PropertiesType = properties.PropertiesTypes.Name,
-                    SaleType = properties.SaleType.Name,
+                    SaleType = properties.SaleTypes.Name,
                     PropertiesImprovements = await _propertiesImprovementsService.GetImprovementsByPropertyId(properties.Id),
                     Agent = _mapper.Map<AgentVM>(agent),
                     ImagesProperties = await _imagesPropertiesService.GetAllImagesByPropertyId(properties.Id)
@@ -156,13 +169,45 @@ namespace RealStateApp.Core.Application.Services
                 Id = properties.Id,
                 Code = properties.Code,
                 PropertiesType = properties.PropertiesTypes.Name,
-                SaleType = properties.SaleType.Name,
+                SaleType = properties.SaleTypes.Name,
                 PropertiesImprovements = await _propertiesImprovementsService.GetImprovementsByPropertyId(properties.Id),
                 Agent = _mapper.Map<AgentVM>(agent),
                 ImagesProperties = await _imagesPropertiesService.GetAllImagesByPropertyId(properties.Id),
             };
 
             return dtoProperty;
+        }
+
+        public override async Task Update(SavePropertiesVM vm, int id)
+        {
+            var listImprovements = await _propertiesImprovementsRepository
+                                           .GetAllAsync();
+
+            var existingImprovements = listImprovements.Where(x => x.PropertiesId == id)
+                                           .Select(x => x.ImprovementId)
+                                           .ToList();
+
+              var improvementsToRemove = existingImprovements.Except(vm.PropertiesImprovementsId).ToList();
+
+             foreach (var improvementId in improvementsToRemove)
+            {
+                await _propertiesImprovementsRepository.DeletePropertiesImprovements(vm.Id, improvementId);
+            }
+
+             var newImprovementsToAdd = vm.PropertiesImprovementsId.Except(existingImprovements).ToList();
+
+            foreach (var newImprovementId in newImprovementsToAdd)
+            {
+                var saveImprovementsProperties = new SavePropertiesImprovementsVM
+                {
+                    PropertiesId = vm.Id,
+                    ImprovementId = newImprovementId
+                };
+
+                await _propertiesImprovementsService.Add(saveImprovementsProperties);
+            }
+
+            await base.Update(vm, id);
         }
 
         public async Task AddFavoriteProperties(int propertyId, string clientId) 

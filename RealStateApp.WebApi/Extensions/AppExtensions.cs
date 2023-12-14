@@ -1,4 +1,5 @@
 ﻿using RealStateApp.WebApi.Middlewares;
+using Swashbuckle.AspNetCore.SwaggerUI;
 
 namespace RealStateApp.WebApi.Extensions
 {
@@ -10,6 +11,7 @@ namespace RealStateApp.WebApi.Extensions
             app.UseSwaggerUI(options =>
             {
                 options.SwaggerEndpoint("/swagger/v1/swagger.json", "RealStateApp");
+                options.DefaultModelRendering(ModelRendering.Model);
             });
         }
 
