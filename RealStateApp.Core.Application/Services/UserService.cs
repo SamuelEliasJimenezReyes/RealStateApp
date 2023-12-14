@@ -129,7 +129,10 @@ namespace RealStateApp.Core.Application.Services
         }
         public async Task UpdateUserByUserId(UserDTO dto)
         {
-            await _agentImagesService.UpdateAgentImagesByAgentId(_userSession.Id, dto.ImagePath);
+            if(dto.ImagePath != null)
+            {
+                await _agentImagesService.UpdateAgentImagesByAgentId(_userSession.Id, dto.ImagePath);
+            }
             dto.UserId = _userSession.Id;
             await _accountService.UpdateUser(dto);
         }

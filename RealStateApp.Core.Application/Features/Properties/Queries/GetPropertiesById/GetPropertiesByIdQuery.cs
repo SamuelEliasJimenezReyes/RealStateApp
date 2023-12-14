@@ -62,6 +62,7 @@ namespace RealStateApp.Core.Application.Features.Properties.Queries.GetPropertie
                     AgentName = $"{agent.FirstName} {agent.LastName}"
                 };
 
+
             return dtoProperty;
         }
     }

@@ -35,7 +35,15 @@
                         <span asp-validation-for="Phone" class="text-white"></span>
                     </div>
                     <div class="form-group mx-sm-4 pt-3 mb-2" id="imageUploadSection">
-                        <img src="@Model.ImagePath" alt="Foto Perfil" class="agent-image mb-3" />
+                        @if (Model.ImagePath != null)
+                        {
+                            <img src="@Model.ImagePath" alt="Foto Perfil" class="agent-image mb-3" />
+
+                        }
+                        else
+                        {
+                            <img src="\Images\Agent\Anonimo\AgentAnonimo.png" alt="Foto Perfil" class="agent-image mb-3" />
+                        }
                         <label asp-for="File">Selecciona una imagen, si desea cambiarla:</label>
                         <input type="file" asp-for="File" lang="es" name="File" class="d-none mb-2" id="image" />
                         <button type="button" class="btn btn-outline-dark btn-lg btn-block btn-outline-light" onclick="document.getElementById('image').click()">

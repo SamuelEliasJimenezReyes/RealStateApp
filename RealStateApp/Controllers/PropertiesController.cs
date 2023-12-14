@@ -50,6 +50,7 @@ namespace RealStateApp.Controllers
 
             if (!ModelState.IsValid)
             {
+
                 if (svm.File.Count >= 5)
                 {
                     svm.HasError = true;
