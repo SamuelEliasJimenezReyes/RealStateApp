@@ -1,8 +1,10 @@
 ﻿
 
+using RealStateApp.Core.Domain.Common;
+
 namespace RealStateApp.Core.Domain.Entities
 {
-    public class FavoriteProperties
+    public class FavoriteProperties : BaseEntity
     {
         public string ClientId { get; set; }
         public int PropertiesId { get; set; }
