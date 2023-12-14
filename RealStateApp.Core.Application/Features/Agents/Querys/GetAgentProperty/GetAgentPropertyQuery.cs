@@ -38,7 +38,7 @@ namespace RealStateApp.Core.Application.Features.Agents.Querys.GetAgentProperty
         private async Task<List<PropertiesDTO>> GetAgentPropertiesById(string id)
         {
 
-            var list = await _propertiesRepository.GetAllWithIncludeAsync(new List<string> { "SaleTypes", "PropertiesTypes" });
+            var list = await _propertiesRepository.GetAllWithIncludeAsync(new List<string> { "SaleType", "PropertiesTypes" });
             var dtoList = new List<PropertiesDTO>();
 
             foreach (var properties in list.Where(a => a.AgentId == id))
@@ -55,7 +55,7 @@ namespace RealStateApp.Core.Application.Features.Agents.Querys.GetAgentProperty
                     Id = properties.Id,
                     Code = properties.Code,
                     PropertiesType = properties.PropertiesTypes.Name,
-                    SaleType = properties.SaleTypes.Name,
+                    SaleType = properties.SaleType.Name,
                     Improvements = await _propertiesImprovementsService.GetImprovementsByPropertyId(properties.Id),
                     AgentId = properties.AgentId,
                     AgentName = $"{agent.FirstName} + + {agent.LastName}"

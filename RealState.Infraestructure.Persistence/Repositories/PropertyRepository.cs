@@ -20,6 +20,11 @@ namespace RealState.Infraestructure.Persistence.Repositories
             await UpdateAsync(entity, entity.Id);
             await _context.SaveChangesAsync();
         }
+
+        public override Task<List<Properties>> GetAllWithIncludeAsync(List<string> properties)
+        {
+            return base.GetAllWithIncludeAsync(properties); 
+        }
     }
 
 }
