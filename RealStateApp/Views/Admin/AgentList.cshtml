@@ -18,6 +18,7 @@
                 <th>Username</th>
                 <th></th>
                 <th></th>
+                <th></th>
             </tr>
         </thead>
         <tbody>
@@ -31,7 +32,7 @@
                     <td>
                         @if (item.IsActive)
                         {
-                            <button type="button" class="btn btn-sm btn-outline-danger" data-bs-toggle="modal" data-bs-target="#statusChangeModal_@item.Id">
+                            <button type="button" class="btn btn-sm btn-outline-info" data-bs-toggle="modal" data-bs-target="#statusChangeModal_@item.Id">
                                 Inactivar
                             </button>
                         }
@@ -64,6 +65,10 @@
                                 </div>
                             </div>
                         </div>
+                    </td>
+                    <td>
+                        <input asp-for="@item.Id" hidden />
+                        <a class="btn btn-sm btn-outline-danger" asp-controller="Admin" asp-action="DeleteAgents">Delete</a>
                     </td>
                 </tr>
             }
