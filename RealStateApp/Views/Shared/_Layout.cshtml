@@ -50,6 +50,21 @@
                             
                     </ul>
                     }
+                      @if (User != null && User.Roles.Contains("Client"))
+                    {
+                          <ul class="navbar-nav flex-grow-1">
+                        
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" asp-controller="Client" asp-action="Index" asp-route-agentId="@User.Id">Home</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" asp-controller="Client" asp-action="FavoriteProperties">Mis Propiedades Favoritas</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" asp-controller="Home" asp-action="AgentHome" asp-route-agentId="@User.Id">Agentes</a>
+                        </li>
+                        </ul>
+                    }
                     @if (User != null && User.Roles.Contains("Agent"))
                     {
                           <ul class="navbar-nav flex-grow-1">
