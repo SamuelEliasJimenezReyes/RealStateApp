@@ -35,6 +35,7 @@ namespace RealStateApp.Controllers
         public async Task<IActionResult> AgentList()
         {
             var list = await _userService.GetAllAgentVM();
+
             return View(list);
         }
         public async Task<IActionResult> ChangeUserStatus(string userID)
