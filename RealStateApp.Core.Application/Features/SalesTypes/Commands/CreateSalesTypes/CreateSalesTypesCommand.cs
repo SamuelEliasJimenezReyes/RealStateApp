@@ -3,14 +3,16 @@ using AutoMapper;
 using MediatR;
 using RealStateApp.Core.Application.Interface.Repositories;
 using RealStateApp.Core.Application.Wrappers;
-using RealStateApp.Core.Domain.Entities;
-
+using Swashbuckle.AspNetCore.Annotations;
 
 namespace RealStateApp.Core.Application.Features.SalesTypes.Commands.CreateSalesTypes
 {
     public class CreateSalesTypesCommand : IRequest<Response<int>>
     {
+        [SwaggerParameter(Description = "Crear descripcion para tipo de ventas")]
         public string Description { get; set; }
+
+        [SwaggerParameter(Description = "Crear nombre para tipo de ventas")]
         public string Name { get; set; }
 
     }

@@ -7,12 +7,14 @@ using RealStateApp.Core.Application.Features.Properties.Queries.GetPropertiesByI
 using RealStateApp.Core.Application.Interface.Repositories;
 using RealStateApp.Core.Application.Interface.Services;
 using RealStateApp.Core.Application.Wrappers;
+using Swashbuckle.AspNetCore.Annotations;
 using System.Net;
 
 namespace RealStateApp.Core.Application.Features.Properties.Queries.GetPropertiesByCode
 {
     public class GetPropertiesByCodeQuery: IRequest<Response<PropertiesDTO>>
     {
+        [SwaggerParameter(Description = "Codigo de la propiedad a obtener")]
         public string Code { get; set; }
     }
 

@@ -6,12 +6,14 @@ using RealStateApp.Core.Application.Dtos.PropertiesTypes;
 using RealStateApp.Core.Application.Exceptions;
 using RealStateApp.Core.Application.Interface.Repositories;
 using RealStateApp.Core.Application.Wrappers;
+using Swashbuckle.AspNetCore.Annotations;
 using System.Net;
 
 namespace RealStateApp.Core.Application.Features.PropertiesTypes.Queries.GetPropertiesTypeById
 {
     public class GetPropertiesTypeByIdQuery : IRequest<Response<PropertiesTypesDTO>>
     {
+        [SwaggerParameter(Description = "Id Del tipo de propiedad a obtener")]
         public int Id { get; set; }
     }
    

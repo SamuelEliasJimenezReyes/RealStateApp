@@ -5,13 +5,16 @@ using MediatR;
 using RealStateApp.Core.Application.Dtos.Api.Improvements;
 using RealStateApp.Core.Application.Interface.Repositories;
 using RealStateApp.Core.Application.Wrappers;
+using Swashbuckle.AspNetCore.Annotations;
 
 namespace RealStateApp.Core.Application.Features.Improvements.Commands.CreateImprovements
 {
     public class CreateImprovementsCommand : IRequest<Response<int>>
     {
+        [SwaggerParameter(Description = "crear Nombre de la mejora")]
         public string Name { get; set; }
 
+        [SwaggerParameter(Description = "crear una descripcion de la mejora")]
         public string Description { get; set; }
 
     }

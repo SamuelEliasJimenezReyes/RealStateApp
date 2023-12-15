@@ -4,6 +4,7 @@ using MediatR;
 using RealStateApp.Core.Application.Exceptions;
 using RealStateApp.Core.Application.Interface.Repositories;
 using RealStateApp.Core.Application.Wrappers;
+using Swashbuckle.AspNetCore.Annotations;
 using System.Net;
 using static Microsoft.EntityFrameworkCore.DbLoggerCategory.Database;
 
@@ -11,6 +12,7 @@ namespace RealStateApp.Core.Application.Features.SalesTypes.Commands.DeleteSales
 {
     public class DeleteSalesTypeByIdCommand : IRequest<Response<int>>
     {
+        [SwaggerParameter(Description = "Id Del tipo de venta a eliminar")]
         public int Id { get; set; }
 
     }

@@ -1,11 +1,14 @@
 ﻿using DRSocialNetwork.Application.Helpers;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using RealStateApp.Core.Application.Enums;
 using RealStateApp.Core.Application.Interface.Services;
 using RealStateApp.Core.Application.ViewModels.ImagesProperties;
 using RealStateApp.Core.Application.ViewModels.Properties;
 
 namespace RealStateApp.Controllers
 {
+    [Authorize(Roles = "Agent")]
     public class PropertiesController : Controller
     {
         private readonly IPropertiesService _propertiesService;

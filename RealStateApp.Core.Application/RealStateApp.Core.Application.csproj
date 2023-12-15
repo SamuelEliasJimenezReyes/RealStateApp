@@ -6,16 +6,22 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
+	<PropertyGroup>
+		<GenerateDocumentationFile>true</GenerateDocumentationFile>
+	</PropertyGroup>
+
   <ItemGroup>
+    <Compile Remove="Features\Properties\Commands\**" />
     <Compile Remove="Mappings\**" />
+    <EmbeddedResource Remove="Features\Properties\Commands\**" />
     <EmbeddedResource Remove="Mappings\**" />
+    <None Remove="Features\Properties\Commands\**" />
     <None Remove="Mappings\**" />
   </ItemGroup>
 
   <ItemGroup>
     <Folder Include="Enums\" />
     <Folder Include="Helpers\" />
-    <Folder Include="Features\Properties\Commands\" />
     <Folder Include="Wrappers\" />
     <Folder Include="Features\Properties\Queries\GetPropertiesById\" />
     <Folder Include="Features\Properties\Queries\GetPropertiesByCode\" />

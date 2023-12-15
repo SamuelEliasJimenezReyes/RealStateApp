@@ -4,14 +4,20 @@ using MediatR;
 using RealStateApp.Core.Application.Exceptions;
 using RealStateApp.Core.Application.Interface.Repositories;
 using RealStateApp.Core.Application.Wrappers;
+using Swashbuckle.AspNetCore.Annotations;
 using System.Net;
 
 namespace RealStateApp.Core.Application.Features.SalesTypes.Commands.UpdateSalesTypes
 {
     public class UpdateSalesTypesCommand : IRequest<Response<SalesTypesUpdateResponse>>
     {
+        [SwaggerParameter(Description = "Id Del tipo de venta a obtener")]
         public int Id { get; set; }
+
+        [SwaggerParameter(Description = "nueva modificacion de la descripcion")]
         public string Description { get; set; }
+
+        [SwaggerParameter(Description = "nueva modificacion del nombre")]
         public string Name { get; set; }
     }
 

@@ -6,13 +6,14 @@ using RealStateApp.Core.Application.Dtos.Api.Improvements;
 using RealStateApp.Core.Application.Exceptions;
 using RealStateApp.Core.Application.Interface.Services;
 using RealStateApp.Core.Application.Wrappers;
+using Swashbuckle.AspNetCore.Annotations;
 using System.Net;
 
 namespace RealStateApp.Core.Application.Features.Agents.Querys.GetAgentById
 {
     public class GetAgentByIdQuery : IRequest<Response<AgentsDTO>>
     {
-        
+        [SwaggerParameter(Description = "Id Del Agente a obtener")]
         public string Id { get; set; } 
     }
 

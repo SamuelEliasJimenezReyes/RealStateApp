@@ -23,6 +23,7 @@ namespace realstateapp.Controllers
             return View(list);
         }
 
+
         public IActionResult AddPropertiesTypes()
         {
             ViewBag.EditMode = false;

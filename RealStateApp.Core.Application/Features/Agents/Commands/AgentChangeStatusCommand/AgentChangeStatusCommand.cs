@@ -13,10 +13,10 @@ namespace RealStateApp.Core.Application.Features.Agents.Commands.AgentChangeStat
 {
     public class AgentChangeStatusCommand : IRequest<Response<ChangeStatusRequest>>
     {
-        [SwaggerParameter("Necesita ingresar un Id")]
+        [SwaggerParameter(Description = "Id del Agente del que queremos cambiar estado")]
         public string Id { get; set; }
 
-        [SwaggerParameter("Necesita ingresar un Estado")]
+        [SwaggerParameter(Description = "Estado del Agente")]
         public bool Status { get; set; }
     }
 
