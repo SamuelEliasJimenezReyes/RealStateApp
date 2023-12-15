@@ -6,6 +6,7 @@ using RealStateApp.Core.Application.Interface.Services;
 using WebApp.RealStateApp.Middlewares;
 using DRSocialNetwork.Application.Helpers;
 using RealStateApp.Core.Application.ViewModels.AgentImages;
+using RealStateApp.Core.Application.Dtos.User;
 
 namespace WebApp.RealStateApp.Controllers
 {
@@ -170,68 +171,39 @@ namespace WebApp.RealStateApp.Controllers
             return View();
         }
 
-        //    public async Task<IActionResult> UpdateUser(string userId)
-        //    {
-        //        var user = await _userService.GetUserDTOAsync(userId);
-        //        var editUser = new EditUserViewModel()
-        //        {
-        //            Email = user.Email,
-        //            FirstName = user.FirstName,
-        //            LastName = user.LastName,
-        //            Phone = user.Phone,
-        //            Username = user.UserName,
-        //        };
-        //    return View(editUser);
-        //}
+        public async Task<IActionResult> UpdateUser()
+        {
+            var user = await _userService.GetUserDTOAsync();
+            var editUser = new EditUserViewModel()
+            {
+                Email = user.Email,
+                FirstName = user.FirstName,
+                LastName = user.LastName,
+                Phone = user.Phone,
+                Username = user.UserName,
+            };
+            return View(editUser);
+        }
 
-        //[HttpPost]
-        //public async Task<IActionResult> UpdateUser(EditUserViewModel vm)
-        //{
-        //    UserDTO value = new();
-
-
-        //    value.Phone = vm.Phone;
-        //    value.Email = vm.Email;
-        //    value.FirstName = vm.FirstName;
-        //    value.LastName = vm.LastName;
-        //    value.UserName = vm.Username;
-        //    value.UserId = vm.UserId;
-
-        //    await _userService.UpdateUserByUserId(value);
-        //    return RedirectToRoute(new { controller = "Home", action = "Index" });
-        //}
+        [HttpPost]
+        public async Task<IActionResult> UpdateUser(EditUserViewModel vm)
+        {
+            UserDTO value = new();
 
 
-        //public async Task<IActionResult> UpdateClient(string userId)
-        //    {
-        //       var user = await _userService.GetUserDTOAsync(userId);
-        //        var editUser = new EditUserViewModel()
-        //        {
-        //            Email = user.Email,
-        //            FirstName = user.FirstName,
-        //            LastName = user.LastName,
-        //            Phone = user.Phone,
-        //            Username = user.UserName,
-        //        };
-        //        return View(editUser);
-        //    }
+            value.Phone = vm.Phone;
+            value.Email = vm.Email;
+            value.FirstName = vm.FirstName;
+            value.LastName = vm.LastName;
+            value.UserName = vm.Username;
+            value.UserId = vm.UserId;
 
-            //[HttpPost]
-            //public async Task<IActionResult> UpdateClient(EditUserViewModel vm)
-            //{
-            //    UserDTO value = new();
-            
-            //    value.Phone= vm.Phone;
-            //    value.Email= vm.Email;
-            //    value.FirstName = vm.FirstName;
-            //    value.LastName= vm.LastName;
-            //    value.UserName = vm.Username;
-            //      value.UserId = vm.UserId;
+            await _userService.UpdateUserByUserId(value);
+            return RedirectToRoute(new { controller = "Home", action = "Index" });
+        }
 
-            //  var user = await _userService.UpdateUserByUserId(value);
 
-            //return RedirectToRoute(new {controller = "Home", action= "Index" });
-            //}
+       
     }
 }
 
