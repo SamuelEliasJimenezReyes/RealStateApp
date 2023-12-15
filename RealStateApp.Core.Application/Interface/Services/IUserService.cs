@@ -1,5 +1,6 @@
 ﻿using RealStateApp.Core.Application.Dtos.Account;
 using RealStateApp.Core.Application.Dtos.User;
+using RealStateApp.Core.Application.ViewModels.Admin;
 using RealStateApp.Core.Application.ViewModels.Agents;
 using RealStateApp.Core.Application.ViewModels.User;
 
@@ -18,7 +19,9 @@ namespace RealStateApp.Core.Application.Interface.Services
         Task<ResetPasswordResponse> ResetPasswordAsync(ResetPasswordViewModel vm);
         Task<List<AgentVM>> GetAllAgentVM();
         Task SignOutAsync();
-        //Task UpdateUser(SaveUserViewModel user);
+        //Task UpdateUser(SaveAdminViewModel user);
         Task UpdateUserByUserId(UserDTO dto);
+
+        Task<List<SaveAdminViewModel>> GetAllAdminVM();
     }
 }

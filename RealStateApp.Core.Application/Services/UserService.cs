@@ -6,6 +6,7 @@ using RealStateApp.Core.Application.Interface.Services;
 using RealStateApp.Core.Application.ViewModels.Agents;
 using Microsoft.AspNetCore.Http;
 using RealStateApp.Core.Application.Helpers;
+using RealStateApp.Core.Application.ViewModels.Admin;
 
 namespace RealStateApp.Core.Application.Services
 {
@@ -45,7 +46,7 @@ namespace RealStateApp.Core.Application.Services
             AuthenticationResponse userResponse = await _accountService.AuthenticateAsync(loginRequest,isForApi );
             return userResponse;
         }
-        //public async Task UpdateUser(SaveUserViewModel user)
+        //public async Task UpdateUser(SaveAdminViewModel user)
         //{
         //    await _accountService.UpdateUser(user);
         //}
@@ -113,7 +114,19 @@ namespace RealStateApp.Core.Application.Services
 
             return agentVMList;
         }
+        public async Task<List<SaveAdminViewModel>> GetAllAdminVM()
+        {
+            var userDTOList = await _accountService.GetAllUsers();
+            var agentList = userDTOList.Where(x => x.Roles.Contains("Admin")).ToList();
+            var agentVMList = new List<SaveAdminViewModel>();
+            foreach (var agent in agentList)
+            {
+                var agentVM = _mapper.Map<SaveAdminViewModel>(agent);
+                agentVMList.Add(agentVM);
+            }
 
+            return agentVMList;
+        }
         public async Task UpdateUserByUserId(UserDTO dto)
         {
             if(dto.ImagePath != null)
