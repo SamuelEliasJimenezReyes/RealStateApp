@@ -1,14 +1,14 @@
-﻿@using RealStateApp.Core.Application.ViewModels.PropertiesTypes
-@model List<PropertiesTypesVM>
+﻿@using RealStateApp.Core.Application.ViewModels.Improvements
+@model List<ImprovementsVM>
 
 <div class="row align-content-center">
     <div class="col-10 offset-1">
 
         <div class="card">
             <div class="card-header bg-primary text-light">
-                Estados de Caso
+                Mejoras
                 <div class="text-end">
-                    <a class="btn btn-success float-end text-black" style="background-color: #f6eaff; color: white;" asp-controller="PropertiesTypes" asp-action="AddPropertiesTypes">Nuevo Tipo de Propiedades</a>
+                    <a class="btn btn-success float-end text-black" style="background-color: #f6eaff; color: white;" asp-controller="AddImprovements" asp-action="AddImprovements">Nuevo Tipo de Propiedades</a>
                 </div>
             </div>
             <div class="card-body">
@@ -30,7 +30,7 @@
                                 <tr>
                                     <td>@item.Name</td>
                                     <td>@item.Description</td>
-                                    <td><a class="btn btn-outline-success" asp-action="EditPropertiesTypes" asp-route-id="@item.Id">Editar</a></td>
+                                    <td><a class="btn btn-outline-success" asp-action="EditImprovements" asp-route-id="@item.Id">Editar</a></td>
                                     <td><a class="btn btn-outline-danger" asp-action="Delete" asp-route-id="@item.Id">Delete</a></td>
                                 </tr>
 
@@ -40,7 +40,7 @@
                 }
                 else
                 {
-                    <h2 class="bg-danger text-center text-black"><b>No Hay Tipos de Propiedades</b></h2>
+                    <h2 class="bg-danger text-center text-black"><b>No Hay Mejoras</b></h2>
                 }
             </div>
         </div>
